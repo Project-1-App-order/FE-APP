@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project_1_btl/screens/LoginAndRegister/EmailOTPScreen.dart';
-import 'package:project_1_btl/screens/LoginAndRegister/RegisterScreen.dart';
-import 'package:project_1_btl/screens/Main/MainScreen.dart';
+import 'package:project_1_btl/screen/OTPSetting/EmailOTPScreen.dart';
+import 'package:project_1_btl/screen/Register/RegisterScreen.dart';
 import 'package:project_1_btl/utils/constants.dart'; // Đảm bảo bạn đã định nghĩa ColorApp trong file này
 import 'package:project_1_btl/widgets/CustomTextField.dart';
 import 'package:project_1_btl/widgets/MyButton.dart';
@@ -95,7 +94,7 @@ class LoginScreen extends StatelessWidget {
 
             // Nút Login
             InkWell(child: MyButton(size: size, title: "Đăng Nhập"), onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen()));
+              //Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen()));
             },),
             SizedBox(height: height * 0.06),
             InkWell(
