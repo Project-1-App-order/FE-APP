@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-//import 'package:project_1_btl/screen/Setting/SettingScreen.dart';
-//import 'package:project_1_btl/screen/UserSettings/UserInformationScreen.dart';
+import 'package:project_1_btl/screen/Login/LoginScreen.dart';
+import 'package:project_1_btl/screen/Setting/SettingScreen.dart';
+import 'package:project_1_btl/screen/UserSetting/UserInformationScreen.dart';
+import 'package:project_1_btl/services/AuthService.dart';
 import 'package:project_1_btl/utils/constants.dart';
 import 'package:project_1_btl/widgets/MyButton.dart';
 import 'package:project_1_btl/widgets/MyText.dart';
@@ -77,16 +79,32 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
           InkWell(child : ItemProfile(size: size, icon: Icons.info, title: "Thông tin người dùng"), onTap: (){
-            //Navigator.push(context, MaterialPageRoute(builder: (context) => UserInformationScreen()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => UserInformationScreen()));
           },),
           SizedBox(height: 30,),
           ItemProfile(size: size, icon: Icons.info, title: "Chính sách quy định"),
           InkWell(child: ItemProfile(size: size, icon: Icons.settings, title: "Cài đặt"), onTap: (){
-            //Navigator.push(context, MaterialPageRoute(builder: (context) => SettingScreen()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => SettingScreen()));
           },),
           ItemProfile(size: size, icon: Icons.fastfood, title: "Về Food App"),
           SizedBox(height: 270,),
-          MyButton(size: size, title: "Đăng Xuất")
+          InkWell(
+            onTap: () async {
+              try {
+                // Call the logout API and remove the token
+                await AuthService().logout();
+
+                // Navigate back to the login screen
+                Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+              } catch (e) {
+                // Handle logout error
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Logout failed: ${e.toString()}')),
+                );
+              }
+            },
+            child: MyButton(size: size, title: "Đăng Xuất"),
+          ),
         ],
       ),
     );
