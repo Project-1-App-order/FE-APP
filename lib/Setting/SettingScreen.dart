@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:project_1/screens/UserSettings/ChangePasswordScreen.dart';
-import 'package:project_1/screens/item/ItemProfile.dart';
-import 'package:project_1/utils/constants.dart';
-import 'package:project_1/widgets/MyAppBar.dart';
-import 'package:project_1/widgets/MyText.dart';
+import 'package:project_1_btl/screen/UserSetting/ChangePasswordScreen.dart';
+import 'package:project_1_btl/screen/item/ItemProfile.dart';
+import 'package:project_1_btl/utils/constants.dart';
+import 'package:project_1_btl/widgets/MyAppBar.dart';
+import 'package:project_1_btl/widgets/MyText.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});
