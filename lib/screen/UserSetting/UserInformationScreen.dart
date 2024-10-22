@@ -35,7 +35,9 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
         phoneController.text = userInfo['phoneNumber'] ?? '';
         emailController.text = userInfo['email'] ?? '';
         addressController.text = userInfo['address'] ?? '';
-        selectedGender = userInfo['gender'] ?? '';
+        selectedGender = (userInfo['gender'] == 'Nam' || userInfo['gender'] == 'Nữ')
+            ? userInfo['gender']
+            : null;
       });
     } catch (error) {
       // Handle error when retrieving user information

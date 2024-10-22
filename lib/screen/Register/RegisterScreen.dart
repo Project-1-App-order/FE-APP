@@ -32,10 +32,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ));
 
       // Show a success message for password match
-      Fluttertoast.showToast(
-        msg: "Passwords match, proceeding with registration.",
-        backgroundColor: Colors.green,
-      );
+
     } else {
       // Show an error message if passwords do not match
       Fluttertoast.showToast(
@@ -64,7 +61,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
           } else if (state is RegisterFailure) {
             Fluttertoast.showToast(
-              msg: "Registration failed: ${state.error}",
+              msg: "${state.error}",
               backgroundColor: Colors.red,
             );
           }

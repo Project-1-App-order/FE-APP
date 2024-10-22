@@ -34,5 +34,9 @@ class AuthRepository {
     return await _authService.updateUserInformation(updatedUserInfo);
   }
 
+  Future<String> changePasswordUser(String currentPassword, String newPassword, String confirmPassword) async {
+    return await _authService.changePasswordUser(currentPassword, newPassword, confirmPassword);
+  }
+
 
 }

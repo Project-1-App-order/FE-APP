@@ -17,10 +17,30 @@ class AuthService {
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
       return data['statusMessage'];
-    } else {
+    } else if (response.statusCode == 400) {
+
+      // Parse lỗi và trả về lỗi cụ thể
+      final Map<String, dynamic> errorData = json.decode(response.body);
+
+      if (errorData['status'] == 'False' && errorData['statusMessage'] == 'Email already exists') {
+        throw Exception('Email already exists');
+      }
+
+      final errors = errorData['errors'];
+      if (errors != null) {
+
+        if (errors['Email'] != null) {
+          throw Exception('Email không đúng định dạng');
+        } else if (errors['Password'] != null) {
+          throw Exception('Password có độ dài từ 8 - 16 kí tự, có chữ cái in hoa, kí tự đặc biệt, chữ số');
+        }
+      }
       throw Exception('Registration failed');
+    } else {
+      throw Exception('${response.statusCode}');
     }
   }
+
 
   // Login user
   Future<String> login(String email, String password) async {
@@ -32,11 +52,24 @@ class AuthService {
     );
 
     if (response.statusCode == 200) {
-      return response.body; // Return the token
+      // Đăng nhập thành công, trả về token hoặc thông tin khác
+      return response.body;
+    } else if (response.statusCode == 500) {
+      // Parse lỗi trả về từ API với status 500
+      final Map<String, dynamic> errorData = json.decode(response.body);
+
+      if (errorData['status'] == 'Error' && errorData['statusMessage'] == "User doesn't exist") {
+        throw Exception('User does not exist');
+      }
+
+      // Xử lý các lỗi khác nếu có
+      throw Exception('Internal Server Error');
     } else {
-      throw Exception('Login failed');
+      // Xử lý các mã lỗi khác
+      throw Exception('Login failed with status code: ${response.statusCode}');
     }
   }
+
 
   // Send OTP
   Future<String> sendOTP(String email) async {
@@ -162,6 +195,37 @@ class AuthService {
       await prefs.remove('auth_token');
     } else {
       throw Exception('Logout failed');
+    }
+  }
+
+  Future<String> changePasswordUser(String currentPassword, String newPassword, String confirmPassword) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('auth_token');
+
+    if (token == null) {
+      throw Exception('No token found');
+    }
+
+    final url = Uri.parse('$baseUrl/ChangePassword');
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'accept': '*/*',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode({
+        'currentPassword': currentPassword,
+        'newPassword': newPassword,
+        'confirmPassword': confirmPassword,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      return data['statusMessage']; // Return status message from response
+    } else {
+      throw Exception('Failed to change password');
     }
   }
 }
