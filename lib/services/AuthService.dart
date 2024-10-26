@@ -54,12 +54,16 @@ class AuthService {
     if (response.statusCode == 200) {
       // Đăng nhập thành công, trả về token hoặc thông tin khác
       return response.body;
-    } else if (response.statusCode == 500) {
+    } else if (response.statusCode == 400) {
       // Parse lỗi trả về từ API với status 500
       final Map<String, dynamic> errorData = json.decode(response.body);
 
+
       if (errorData['status'] == 'Error' && errorData['statusMessage'] == "User doesn't exist") {
         throw Exception('User does not exist');
+      }
+      if (errorData['status'] == 'Error' && errorData['statusMessage'] == "Invalid password") {
+        throw Exception('Password có độ dài từ 8 - 16 kí tự, có chữ cái in hoa, kí tự đặc biệt, chữ số');
       }
 
       // Xử lý các lỗi khác nếu có

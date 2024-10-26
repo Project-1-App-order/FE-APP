@@ -42,7 +42,7 @@ dependencies:
   equatable:
   bloc:
   flutter_bloc:
-  fluttertoast:
+  fluttertoast: 
 
 dev_dependencies:
   flutter_test:
