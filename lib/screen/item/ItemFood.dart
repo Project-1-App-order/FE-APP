@@ -13,7 +13,7 @@ class ItemFood extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       child: Container(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.only(left: 10),
         width: size.width * 0.8,
         child: Row(
           children: [
@@ -52,7 +52,6 @@ class ItemFood extends StatelessWidget {
                       Text(
                         this.price.toString(),
                         style: TextStyle(
-                          decoration: TextDecoration.lineThrough,
                           fontSize: 16,
                           color: Colors.black,
                         ),

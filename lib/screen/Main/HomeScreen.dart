@@ -161,14 +161,6 @@ class HomeScreen extends StatelessWidget {
                   color: Colors.black,
                   weight: FontWeight.w600),
             ),
-            //SizedBox(height: 10),
-            // ListView cuối cùng sẽ giữ nguyên, scroll cả màn hình
-            // Container(
-            //   padding: EdgeInsets.symmetric(horizontal: 7, vertical: 7),
-            //   height: size.height, // Giới hạn chiều cao
-            //   width: size.width,
-            //   color: ColorApp.whiteColor,
-            //   child:
             // Inside FutureBuilder for recommended items
             FutureBuilder<List<Food>>(
               future: _foodRepository.getDailyRandomFoods(), // Change to appropriate method
