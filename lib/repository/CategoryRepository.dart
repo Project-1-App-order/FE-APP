@@ -10,4 +10,6 @@ class CategoryRepository {
   Future<List<Category>> getCategories() async {
     return await _categoryService.fetchCategories();
   }
+
+
 }

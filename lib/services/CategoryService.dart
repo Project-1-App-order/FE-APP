@@ -15,4 +15,6 @@ class CategoryService {
       throw Exception('Failed to load categories');
     }
   }
+
+
 }

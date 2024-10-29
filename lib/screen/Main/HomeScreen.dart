@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:project_1_btl/model/Category.dart';
+import 'package:project_1_btl/model/Food.dart';
 import 'package:project_1_btl/repository/CategoryRepository.dart';
+import 'package:project_1_btl/repository/FoodRepository.dart';
 import 'package:project_1_btl/screen/item/ItemCategory.dart';
 import 'package:project_1_btl/screen/item/ItemFood.dart';
 import 'package:project_1_btl/screen/item/ItemHomeCategory.dart';
 import 'package:project_1_btl/screen/Search/SearchScreens.dart';
 import 'package:project_1_btl/services/CategoryService.dart';
+import 'package:project_1_btl/services/FoodService.dart';
 import 'package:project_1_btl/utils/constants.dart';
 import 'package:project_1_btl/widgets/MyBanner.dart';
 import 'package:project_1_btl/widgets/MyText.dart';
@@ -17,8 +20,11 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CategoryRepository _categoryRepository =
+        CategoryRepository(CategoryService());
 
-    final CategoryRepository _categoryRepository = CategoryRepository(CategoryService());
+    final FoodRepository _foodRepository =
+    FoodRepository(FoodService());
 
     // Lấy kích thước màn hình từ QuerySize
     final size = MediaQuery.of(context).size;
@@ -50,7 +56,7 @@ class HomeScreen extends StatelessWidget {
                     "Food App",
                     style: TextStyle(
                       fontFamily: "LobsterRegular",
-                      fontSize: size.height * 0.025,
+                      fontSize: size.height * 0.03,
                       // 2.5% chiều cao màn hình
                       fontWeight: FontWeight.bold,
                       color: ColorApp.brightOrangeColor,
@@ -99,7 +105,8 @@ class HomeScreen extends StatelessWidget {
                     color: ColorApp.whiteColor,
                     child: ListView.builder(
                       itemBuilder: (context, index) {
-                        return ItemHomeCategory(category: snapshot.data![index]);
+                        return ItemHomeCategory(
+                            category: snapshot.data![index]);
                       },
                       scrollDirection: Axis.horizontal,
                       padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
@@ -117,22 +124,35 @@ class HomeScreen extends StatelessWidget {
                   color: Colors.black,
                   weight: FontWeight.w600),
             ),
-            SizedBox(height: 10),
-            Container(
-                padding: EdgeInsets.symmetric(horizontal: 7, vertical: 7),
-                height: size.height * 0.16,
-                width: size.width,
-                color: ColorApp.whiteColor,
-                child: ListView.builder(
-                  itemBuilder: (context, index) {
-                    return ItemCategory(
-                      title: "Food 1",
-                    );
-                  },
-                  scrollDirection: Axis.horizontal,
-                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                  itemCount: 10,
-                )),
+            //SizedBox(height: 10),
+            FutureBuilder<List<Food>>(
+              future: _foodRepository.getTopTenBestSellers(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Center(child: Text('Không có sản phẩm bán chạy.'));
+                } else {
+                  return Container(
+                    padding: EdgeInsets.symmetric(horizontal: 7, vertical: 7),
+                    height: size.height * 0.2,
+                    width: size.width,
+                    color: Colors.white,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        final food = snapshot.data![index];
+                        return ItemCategory(title: food.foodName, imageUrl: food.images[0],);
+                      },
+                    ),
+                  );
+                }
+              },
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: MyText(
@@ -141,7 +161,7 @@ class HomeScreen extends StatelessWidget {
                   color: Colors.black,
                   weight: FontWeight.w600),
             ),
-            SizedBox(height: 10),
+            //SizedBox(height: 10),
             // ListView cuối cùng sẽ giữ nguyên, scroll cả màn hình
             // Container(
             //   padding: EdgeInsets.symmetric(horizontal: 7, vertical: 7),
@@ -149,16 +169,35 @@ class HomeScreen extends StatelessWidget {
             //   width: size.width,
             //   color: ColorApp.whiteColor,
             //   child:
-            ListView.builder(
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return ItemFood(size: size, title: "Food $index");
+            // Inside FutureBuilder for recommended items
+            FutureBuilder<List<Food>>(
+              future: _foodRepository.getDailyRandomFoods(), // Change to appropriate method
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Center(child: Text('No suggestions available.'));
+                } else {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      final food = snapshot.data![index];
+                      return ItemFood(
+                        size: size,
+                        title: food.foodName,
+                        imageUrl: food.images[0], // Ensure image exists
+                        price: food.price, // Assuming price is a double
+                      );
+                    },
+                  );
+                }
               },
-              scrollDirection: Axis.vertical,
-              physics: NeverScrollableScrollPhysics(),
-              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-              itemCount: 5,
             ),
+
             // ),
           ],
         ),

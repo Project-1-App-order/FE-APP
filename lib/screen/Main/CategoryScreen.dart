@@ -67,6 +67,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 // Thay thế bằng ItemCategory
                 return ItemCategory(
                   title: products[categories[selectedIndex]]?[index] ?? '',
+                  imageUrl: "",
                 );
               },
             ),

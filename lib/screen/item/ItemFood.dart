@@ -5,8 +5,9 @@ import 'package:project_1_btl/widgets/MyText.dart';
 class ItemFood extends StatelessWidget {
   final Size size;
   final String title;
-
-  const ItemFood({super.key, required this.size, required this.title});
+  final String imageUrl;
+  final double price;
+  const ItemFood({super.key, required this.size, required this.title, required this.imageUrl, required this.price});
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +19,19 @@ class ItemFood extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(bottom: 10),
-              child: Image.asset(
-                "assets/images/image_food.jpg",
+              child: Image.network(
+                imageUrl,
                 width: 80,
                 height: 80,
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
+                errorBuilder: (context, error, stackTrace) {
+                  return Image.asset(
+                    "assets/images/image_food.jpg", // Fallback image in case of error
+                    width: 80,
+                    height: 80,
+                    fit: BoxFit.fill,
+                  );
+                },
               ),
             ),
             const SizedBox(width: 20),
@@ -37,32 +46,17 @@ class ItemFood extends StatelessWidget {
                       color: Colors.black,
                       weight: FontWeight.w300),
                   const SizedBox(height: 10),
-                  Row(
-                    children: const [
-                      Icon(Icons.star, size: 15, color: Colors.amberAccent),
-                      SizedBox(width: 5),
-                      Text("4.9"),
-                    ],
-                  ),
+
                   const SizedBox(height: 10),
-                  Row(
-                    children: [
+
                       Text(
-                        '70000đ',
+                        this.price.toString(),
                         style: TextStyle(
                           decoration: TextDecoration.lineThrough,
                           fontSize: 16,
                           color: Colors.black,
                         ),
                       ),
-                      SizedBox(width: 10,),
-                      MyText(
-                          text: "60000đ",
-                          size: 16,
-                          color: Colors.black,
-                          weight: FontWeight.w500),
-                    ],
-                  ),
                   const SizedBox(height: 10),
                 ],
               ),
