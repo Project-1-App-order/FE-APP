@@ -11,7 +11,12 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: ColorApp.whiteColor,
       title: Center(child: Text(title)),
-      leading: Icon(Icons.arrow_back),
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
     );
   }
 

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:project_1_btl/utils/constants.dart';
+import 'package:project_1_btl/model/Category.dart';
 
 class ItemHomeCategory extends StatelessWidget {
-  final Size size;
+  final Category category;
 
-  const ItemHomeCategory({super.key, required this.size});
+  const ItemHomeCategory({super.key, required this.category});
 
   @override
   Widget build(BuildContext context) {
@@ -16,18 +16,21 @@ class ItemHomeCategory extends StatelessWidget {
             child: Container(
               width: 55,
               height: 55,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/image_food.jpg'),
+                  image: (category.categoryImgUrl != null && category.categoryImgUrl!.isNotEmpty)
+                      ? NetworkImage(category.categoryImgUrl!) // Use NetworkImage if categoryImgUrl is not null
+                      : AssetImage('assets/images/image_food.jpg') as ImageProvider, // Fallback to local asset
                   fit: BoxFit.fill,
                 ),
               ),
+
             ),
           ),
-          const SizedBox(height: 8), // Add some space between the image and the text
-          const Text(
-            "Food 1",
-            style: TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.w600),
+          const SizedBox(height: 8),
+          Text(
+            category.categoryName != null ? category.categoryName : "Food 1",
+            style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.w600),
           ),
         ],
       ),

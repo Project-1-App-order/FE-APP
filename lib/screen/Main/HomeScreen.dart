@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:project_1_btl/model/Category.dart';
+import 'package:project_1_btl/repository/CategoryRepository.dart';
 import 'package:project_1_btl/screen/item/ItemCategory.dart';
 import 'package:project_1_btl/screen/item/ItemFood.dart';
 import 'package:project_1_btl/screen/item/ItemHomeCategory.dart';
 import 'package:project_1_btl/screen/Search/SearchScreens.dart';
+import 'package:project_1_btl/services/CategoryService.dart';
 import 'package:project_1_btl/utils/constants.dart';
 import 'package:project_1_btl/widgets/MyBanner.dart';
 import 'package:project_1_btl/widgets/MyText.dart';
@@ -14,6 +17,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final CategoryRepository _categoryRepository = CategoryRepository(CategoryService());
+
     // Lấy kích thước màn hình từ QuerySize
     final size = MediaQuery.of(context).size;
 
@@ -56,8 +62,7 @@ class HomeScreen extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => SearchScreen()),
+                        MaterialPageRoute(builder: (context) => SearchScreen()),
                       );
                     },
                     child: TextFieldSearchHome(
@@ -77,19 +82,33 @@ class HomeScreen extends StatelessWidget {
             MyBanner(pageController: _pageController, size: size),
 
             // GridView to display two rows of items
-            Container(
-                padding: EdgeInsets.symmetric(horizontal: 7, vertical: 7),
-                height: size.height * 0.14,
-                width: size.width,
-                color: ColorApp.whiteColor,
-                child: ListView.builder(
-                  itemBuilder: (context, index) {
-                    return ItemHomeCategory(size: size);
-                  },
-                  scrollDirection: Axis.horizontal,
-                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                  itemCount: 10,
-                )),
+            FutureBuilder<List<Category>>(
+              future: _categoryRepository.getCategories(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Center(child: Text('No categories available.'));
+                } else {
+                  return Container(
+                    padding: EdgeInsets.symmetric(horizontal: 7, vertical: 7),
+                    height: size.height * 0.14,
+                    width: size.width,
+                    color: ColorApp.whiteColor,
+                    child: ListView.builder(
+                      itemBuilder: (context, index) {
+                        return ItemHomeCategory(category: snapshot.data![index]);
+                      },
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                      itemCount: snapshot.data!.length,
+                    ),
+                  );
+                }
+              },
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: MyText(
@@ -130,16 +149,16 @@ class HomeScreen extends StatelessWidget {
             //   width: size.width,
             //   color: ColorApp.whiteColor,
             //   child:
-              ListView.builder(
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return ItemFood(size: size, title: "Food $index");
-                },
-                scrollDirection: Axis.vertical,
-                physics: NeverScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                itemCount: 5,
-              ),
+            ListView.builder(
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return ItemFood(size: size, title: "Food $index");
+              },
+              scrollDirection: Axis.vertical,
+              physics: NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+              itemCount: 5,
+            ),
             // ),
           ],
         ),
