@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:project_1_btl/repository/CategoryRepository.dart';
+import 'package:project_1_btl/repository/FoodRepository.dart';
 import 'package:project_1_btl/screen/item/ItemCategory.dart';
 import 'package:project_1_btl/screen/item/ItemLeftListCategory.dart';
+import 'package:project_1_btl/services/CategoryService.dart';
+import 'package:project_1_btl/services/FoodService.dart';
 import 'package:project_1_btl/widgets/MyAppBar.dart';
- // Import ItemLeftListCategory
+import 'package:project_1_btl/model/Category.dart';
+import 'package:project_1_btl/model/Food.dart'; // Import model của Food
 
 class CategoryScreen extends StatefulWidget {
   @override
@@ -11,63 +16,93 @@ class CategoryScreen extends StatefulWidget {
 
 class _CategoryScreenState extends State<CategoryScreen> {
   int selectedIndex = 0;
+  final CategoryRepository _categoryRepository = CategoryRepository(CategoryService());
+  final FoodRepository _foodRepository = FoodRepository(FoodService());
+  List<Category> categories = [];
+  Map<String, List<Food>> products = {}; // Map lưu trữ sản phẩm theo danh mục
 
-  // Danh sách danh mục (cột bên trái)
-  final List<String> categories = ['Trà sữa', 'Gà rán', 'Pizza', 'Mì Ý', 'Bánh ngọt'];
+  @override
+  void initState() {
+    super.initState();
+    loadCategories();
+  }
 
-  // Danh sách sản phẩm cho mỗi danh mục
-  final Map<String, List<String>> products = {
-    'Trà sữa': ['Trà sữa trân châu', 'Trà sữa matcha', 'Trà sữa socola', 'Trà sữa trân châu', 'Trà sữa matcha', 'Trà sữa socola'],
-    'Gà rán': ['Gà rán truyền thống', 'Gà rán cay', 'Gà rán phô mai'],
-    'Pizza': ['Pizza hải sản', 'Pizza bò', 'Pizza phô mai'],
-    'Mì Ý': ['Mì Ý sốt bò bằm', 'Mì Ý sốt kem', 'Mì Ý sốt cà chua'],
-    'Bánh ngọt': ['Bánh cheesecake', 'Bánh tiramisu', 'Bánh su kem'],
-  };
+  Future<void> loadCategories() async {
+    List<Category> fetchedCategories = await _categoryRepository.getCategoriesAndSpecial();
+    setState(() {
+      categories = fetchedCategories;
+    });
+    if (categories.isNotEmpty) {
+      loadProductsForSelectedCategory(); // Chỉ gọi sau khi categories có dữ liệu
+    }
+  }
+
+  Future<void> loadProductsForSelectedCategory() async {
+    if (categories.isEmpty) return;
+
+    // Nếu danh mục "Tất Cả" được chọn, tải toàn bộ sản phẩm
+    if (categories[selectedIndex].categoryId == "all") {
+      List<Food> allFoods = await  _foodRepository.getAll();// Giả sử bạn có phương thức này
+      setState(() {
+        products["all"] = allFoods;
+      });
+    }
+    else {
+      List<Food> foodsByCategory = await _foodRepository.getFoodsByCategory(categories[selectedIndex].categoryId);
+      setState(() {
+        products[categories[selectedIndex].categoryId] = foodsByCategory;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: MyAppBar(title: "Danh mục sản phẩm",),
-      body: Row(
+      appBar: MyAppBar(title: "Danh mục sản phẩm"),
+      body: categories.isEmpty // Kiểm tra nếu categories rỗng
+          ? Center(child: CircularProgressIndicator()) // Hiển thị vòng xoay tải
+          :Row(
         children: [
           // Cột bên trái chứa ListView các danh mục
           Container(
-            width: MediaQuery.of(context).size.width * 0.25, // Cột chiếm 25% màn hình
+            width: MediaQuery.of(context).size.width * 0.25,
             child: ListView.builder(
               itemCount: categories.length,
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
                     setState(() {
-                      selectedIndex = index; // Cập nhật selectedIndex khi chọn
+                      selectedIndex = index;
                     });
+                    loadProductsForSelectedCategory(); // Tải sản phẩm tương ứng với danh mục được chọn
                   },
                   child: ItemLeftListCategory(
-                    size: MediaQuery.of(context).size,  // Truyền kích thước của màn hình
-                    title: categories[index],            // Truyền tên danh mục
-                    isSelected: selectedIndex == index,  // Xác định mục nào được chọn
+                    size: MediaQuery.of(context).size,
+                    title: categories[index].categoryName,
+                    imageUrl: categories[index].categoryImgUrl!,
+                    isSelected: selectedIndex == index,
                   ),
                 );
               },
             ),
           ),
-          SizedBox(width: 10,),
+          SizedBox(width: 10),
           // Phần còn lại là GridView chứa các sản phẩm tương ứng với danh mục được chọn
           Expanded(
             child: GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3, // 3 hànmainAxisSpacing: 5,
+                crossAxisCount: 3,
+                mainAxisSpacing: 5,
                 crossAxisSpacing: 5,
-
-                childAspectRatio: 2 / 3, // Điều chỉnh tỷ lệ kích thước của ô sản phẩm
+                childAspectRatio: 2 / 3,
               ),
-              itemCount: products[categories[selectedIndex]]?.length ?? 0,
+              itemCount: products[categories[selectedIndex].categoryId]?.length ?? 0,
               itemBuilder: (context, index) {
-                // Thay thế bằng ItemCategory
+                Food? food = products[categories[selectedIndex].categoryId]?[index];
                 return ItemCategory(
-                  title: products[categories[selectedIndex]]?[index] ?? '',
-                  imageUrl: "",
+                  title: food!.foodName,   // Hiển thị tên của món ăn
+                  imageUrl: food.images[0], // Hiển thị URL của hình ảnh nếu có
                 );
               },
             ),

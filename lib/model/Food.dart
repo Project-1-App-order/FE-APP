@@ -8,7 +8,6 @@ class Food {
     required this.foodId,
     required this.foodName,
     required this.price,
-
     required this.images,
   });
 
@@ -20,6 +19,7 @@ class Food {
       images: List<String>.from(json['foodImages']["\$values"]),
     );
   }
+
   Map<String, dynamic> toJson() {
     return {
       'foodId': foodId,

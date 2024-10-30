@@ -28,4 +28,19 @@ class FoodService {
       throw Exception('Failed to load all foods');
     }
   }
+
+  final String _baseUrlFoodByCategory = 'http://10.0.2.2:7258/api/Foods/GetFoodsByCategory';
+
+  Future<List<Food>> fetchFoodsByCategory(String categoryId) async {
+    final url = '$_baseUrlFoodByCategory?categoryId=$categoryId';
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      List<dynamic> foodsJson = data['result']['\$values'];
+      return foodsJson.map((json) => Food.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load foods');
+    }
+  }
 }

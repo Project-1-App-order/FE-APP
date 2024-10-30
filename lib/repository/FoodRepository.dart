@@ -48,4 +48,8 @@ class FoodRepository {
     }
     return [];
   }
+
+  Future<List<Food>> getFoodsByCategory(String categoryId) async {
+    return await _foodService.fetchFoodsByCategory(categoryId);
+  }
 }
