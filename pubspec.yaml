@@ -42,7 +42,8 @@ dependencies:
   equatable:
   bloc:
   flutter_bloc:
-  fluttertoast: 
+  fluttertoast:
+  hero_animation:
 
 dev_dependencies:
   flutter_test:

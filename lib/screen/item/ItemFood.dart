@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:project_1_btl/model/Food.dart';
+import 'package:project_1_btl/screen/detail/DetailFoodScreen.dart';
 //import 'package:project_1_btl/screen/Detail/DetailFoodScreen.dart';
 import 'package:project_1_btl/widgets/MyText.dart';
 
 class ItemFood extends StatelessWidget {
   final Size size;
-  final String title;
-  final String imageUrl;
-  final double price;
-  const ItemFood({super.key, required this.size, required this.title, required this.imageUrl, required this.price});
+  final Food food;
+  const ItemFood({super.key, required this.food, required this.size, });
 
   @override
   Widget build(BuildContext context) {
@@ -19,21 +19,25 @@ class ItemFood extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(bottom: 10),
-              child: Image.network(
-                imageUrl,
-                width: 80,
-                height: 80,
-                fit: BoxFit.fill,
-                errorBuilder: (context, error, stackTrace) {
-                  return Image.asset(
-                    "assets/images/image_food.jpg", // Fallback image in case of error
-                    width: 80,
-                    height: 80,
-                    fit: BoxFit.fill,
-                  );
-                },
+              child: Hero(
+                tag: food.foodId, // Cùng tag với ảnh lớn để tạo hiệu ứng chuyển tiếp
+                child: Image.network(
+                  food.images[0],
+                  width: 80,
+                  height: 80,
+                  fit: BoxFit.fill,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      "assets/images/image_food.jpg", // Fallback image in case of error
+                      width: 80,
+                      height: 80,
+                      fit: BoxFit.fill,
+                    );
+                  },
+                ),
               ),
             ),
+
             const SizedBox(width: 20),
             Expanded(
               child: Column(
@@ -41,7 +45,7 @@ class ItemFood extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   MyText(
-                      text: title,
+                      text: food.foodName,
                       size: 15,
                       color: Colors.black,
                       weight: FontWeight.w300),
@@ -50,7 +54,7 @@ class ItemFood extends StatelessWidget {
                   const SizedBox(height: 10),
 
                       Text(
-                        this.price.toString(),
+                        food.price.toString(),
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.black,
@@ -64,7 +68,7 @@ class ItemFood extends StatelessWidget {
         ),
       ),
       onTap: (){
-        //Navigator.push(context, MaterialPageRoute(builder: (context) => DetailFoodScreen()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => DetailFoodScreen(foodId: food.foodId,)));
       },
     );
   }

@@ -15,24 +15,7 @@ class MyButton extends StatelessWidget {
         width: size.width,
         // Nút rộng 100% màn hình
         height: 48,
-        // Chiều cao của nút cố định
-        // child: ElevatedButton(
-        //   style: ElevatedButton.styleFrom(
-        //     backgroundColor: ColorApp.brightOrangeColor, // Màu nền của nút
-        //     foregroundColor: ColorApp.whiteColor, // Màu chữ của nút
-        //     textStyle: const TextStyle(
-        //       // Sử dụng font tùy chỉnh
-        //         fontSize: 18,
-        //         fontWeight: FontWeight.w600
-        //     ),
-        //     shape: RoundedRectangleBorder(
-        //       borderRadius: BorderRadius.zero, // Bỏ bo góc để tạo thành hình chữ nhật
-        //     ),
-        //   ),
-        //   child: Text(
-        //    title,
-        //   ),
-        // ),
+
         child: Container(
           width: size.width,
           // Nút rộng 100% màn hình

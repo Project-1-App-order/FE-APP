@@ -1,12 +1,16 @@
 // FilterDrawer.dart
 import 'package:flutter/material.dart';
+import 'package:project_1_btl/utils/constants.dart';
+import 'package:project_1_btl/widgets/MyButton.dart';
 
 class FilterDrawer extends StatelessWidget {
+
   const FilterDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      width: 350,
       child: Container(
         padding: EdgeInsets.all(20),
         child: Column(
@@ -35,13 +39,36 @@ class FilterDrawer extends StatelessWidget {
               ],
             ),
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Thực hiện hành động khi nhấn nút Lọc
-                Navigator.pop(context); // Đóng Drawer sau khi chọn
-              },
-              child: Text('Áp dụng lọc'),
-            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: SizedBox(
+                width: double.infinity,
+                // Nút rộng 100% màn hình
+                height: 48,
+
+                child: Container(
+                  width: 120,
+                  // Nút rộng 100% màn hình
+                  height: 48,
+                  // Chiều cao của nút cố định
+                  decoration: BoxDecoration(
+                    color: ColorApp.brightOrangeColor, // Màu nền của nút
+                    borderRadius:
+                    BorderRadius.zero, // Bỏ bo góc để tạo thành hình chữ nhật
+                  ),
+                  alignment: Alignment.center,
+                  // Căn giữa nội dung bên trong Container
+                  child: Text(
+                    "Áp dụng lọc",
+                    style: const TextStyle(
+                      color: ColorApp.whiteColor, // Màu chữ của nút
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600, // Sử dụng font tùy chỉnh
+                    ),
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),
@@ -58,7 +85,7 @@ class FilterDrawer extends StatelessWidget {
             print('Lọc theo $title');
           },
           child: Container(
-            padding: EdgeInsets.all(15),
+            padding: EdgeInsets.symmetric(vertical: 15),
             alignment: Alignment.center,
             child: Text(
               title,

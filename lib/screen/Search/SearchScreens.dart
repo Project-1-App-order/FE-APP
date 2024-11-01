@@ -18,6 +18,7 @@ class _SearchScreenState extends State<SearchScreen> {
   bool _isFiltering = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+
   @override
   void initState() {
     super.initState();
@@ -41,6 +42,9 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
       key: _scaffoldKey, // Đặt GlobalKey cho Scaffold
       backgroundColor: Colors.white,
@@ -98,18 +102,7 @@ class _SearchScreenState extends State<SearchScreen> {
               ],
             ),
           ),
-          Container(height: 10, color: Colors.grey),
-          Padding(
-            padding: const EdgeInsets.only(left: 8, top: 10),
-            child: MyText(text: "Phổ biến", size: 18, color: Colors.black, weight: FontWeight.w300),
-          ),
-          Expanded(
-            child: GridView.count(
-              crossAxisCount: 2,
-              childAspectRatio: 2.2 / 1,
-              children: List.generate(10, (index) => ItemFoodSearch()),
-            ),
-          ),
+
         ],
       ),
       endDrawer: const FilterDrawer(), // Sử dụng FilterDrawer

@@ -110,6 +110,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "hero_animation",
+      "rootUri": "file:///C:/Users/admin/AppData/Local/Pub/Cache/hosted/pub.dev/hero_animation-1.1.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "http",
       "rootUri": "file:///C:/Users/admin/AppData/Local/Pub/Cache/hosted/pub.dev/http-1.2.2",
       "packageUri": "lib/",
@@ -338,7 +344,7 @@
       "languageVersion": "3.4"
     }
   ],
-  "generated": "2024-10-25T14:12:18.792103Z",
+  "generated": "2024-10-31T02:52:17.300147Z",
   "generator": "pub",
   "generatorVersion": "3.4.4",
   "flutterRoot": "file:///D:/mobile/flutter",

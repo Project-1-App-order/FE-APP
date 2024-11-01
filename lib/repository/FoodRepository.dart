@@ -52,4 +52,8 @@ class FoodRepository {
   Future<List<Food>> getFoodsByCategory(String categoryId) async {
     return await _foodService.fetchFoodsByCategory(categoryId);
   }
+
+  Future<Food> getDetailFoodById(String foodId) async {
+    return await _foodService.getDetailFoodById(foodId);
+  }
 }

@@ -146,7 +146,7 @@ class HomeScreen extends StatelessWidget {
                       itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) {
                         final food = snapshot.data![index];
-                        return ItemCategory(title: food.foodName, imageUrl: food.images[0],);
+                        return ItemCategory(food: food,);
                       },
                     ),
                   );
@@ -180,9 +180,7 @@ class HomeScreen extends StatelessWidget {
                       final food = snapshot.data![index];
                       return ItemFood(
                         size: size,
-                        title: food.foodName,
-                        imageUrl: food.images[0], // Ensure image exists
-                        price: food.price, // Assuming price is a double
+                        food: food, // Assuming price is a double
                       );
                     },
                   );

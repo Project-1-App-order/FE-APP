@@ -101,8 +101,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
               itemBuilder: (context, index) {
                 Food? food = products[categories[selectedIndex].categoryId]?[index];
                 return ItemCategory(
-                  title: food!.foodName,   // Hiển thị tên của món ăn
-                  imageUrl: food.images[0], // Hiển thị URL của hình ảnh nếu có
+                  food: food!, // Hiển thị URL của hình ảnh nếu có
                 );
               },
             ),
