@@ -20,7 +20,7 @@ class ItemFood extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 10),
               child: Hero(
-                tag: food.foodId, // Cùng tag với ảnh lớn để tạo hiệu ứng chuyển tiếp
+                tag: "image", // Cùng tag với ảnh lớn để tạo hiệu ứng chuyển tiếp
                 child: Image.network(
                   food.images[0],
                   width: 80,

@@ -37,7 +37,7 @@ class DetailFoodScreen extends StatelessWidget {
                       Container(
                         height: 350,
                         child: Hero(
-                          tag: foodId, // Đảm bảo tag là duy nhất
+                          tag: "image", // Đảm bảo tag là duy nhất
                           child: Image.network(
                             food.images[0].isNotEmpty
                                 ? food.images[0]

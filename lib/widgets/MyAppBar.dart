@@ -10,7 +10,15 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: ColorApp.whiteColor,
-      title: Center(child: Text(title)),
+      title: Center(
+        child: Padding(
+          padding: const EdgeInsets.only(right: 50.0),
+          child: Align(
+            alignment: Alignment.center,
+            child: Text(title),
+          ),
+        ),
+      ),
       leading: IconButton(
         icon: Icon(Icons.arrow_back),
         onPressed: () {

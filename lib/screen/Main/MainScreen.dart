@@ -5,7 +5,7 @@ import 'package:project_1_btl/screen/Main/CategoryScreen.dart';
 import 'package:project_1_btl/screen/Main/HomeScreen.dart';
 import 'package:project_1_btl/screen/Main/ProfileScreen.dart';
 import 'package:project_1_btl/utils/constants.dart'; // Giả sử bạn đã định nghĩa ColorApp.brightOrangeColor ở đây
-
+import 'package:project_1_btl/model/Category.dart' as app;
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 

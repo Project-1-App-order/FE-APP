@@ -3,6 +3,7 @@ import 'package:project_1_btl/model/Category.dart';
 import 'package:project_1_btl/model/Food.dart';
 import 'package:project_1_btl/repository/CategoryRepository.dart';
 import 'package:project_1_btl/repository/FoodRepository.dart';
+import 'package:project_1_btl/screen/Main/CategoryHomeScreen.dart';
 import 'package:project_1_btl/screen/item/ItemCategory.dart';
 import 'package:project_1_btl/screen/item/ItemFood.dart';
 import 'package:project_1_btl/screen/item/ItemHomeCategory.dart';
@@ -105,8 +106,20 @@ class HomeScreen extends StatelessWidget {
                     color: ColorApp.whiteColor,
                     child: ListView.builder(
                       itemBuilder: (context, index) {
-                        return ItemHomeCategory(
-                            category: snapshot.data![index]);
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CategoryHomeScreen(
+                                  selectedCategory: snapshot.data![index],
+                                   // Truyền danh mục
+                                ),
+                              ),
+                            );
+                          },
+                          child: ItemHomeCategory(category: snapshot.data![index]),
+                        );
                       },
                       scrollDirection: Axis.horizontal,
                       padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),

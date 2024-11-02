@@ -10,6 +10,8 @@ import 'package:project_1_btl/model/Category.dart';
 import 'package:project_1_btl/model/Food.dart'; // Import model của Food
 
 class CategoryScreen extends StatefulWidget {
+
+
   @override
   _CategoryScreenState createState() => _CategoryScreenState();
 }
@@ -24,6 +26,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   @override
   void initState() {
     super.initState();
+
     loadCategories();
   }
 
@@ -31,6 +34,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     List<Category> fetchedCategories = await _categoryRepository.getCategoriesAndSpecial();
     setState(() {
       categories = fetchedCategories;
+
     });
     if (categories.isNotEmpty) {
       loadProductsForSelectedCategory(); // Chỉ gọi sau khi categories có dữ liệu
@@ -40,8 +44,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Future<void> loadProductsForSelectedCategory() async {
     if (categories.isEmpty) return;
 
+    String categoryId = categories[selectedIndex].categoryId;
+
     // Nếu danh mục "Tất Cả" được chọn, tải toàn bộ sản phẩm
-    if (categories[selectedIndex].categoryId == "all") {
+    if (categoryId == "all") {
       List<Food> allFoods = await  _foodRepository.getAll();// Giả sử bạn có phương thức này
       setState(() {
         products["all"] = allFoods;

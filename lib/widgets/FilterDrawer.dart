@@ -1,11 +1,18 @@
-// FilterDrawer.dart
 import 'package:flutter/material.dart';
 import 'package:project_1_btl/utils/constants.dart';
-import 'package:project_1_btl/widgets/MyButton.dart';
 
-class FilterDrawer extends StatelessWidget {
+class FilterDrawer extends StatefulWidget {
+  final Function(int? startPrice, int? endPrice) onApplyFilter;
 
-  const FilterDrawer({Key? key}) : super(key: key);
+  const FilterDrawer({Key? key, required this.onApplyFilter}) : super(key: key);
+
+  @override
+  _FilterDrawerState createState() => _FilterDrawerState();
+}
+
+class _FilterDrawerState extends State<FilterDrawer> {
+  int? selectedStartPrice;
+  int? selectedEndPrice;
 
   @override
   Widget build(BuildContext context) {
@@ -16,26 +23,26 @@ class FilterDrawer extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 50,),
+            SizedBox(height: 50),
             Text(
               'Lọc theo khoảng giá',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 20),
-            // Phần lọc giá
+            // Price filtering section
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _PriceOption("25.000đ - 50.000đ"),
-                _PriceOption("50.000đ - 75.000đ"),
+                _PriceOption("25.000đ - 50.000đ", 25000, 50000),
+                _PriceOption("50.000đ - 75.000đ", 50000, 75000),
               ],
             ),
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _PriceOption("75.000đ - 100.000đ"),
-                _PriceOption("100.000đ - 125.000đ"),
+                _PriceOption("75.000đ - 100.000đ", 75000, 100000),
+                _PriceOption("100.000đ - 125.000đ", 100000, 125000),
               ],
             ),
             SizedBox(height: 20),
@@ -43,45 +50,77 @@ class FilterDrawer extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: SizedBox(
                 width: double.infinity,
-                // Nút rộng 100% màn hình
                 height: 48,
-
-                child: Container(
-                  width: 120,
-                  // Nút rộng 100% màn hình
-                  height: 48,
-                  // Chiều cao của nút cố định
-                  decoration: BoxDecoration(
-                    color: ColorApp.brightOrangeColor, // Màu nền của nút
-                    borderRadius:
-                    BorderRadius.zero, // Bỏ bo góc để tạo thành hình chữ nhật
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (selectedStartPrice != null && selectedEndPrice != null) {
+                      widget.onApplyFilter(selectedStartPrice!, selectedEndPrice!);
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ColorApp.brightOrangeColor,
                   ),
-                  alignment: Alignment.center,
-                  // Căn giữa nội dung bên trong Container
                   child: Text(
                     "Áp dụng lọc",
                     style: const TextStyle(
-                      color: ColorApp.whiteColor, // Màu chữ của nút
+                      color: ColorApp.whiteColor,
                       fontSize: 18,
-                      fontWeight: FontWeight.w600, // Sử dụng font tùy chỉnh
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
               ),
-            )
+            ),
+            SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Hủy lọc
+                    setState(() {
+                      selectedStartPrice = null;
+                      selectedEndPrice = null;
+                    });
+                    widget.onApplyFilter(null, null); // Gọi lại để hủy bộ lọc
+                    Navigator.of(context).pop(); // Đóng drawer
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red, // Màu đỏ cho nút hủy
+                  ),
+                  child: Text(
+                    "Hủy lọc",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _PriceOption(String title) {
+  Widget _PriceOption(String title, int startPrice, int endPrice) {
+    bool isSelected = (selectedStartPrice == startPrice && selectedEndPrice == endPrice);
+
     return Expanded(
       child: Card(
-        elevation: 2,
+        elevation: isSelected ? 4 : 2,
+        color: isSelected ? ColorApp.brightOrangeColor.withOpacity(0.2) : Colors.white,
         child: InkWell(
           onTap: () {
-            // Thực hiện hành động khi nhấn vào ô giá
+            setState(() {
+              selectedStartPrice = startPrice;
+              selectedEndPrice = endPrice;
+            });
             print('Lọc theo $title');
           },
           child: Container(

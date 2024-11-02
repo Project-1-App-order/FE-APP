@@ -56,4 +56,10 @@ class FoodRepository {
   Future<Food> getDetailFoodById(String foodId) async {
     return await _foodService.getDetailFoodById(foodId);
   }
+  Future<List<Food>> getFoodByName(String foodName) async {
+    return await _foodService.getDetailFoodByName(foodName);
+  }
+  Future<List<Food>> getFoodByNameAndFilter(String foodName, int startPrice, int endPrice) async {
+    return await _foodService.getDetailFoodByNameAndFilter(foodName, startPrice, endPrice);
+  }
 }

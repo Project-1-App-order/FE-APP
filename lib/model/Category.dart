@@ -17,6 +17,7 @@ class Category {
     this.foods,
   });
 
+
   factory Category.fromJson(Map<String, dynamic> json) {
     return Category(
       id: json['\$id'] as String,
@@ -28,4 +29,5 @@ class Category {
       foods: json['foods'] as String?,              // Cast to nullable String
     );
   }
+
 }

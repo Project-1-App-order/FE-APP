@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_1_btl/blocs/Login/LoginBloc.dart';
 import 'package:project_1_btl/blocs/Register/RegisterBloc.dart'; // Import RegisterBloc
+import 'package:project_1_btl/network/NetworkAwareWidget.dart';
 import 'package:project_1_btl/repository/AuthRepository.dart';
 import 'package:project_1_btl/screen/Login/LoginScreen.dart';
 import 'package:project_1_btl/services/AuthService.dart';
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: LoginScreen(), // or RegisterScreen if needed
+        home: const NetworkAwareWidget(), // or RegisterScreen if needed
       ),
     );
   }
