@@ -40,7 +40,8 @@ class _SearchScreenState extends State<SearchScreen> {
     setState(() {
       _isSearching = true;
       if (_selectedStartPrice != null && _selectedEndPrice != null) {
-        print('Searching with filter: ${_searchController.text} - $_selectedStartPrice - $_selectedEndPrice');
+        print(
+            'Searching with filter: ${_searchController.text} - $_selectedStartPrice - $_selectedEndPrice');
         // When price filter is applied
         _searchResults = _foodRepository.getFoodByNameAndFilter(
           _searchController.text,
@@ -56,6 +57,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   void _openFilterMenu() {
+    FocusScope.of(context).unfocus();
     _scaffoldKey.currentState?.openEndDrawer();
   }
 
@@ -65,7 +67,8 @@ class _SearchScreenState extends State<SearchScreen> {
       _selectedEndPrice = endPrice;
     });
 
-    String searchText = _searchController.text; // Lưu giá trị trước khi tìm kiếm
+    String searchText =
+        _searchController.text; // Lưu giá trị trước khi tìm kiếm
 
     _performSearch();
 
@@ -84,12 +87,13 @@ class _SearchScreenState extends State<SearchScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 0, right: 15, top: 30, bottom: 10),
+            padding:
+                const EdgeInsets.only(left: 0, right: 15, top: 30, bottom: 10),
             child: Row(
               children: [
                 IconButton(
                   icon: Icon(Icons.arrow_back, color: Colors.black),
-                  onPressed: (){
+                  onPressed: () {
                     Navigator.pop(context);
                   },
                 ),
@@ -116,7 +120,10 @@ class _SearchScreenState extends State<SearchScreen> {
                       if (_isFiltering) {
                         _openFilterMenu();
                       } else {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MainScreen()));
                       }
                     },
                     child: MyText(
@@ -133,27 +140,46 @@ class _SearchScreenState extends State<SearchScreen> {
           Expanded(
             child: _isSearching
                 ? FutureBuilder<List<Food>>(
-              future: _searchResults,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(child: Text('No results found.'));
-                } else {
-                  final foods = snapshot.data!;
-                  return ListView.builder(
-                    itemCount: foods.length,
-                    itemBuilder: (context, index) {
-                      final food = foods[index];
-                      return ItemFood(size: size, food: food);
+                    future: _searchResults,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return Center(child: Text('No results found.'));
+                      } else {
+                        final foods = snapshot.data!;
+                        return ListView.builder(
+                          itemCount: foods.length,
+                          itemBuilder: (context, index) {
+                            final food = foods[index];
+                            return ItemFood(size: size, food: food);
+                          },
+                        );
+                      }
                     },
-                  );
-                }
-              },
-            )
-                : Center(child: Text('Enter a search term to find food items.')),
+                  )
+                : Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center, // Căn giữa
+                      children: [
+                        // Hình ảnh
+                        Container(
+                          width: 100,
+                          height: 100,
+                          child: Image.asset(
+                            "assets/images/searching.png", // Đường dẫn đến hình ảnh
+                            fit: BoxFit.cover, // Đảm bảo hình ảnh được hiển thị đầy đủ trong container
+                          ),
+                        ),
+                        SizedBox(height: 16), // Khoảng cách giữa hình ảnh và text
+                        // Text
+                        MyText(text: "Chưa có sản phẩm tìm kiếm", size: 20, color: Colors.black, weight: FontWeight.w500),
+
+                      ],
+                    ),
+                  ),
           ),
         ],
       ),

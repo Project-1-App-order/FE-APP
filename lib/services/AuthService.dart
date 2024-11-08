@@ -30,7 +30,13 @@ class AuthService {
       if (errors != null) {
 
         if (errors['Email'] != null) {
-          throw Exception('Email không đúng định dạng');
+          if(errors['Email'][0] == "Empty email"){
+            throw Exception('Email rỗng ! Hãy nhập email của bạn');
+          }
+          if(errors['Email'][0] == "Email invalid"){
+            throw Exception('Email không đúng định dạng');
+          }
+
         } else if (errors['Password'] != null) {
           throw Exception('Password có độ dài từ 8 - 16 kí tự, có chữ cái in hoa, kí tự đặc biệt, chữ số');
         }
@@ -169,10 +175,24 @@ class AuthService {
       body: jsonEncode(updatedUserInfo),
     );
 
+    final Map<String, dynamic> data = jsonDecode(response.body);
+
     if (response.statusCode == 200) {
-      final Map<String, dynamic> data = jsonDecode(response.body);
+
       return data['statusMessage']; // Return status message from response
-    } else {
+    } else if(response.statusCode == 400) {
+      final error = data['errors'];
+      if(error['PhoneNumber'] != null){
+        throw Exception("Số điện thoại không đúng định dạng ! Số điện thoại có đầu số : 03, 05, 07, 08,09 và phải có 10 chữ số");
+      }
+      if(error['Address'] != null){
+        throw Exception("Địa chỉ không được có kí tự đặc biệt");
+      }
+      else{
+        throw Exception("Failed to update user information 1");
+      }
+
+    }else {
       throw Exception('Failed to update user information');
     }
   }
@@ -224,11 +244,19 @@ class AuthService {
         'confirmPassword': confirmPassword,
       }),
     );
+    final Map<String, dynamic> data = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> data = jsonDecode(response.body);
+
       return data['statusMessage']; // Return status message from response
-    } else {
+    }else if(response.statusCode == 400) {
+      final error = data['errors'];
+      if(error['NewPassword'] != null){
+        throw Exception("Mật khẩu mới không hợp lệ!");
+      }else{
+        throw Exception("Failed to change password");
+      }
+    }else {
       throw Exception('Failed to change password');
     }
   }

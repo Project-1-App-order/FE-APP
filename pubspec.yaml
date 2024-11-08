@@ -45,7 +45,6 @@ dependencies:
   fluttertoast:
   hero_animation:
   connectivity_plus:
-  battery_plus: ^6.2.0
 
 
 dev_dependencies:
@@ -80,6 +79,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
       - assets/images/image_food.jpg
+      - assets/images/cutlery.png
+      - assets/images/searching.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

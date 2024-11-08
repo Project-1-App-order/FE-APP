@@ -1,10 +1,11 @@
 import 'dart:async';
 
-import 'package:battery_plus/battery_plus.dart';
+//import 'package:battery_plus/battery_plus.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:project_1_btl/screen/Login/LoginScreen.dart';
 import 'package:project_1_btl/screen/Main/HomeScreen.dart';
+import 'package:project_1_btl/screen/Main/MainScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NetworkAwareWidget extends StatefulWidget {
@@ -32,10 +33,10 @@ class _NetworkAwareWidgetState extends State<NetworkAwareWidget> {
         _connectionStatus = result;
       });
     });
-    batterySubscription =
-        Battery().onBatteryStateChanged.listen((BatteryState state) {
-      _checkBatteryLevel();
-    });
+    // batterySubscription =
+    //     Battery().onBatteryStateChanged.listen((BatteryState state) {
+    //   _checkBatteryLevel();
+    // });
 
     _checkInitialConnectivity();
   }
@@ -48,10 +49,10 @@ class _NetworkAwareWidgetState extends State<NetworkAwareWidget> {
     });
   }
 
-  Future<void> _checkBatteryLevel() async {
-    batteryLevel = await Battery().batteryLevel;
-    setState(() {});
-  }
+  // Future<void> _checkBatteryLevel() async {
+  //   batteryLevel = await Battery().batteryLevel;
+  //   setState(() {});
+  // }
 
   // Kiểm tra token trong SharedPreferences
   Future<void> _checkLoginStatus() async {
@@ -150,7 +151,7 @@ class _NetworkAwareWidgetState extends State<NetworkAwareWidget> {
             // Kiểm tra trạng thái đăng nhập khi có mạng
             if (isLoggedIn) {
               // Nếu có token, điều hướng đến trang chủ
-              return HomeScreen();
+              return LoginScreen();
             } else {
               // Nếu không có token, điều hướng đến trang đăng nhập
               return LoginScreen();

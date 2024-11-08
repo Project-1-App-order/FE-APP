@@ -31,7 +31,7 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
     try {
       final userInfo = await authRepository.getUserInformation();
       setState(() {
-        userNameController.text = userInfo['userName'] ?? '';
+        userNameController.text = userInfo['fullName'] ?? '';
         phoneController.text = userInfo['phoneNumber'] ?? '';
         emailController.text = userInfo['email'] ?? '';
         addressController.text = userInfo['address'] ?? '';
@@ -64,12 +64,10 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
     } catch (error) {
       // Handle error when saving user information
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to save user information: $error')),
+        SnackBar(content: Text('$error')),
       );
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -84,35 +82,9 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: width * 0.2,
-                    height: width * 0.2,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/image_food.jpg'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      MyText(
-                          text: "Đổi ảnh đại diện",
-                          size: 18,
-                          color: Colors.black,
-                          weight: FontWeight.w300),
-                      SizedBox(width: 15),
-                      Icon(Icons.keyboard_arrow_right)
-                    ],
-                  )
-                ],
-              ),
+
               SizedBox(height: 20),
-              _buildTextFormField("Tên Đăng Nhập", userNameController),
+              _buildTextFormField("Tên Người Dùng", userNameController),
               _buildTextFormField("Số Điện Thoại", phoneController),
               _buildTextFormField("Email", emailController),
               _buildGenderDropdown(), // Thêm phần dropdown giới tính
@@ -143,7 +115,7 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
               style: TextStyle(fontSize: 16),
             ),
           ),
-          SizedBox(width: 10),
+          SizedBox(width: 5),
           Expanded(
             flex: 2,
             child: TextFormField(

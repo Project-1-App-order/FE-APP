@@ -47,7 +47,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to change password: ${e.toString()}')),
+        SnackBar(content: Text('${e.toString()}')),
       );
     }
   }
@@ -76,6 +76,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               background: Color(0xffc9c9c9),
               height: 45,
             ),
+            SizedBox(height: 10),
             CustomTextField(
               hintText: "Mật Khẩu Mới",
               controller: _newPasswordController,
