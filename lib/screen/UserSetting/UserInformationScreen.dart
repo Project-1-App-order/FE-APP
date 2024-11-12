@@ -3,7 +3,6 @@ import 'package:project_1_btl/repository/AuthRepository.dart';
 import 'package:project_1_btl/screen/item/ItemUserInfo.dart';
 import 'package:project_1_btl/services/AuthService.dart';
 import 'package:project_1_btl/widgets/MyAppBar.dart';
-
 import '../../widgets/MyText.dart';
 
 class UserInformationScreen extends StatefulWidget {
@@ -40,9 +39,9 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
             : null;
       });
     } catch (error) {
-      // Handle error when retrieving user information
+      // Xử lý lỗi khi lấy thông tin người dùng
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to load user information: $error')),
+        SnackBar(content: Text('Không thể tải thông tin người dùng: $error')),
       );
     }
   }
@@ -51,7 +50,7 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
     final updatedUserInfo = {
       'fullName': userNameController.text,
       'phoneNumber': phoneController.text,
-      'email': emailController.text, // Ensure you don't update email if the server doesn't allow it
+      'email': emailController.text, // Đảm bảo không cập nhật email nếu server không cho phép
       'address': addressController.text,
       'gender': selectedGender ?? '',
     };
@@ -62,11 +61,18 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
         SnackBar(content: Text(result)),
       );
     } catch (error) {
-      // Handle error when saving user information
+      // Xử lý lỗi khi lưu thông tin người dùng
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('$error')),
       );
     }
+  }
+
+  bool _isSaveButtonEnabled() {
+    return userNameController.text.isNotEmpty &&
+        phoneController.text.isNotEmpty &&
+        addressController.text.isNotEmpty &&
+        selectedGender != null;
   }
 
   @override
@@ -84,17 +90,16 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
             children: [
 
               SizedBox(height: 20),
-              _buildTextFormField("Tên Người Dùng", userNameController),
-              _buildTextFormField("Số Điện Thoại", phoneController),
-              _buildTextFormField("Email", emailController),
+              _buildTextFormField("Tên Người Dùng", userNameController, true),
+              _buildTextFormField("Số Điện Thoại", phoneController, true),
+              _buildTextFormField("Email", emailController, false),
               _buildGenderDropdown(), // Thêm phần dropdown giới tính
-              _buildTextFormField("Địa Chỉ", addressController),
+              _buildTextFormField("Địa Chỉ", addressController, true),
               SizedBox(height: 30),
               ElevatedButton(
-                onPressed: () {
-                  _saveChanges();
-                },
+                onPressed: () => _saveChanges(),
                 child: Text('Lưu thay đổi'),
+
               ),
             ],
           ),
@@ -103,7 +108,7 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
     );
   }
 
-  Widget _buildTextFormField(String label, TextEditingController controller) {
+  Widget _buildTextFormField(String label, TextEditingController controller, bool isEditable) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
@@ -120,6 +125,7 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
             flex: 2,
             child: TextFormField(
               controller: controller,
+              enabled: isEditable, // Thêm điều kiện cho phép chỉnh sửa
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
               ),
@@ -148,7 +154,7 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
             flex: 2,
             child: DropdownButtonFormField<String>(
               value: selectedGender,
-              items: ['Nam', 'Nữ']
+              items: ['','Nam', 'Nữ']
                   .map((gender) => DropdownMenuItem<String>(
                 value: gender,
                 child: Text(gender),

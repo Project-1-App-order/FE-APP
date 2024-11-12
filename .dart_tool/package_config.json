@@ -297,7 +297,7 @@
     },
     {
       "name": "shared_preferences",
-      "rootUri": "file:///C:/Users/admin/AppData/Local/Pub/Cache/hosted/pub.dev/shared_preferences-2.3.2",
+      "rootUri": "file:///C:/Users/admin/AppData/Local/Pub/Cache/hosted/pub.dev/shared_preferences-2.3.3",
       "packageUri": "lib/",
       "languageVersion": "3.4"
     },
@@ -434,7 +434,7 @@
       "languageVersion": "3.4"
     }
   ],
-  "generated": "2024-11-04T11:10:09.602108Z",
+  "generated": "2024-11-12T11:20:39.921326Z",
   "generator": "pub",
   "generatorVersion": "3.4.4",
   "flutterRoot": "file:///D:/mobile/flutter",

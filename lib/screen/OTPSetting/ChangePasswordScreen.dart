@@ -10,8 +10,8 @@ import 'package:project_1_btl/widgets/MyText.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   final Size size;
-  final String email;  // Email passed from the previous screen
-  final String otp;    // OTP passed from the previous screen
+  final String email;  // Email được truyền từ màn hình trước
+  final String otp;    // OTP được truyền từ màn hình trước
 
   const ChangePasswordScreen({super.key, required this.size, required this.email, required this.otp});
 
@@ -29,7 +29,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     final String confirmPassword = _confirmPasswordController.text;
 
     if (password != confirmPassword) {
-      _showMessage('Passwords do not match');
+      _showMessage('Mật khẩu không khớp');
       return;
     }
 
@@ -37,9 +37,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       String result = await _authRepository.changePassword(widget.email, widget.otp, password);
       _showMessage(result);
       Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
-      // Navigate back or to another screen
+      // Điều hướng về màn hình đăng nhập hoặc màn hình khác
     } catch (e) {
-      _showMessage('Failed to reset password');
+      _showMessage('Đặt lại mật khẩu thất bại');
     }
   }
 

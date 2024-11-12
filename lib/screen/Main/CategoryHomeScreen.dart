@@ -23,14 +23,14 @@ class CategoryHomeScreen extends StatelessWidget {
       ),
       body: FutureBuilder<List<Food>>(
         future: _foodRepository.getFoodsByCategory(selectedCategory.categoryId),
-        // Change to appropriate method
+        // Thay đổi phương thức phù hợp
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(child: Text('Lỗi: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No suggestions available.'));
+            return Center(child: Text('Không có gợi ý nào.'));
           } else {
             return ListView.builder(
               shrinkWrap: true,
@@ -40,7 +40,7 @@ class CategoryHomeScreen extends StatelessWidget {
                 final food = snapshot.data![index];
                 return ItemFood(
                   size: size,
-                  food: food, // Assuming price is a double
+                  food: food, // Giả sử giá là một số kiểu double
                 );
               },
             );

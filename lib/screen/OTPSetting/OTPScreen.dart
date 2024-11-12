@@ -10,7 +10,7 @@ import 'package:project_1_btl/widgets/MyText.dart';
 
 class OTPScreen extends StatefulWidget {
   final Size size;
-  final String email; // Pass email from the previous screen
+  final String email; // Nhận email từ màn hình trước
 
   const OTPScreen({super.key, required this.size, required this.email});
 
@@ -24,20 +24,20 @@ class _OTPScreenState extends State<OTPScreen> {
 
   void _verifyOTP() async {
     try {
-      // Call AuthService to verify the OTP
+      // Gọi AuthService để xác minh OTP
       String result = await _authRepository.verifyOTP(widget.email, _otpCode);
 
       if (result == 'OTP verified successfully') {
-        // If OTP is verified, navigate to ChangePasswordScreen
+        // Nếu OTP được xác minh thành công, chuyển sang màn hình đổi mật khẩu
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => ChangePasswordScreen(size: widget.size, email: widget.email, otp: _otpCode,)),
         );
       } else {
-        _showMessage(result); // Show error message if OTP verification fails
+        _showMessage(result); // Hiển thị thông báo lỗi nếu xác minh OTP thất bại
       }
     } catch (e) {
-      _showMessage('Failed to verify OTP');
+      _showMessage('Không thể xác minh OTP');
     }
   }
 
@@ -61,23 +61,23 @@ class _OTPScreenState extends State<OTPScreen> {
               borderColor: Color(0xFF512DA8),
               showFieldAsBox: true,
               onCodeChanged: (String code) {
-                // Optional: Handle validation or checks here
+                // Optional: Xử lý kiểm tra hoặc xác nhận OTP tại đây
               },
               onSubmit: (String verificationCode) {
                 setState(() {
-                  _otpCode = verificationCode; // Capture OTP code
+                  _otpCode = verificationCode; // Lưu mã OTP
                 });
               },
             ),
             SizedBox(height: 20),
             InkWell(
               child: MyButton(size: widget.size, title: "Tiếp tục"),
-              onTap: _verifyOTP, // Call _verifyOTP when tapped
+              onTap: _verifyOTP, // Gọi hàm _verifyOTP khi nhấn
             ),
             SizedBox(height: 20),
             GestureDetector(
               onTap: () {
-                // Optionally handle OTP resend logic
+                // Tùy chọn xử lý logic gửi lại OTP
               },
               child: MyText(text: "Gửi Lại", size: 20, color: Colors.black, weight: FontWeight.w300),
             ),

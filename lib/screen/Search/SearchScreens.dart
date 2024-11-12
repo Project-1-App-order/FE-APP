@@ -41,17 +41,17 @@ class _SearchScreenState extends State<SearchScreen> {
       _isSearching = true;
       if (_selectedStartPrice != null && _selectedEndPrice != null) {
         print(
-            'Searching with filter: ${_searchController.text} - $_selectedStartPrice - $_selectedEndPrice');
-        // When price filter is applied
+            'Đang tìm kiếm với bộ lọc: ${_searchController.text} - $_selectedStartPrice - $_selectedEndPrice');
+        // Khi bộ lọc giá được áp dụng
         _searchResults = _foodRepository.getFoodByNameAndFilter(
           _searchController.text,
           _selectedStartPrice!,
           _selectedEndPrice!,
         );
       } else {
-        // When only searching by name
+        // Khi chỉ tìm kiếm theo tên
         _searchResults = _foodRepository.getFoodByName(_searchController.text);
-        print('Searching with filter: ${_searchController.text}');
+        print('Đang tìm kiếm với bộ lọc: ${_searchController.text}');
       }
     });
   }
@@ -88,7 +88,7 @@ class _SearchScreenState extends State<SearchScreen> {
         children: [
           Padding(
             padding:
-                const EdgeInsets.only(left: 0, right: 15, top: 30, bottom: 10),
+            const EdgeInsets.only(left: 0, right: 15, top: 30, bottom: 10),
             child: Row(
               children: [
                 IconButton(
@@ -101,7 +101,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   flex: 7,
                   child: CustomTextField(
                     controller: _searchController,
-                    hintText: "Search food",
+                    hintText: "Tìm kiếm món ăn",
                     iconSize: 10,
                     hintColor: Colors.grey,
                     background: Color(0xffc9c9c9),
@@ -140,27 +140,14 @@ class _SearchScreenState extends State<SearchScreen> {
           Expanded(
             child: _isSearching
                 ? FutureBuilder<List<Food>>(
-                    future: _searchResults,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Center(child: Text('Error: ${snapshot.error}'));
-                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return Center(child: Text('No results found.'));
-                      } else {
-                        final foods = snapshot.data!;
-                        return ListView.builder(
-                          itemCount: foods.length,
-                          itemBuilder: (context, index) {
-                            final food = foods[index];
-                            return ItemFood(size: size, food: food);
-                          },
-                        );
-                      }
-                    },
-                  )
-                : Center(
+              future: _searchResults,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Lỗi: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center, // Căn giữa
                       children: [
@@ -175,11 +162,43 @@ class _SearchScreenState extends State<SearchScreen> {
                         ),
                         SizedBox(height: 16), // Khoảng cách giữa hình ảnh và text
                         // Text
-                        MyText(text: "Chưa có sản phẩm tìm kiếm", size: 20, color: Colors.black, weight: FontWeight.w500),
+                        MyText(text: "Không có kết quả tìm kiếm", size: 20, color: Colors.black, weight: FontWeight.w500),
 
                       ],
                     ),
+                  );
+                } else {
+                  final foods = snapshot.data!;
+                  return ListView.builder(
+                    itemCount: foods.length,
+                    itemBuilder: (context, index) {
+                      final food = foods[index];
+                      return ItemFood(size: size, food: food);
+                    },
+                  );
+                }
+              },
+            )
+                : Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center, // Căn giữa
+                children: [
+                  // Hình ảnh
+                  Container(
+                    width: 100,
+                    height: 100,
+                    child: Image.asset(
+                      "assets/images/searching.png", // Đường dẫn đến hình ảnh
+                      fit: BoxFit.cover, // Đảm bảo hình ảnh được hiển thị đầy đủ trong container
+                    ),
                   ),
+                  SizedBox(height: 16), // Khoảng cách giữa hình ảnh và text
+                  // Text
+                  MyText(text: "Chưa có sản phẩm tìm kiếm", size: 20, color: Colors.black, weight: FontWeight.w500),
+
+                ],
+              ),
+            ),
           ),
         ],
       ),

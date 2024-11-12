@@ -23,20 +23,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _confirmPasswordController = TextEditingController();
 
   void _register(BuildContext context) {
-    // Check if the passwords match
+    // Kiểm tra mật khẩu có khớp không
     if (_passwordController.text == _confirmPasswordController.text) {
-      // Call the registration method using Bloc
+      // Gọi phương thức đăng ký qua Bloc
       context.read<RegisterBloc>().add(RegisterSubmitted(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       ));
 
-      // Show a success message for password match
-
-    } else {
-      // Show an error message if passwords do not match
+      // Hiển thị thông báo đăng ký thành công nếu mật khẩu khớp
+    } else if (_confirmPasswordController.text == "") {
       Fluttertoast.showToast(
-        msg: "Passwords do not match.",
+        msg: "Hãy nhập lại mật khẩu !",
+        backgroundColor: Colors.red,
+      );
+    } else {
+      // Hiển thị thông báo lỗi nếu mật khẩu không khớp
+      Fluttertoast.showToast(
+        msg: "Mật khẩu không khớp.",
         backgroundColor: Colors.red,
       );
     }
@@ -54,10 +58,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
         listener: (context, state) {
           if (state is RegisterSuccess) {
             Fluttertoast.showToast(
-              msg: "Registration successful!",
+              msg: "Đăng ký thành công!",
               backgroundColor: Colors.green,
             );
-            // Navigate to the login screen
+            // Chuyển hướng tới màn hình đăng nhập
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
           } else if (state is RegisterFailure) {
             Fluttertoast.showToast(
@@ -73,14 +77,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  // Image at the top
+                  // Hình ảnh ở trên
                   Container(
+                    margin: EdgeInsets.only(top: 30),
                     width: width,
                     height: height * 0.3,
                     decoration: const BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage('assets/images/image_food.jpg'),
-                        fit: BoxFit.cover,
+                        image: AssetImage('assets/images/foodlogo.png'),
+                        fit: BoxFit.contain,
                       ),
                     ),
                   ),
@@ -95,9 +100,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   SizedBox(height: height * 0.03),
-                  // Email field
+                  // Trường email
                   CustomTextField(
-                    controller: _emailController,  // Attach controller
+                    controller: _emailController,  // Gắn controller
                     hintText: 'Email / Tên đăng nhập',
                     icon: Icons.email,
                     iconSize: width * 0.06,
@@ -106,9 +111,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     height: 50,
                   ),
                   const Divider(color: ColorApp.lightGrayBeige, height: 1),
-                  // Password field
+                  // Trường mật khẩu
                   CustomTextField(
-                    controller: _passwordController,  // Attach controller
+                    controller: _passwordController,  // Gắn controller
                     hintText: 'Mật khẩu',
                     icon: Icons.lock,
                     iconSize: width * 0.06,
@@ -118,9 +123,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     obscureText: true,
                   ),
                   const Divider(color: ColorApp.lightGrayBeige, height: 1),
-                  // Confirm Password field
+                  // Trường xác nhận mật khẩu
                   CustomTextField(
-                    controller: _confirmPasswordController,  // Attach controller
+                    controller: _confirmPasswordController,  // Gắn controller
                     hintText: 'Nhập lại Mật khẩu',
                     icon: Icons.lock,
                     iconSize: width * 0.06,
@@ -151,7 +156,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   SizedBox(height: height * 0.06),
-                  // Register button
+                  // Nút đăng ký
                   state is RegisterLoading
                       ? const CircularProgressIndicator()
                       : InkWell(
@@ -162,9 +167,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       onTap: () {
                         _register(context);
                       }),
-                  SizedBox(height: height * 0.06),
+                  SizedBox(height: height * 0.04),
                   Padding(
-                    padding: EdgeInsets.all(height * 0.02),
+                    padding: EdgeInsets.zero,
                     child: RichText(
                       textAlign: TextAlign.center,
                       text: const TextSpan(
@@ -199,4 +204,3 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 }
-

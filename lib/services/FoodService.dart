@@ -12,18 +12,18 @@ class FoodService {
       List<dynamic> foodsJson = data["\$values"];
       return foodsJson.map((json) => Food.fromJson(json)).toList();
     } else {
-      throw Exception('Failed to load top ten best sellers');
+      throw Exception('Không tải được danh sách bán chạy nhất');
     }
   }
 
   Future<List<Food>> fetchAllFoods() async {
-    final response = await http.get(Uri.parse('$_baseUrl/GetAllFoods'));
+    final response = await http.get(Uri.parse('$_baseUrl/FIlterGetFoods'));
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       List<dynamic> foodsJson = data["result"]["\$values"];
       return foodsJson.map((json) => Food.fromJson(json)).toList();
     } else {
-      throw Exception('Failed to load all foods');
+      throw Exception('Không tải được tất cả món ăn');
     }
   }
 
@@ -36,21 +36,21 @@ class FoodService {
       List<dynamic> foodsJson = data['result']['\$values'];
       return foodsJson.map((json) => Food.fromJson(json)).toList();
     } else {
-      throw Exception('Failed to load foods');
+      throw Exception('Không tải được các món ăn');
     }
   }
 
-  // New method to get food details by foodId
+  // Phương thức mới để lấy chi tiết món ăn bằng foodId
   Future<Food> getDetailFoodById(String foodId) async {
     final url = '$_baseUrl/FIlterGetFoods?foodId=$foodId';
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      final foodJson = data['result']['\$values'][0]; // Assuming the first item is the desired one
+      final foodJson = data['result']['\$values'][0]; // Giả sử món ăn đầu tiên là món cần lấy
       return Food.fromJson(foodJson);
     } else {
-      throw Exception('Failed to load food details');
+      throw Exception('Không tải được chi tiết món ăn');
     }
   }
 
@@ -63,7 +63,7 @@ class FoodService {
       List<dynamic> foodsJson = data['result']['\$values'];
       return foodsJson.map((json) => Food.fromJson(json)).toList();
     } else {
-      throw Exception('Failed to load food details');
+      throw Exception('Không tải được chi tiết món ăn');
     }
   }
 
@@ -76,7 +76,7 @@ class FoodService {
       List<dynamic> foodsJson = data['result']['\$values'];
       return foodsJson.map((json) => Food.fromJson(json)).toList();
     } else {
-      throw Exception('Failed to load food details');
+      throw Exception('Không tải được chi tiết món ăn');
     }
   }
 }

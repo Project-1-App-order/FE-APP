@@ -16,32 +16,51 @@ class AuthService {
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
-      return data['statusMessage'];
+      final String userId = data['userId'];
+      if (userId != null) {
+
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString("userId", userId); // Lưu orderId vào SharedPreferences
+      }
+      try {
+        print("Đã tạo qua " + userId);
+        // Cố gắng tạo giỏ hàng cho người dùng mới đăng ký
+        await _createCartForUser(userId);
+      } catch (e) {
+        return 'Đăng ký thành công, nhưng tạo giỏ hàng thất bại: $e!';
+      }
+
+      return data['userId'];
     } else if (response.statusCode == 400) {
 
       // Parse lỗi và trả về lỗi cụ thể
       final Map<String, dynamic> errorData = json.decode(response.body);
 
       if (errorData['status'] == 'False' && errorData['statusMessage'] == 'Email already exists') {
-        throw Exception('Email already exists');
+        throw Exception('Email đã tồn tại ! Hãy sử dụng email khác!');
       }
 
       final errors = errorData['errors'];
       if (errors != null) {
-
         if (errors['Email'] != null) {
-          if(errors['Email'][0] == "Empty email"){
-            throw Exception('Email rỗng ! Hãy nhập email của bạn');
-          }
-          if(errors['Email'][0] == "Email invalid"){
-            throw Exception('Email không đúng định dạng');
+          if(errors['Email'][0] == "Emtpy email"){  // Cập nhật lỗi chính xác
+            throw Exception('Email rỗng ! Hãy nhập email của bạn!');
           }
 
+          if(errors['Email'][0] == "Email invalid"){
+            throw Exception('Email không đúng định dạng!');
+          }
         } else if (errors['Password'] != null) {
-          throw Exception('Password có độ dài từ 8 - 16 kí tự, có chữ cái in hoa, kí tự đặc biệt, chữ số');
+          if(errors['Password'][0] == "Empty Password"){
+            throw Exception('Password rỗng ! Hãy nhập password của bạn!');
+          }
+          if(errors['Password'][0] == "invalid format"){
+            throw Exception('Password có độ dài từ 8 - 16 kí tự, có chữ cái in hoa, kí tự đặc biệt, chữ số !');
+          }
         }
       }
-      throw Exception('Registration failed');
+
+      throw Exception('Đăng ký người dùng lỗi !');
     } else {
       throw Exception('${response.statusCode}');
     }
@@ -58,22 +77,54 @@ class AuthService {
     );
 
     if (response.statusCode == 200) {
+
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('auth_token', response.body);
+
       // Đăng nhập thành công, trả về token hoặc thông tin khác
+      String? orderId = await fetchCart();
+
+       // Save the token
+
+      if (orderId != null) {
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString("orderId", orderId); // Lưu orderId vào SharedPreferences
+      }
+
       return response.body;
     } else if (response.statusCode == 400) {
       // Parse lỗi trả về từ API với status 500
       final Map<String, dynamic> errorData = json.decode(response.body);
 
+      final errors = errorData['errors'];
+
+      if (errors != null) {
+        if (errors['Email'] != null) {
+          if(errors['Email'][0] == "Emtpy email"){  // Cập nhật lỗi chính xác
+            throw Exception('Email rỗng ! Hãy nhập email của bạn');
+          }
+          if(errors['Email'][0] == "Email invalid"){
+            throw Exception('Email không đúng định dạng');
+          }
+        } else if (errors['Password'] != null) {
+          if(errors['Password'][0] == "Emtpy Password"){
+            throw Exception('Password rỗng ! Hãy nhập password của bạn');
+          }
+          if(errors['Password'][0] == "invalid format"){
+            throw Exception('Password có độ dài từ 8 - 16 kí tự, có chữ cái in hoa, kí tự đặc biệt, chữ số');
+          }
+        }
+      }
 
       if (errorData['status'] == 'Error' && errorData['statusMessage'] == "User doesn't exist") {
-        throw Exception('User does not exist');
+        throw Exception('Người dùng chưa tồn tại!');
       }
       if (errorData['status'] == 'Error' && errorData['statusMessage'] == "Invalid password") {
-        throw Exception('Password có độ dài từ 8 - 16 kí tự, có chữ cái in hoa, kí tự đặc biệt, chữ số');
+        throw Exception('Mật khẩu sai ! Hãy nhập lại mật khẩu');
       }
 
       // Xử lý các lỗi khác nếu có
-      throw Exception('Internal Server Error');
+      throw Exception('Lỗi Máy Chủ Nội Bộ');
     } else {
       // Xử lý các mã lỗi khác
       throw Exception('Login failed with status code: ${response.statusCode}');
@@ -87,9 +138,9 @@ class AuthService {
     final response = await http.post(url, headers: {'accept': '*/*'});
 
     if (response.statusCode == 200) {
-      return 'OTP sent successfully to $email';
+      return 'OTP gửi thành công đến $email';
     } else {
-      throw Exception('Failed to send OTP');
+      throw Exception('Gửi OTP thất bại !');
     }
   }
 
@@ -101,12 +152,12 @@ class AuthService {
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
       if (data['status'] == 'Success') {
-        return 'OTP verified successfully';
+        return 'Xác minh OTP thành công !';
       } else {
         return data['statusMessage'];
       }
     } else {
-      throw Exception('Failed to verify OTP');
+      throw Exception('Xác minh OTP thất bại!');
     }
   }
 
@@ -127,9 +178,9 @@ class AuthService {
     );
 
     if (response.statusCode == 200) {
-      return 'Password reset successfully';
+      return 'Đặt lại mật khẩu thành công!';
     } else {
-      throw Exception('Failed to reset password');
+      throw Exception('Lỗi đặt lại mật khẩu!');
     }
   }
 
@@ -153,7 +204,7 @@ class AuthService {
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
-      throw Exception('Failed to load user information');
+      throw Exception('Lỗi tải dữ người dùng!');
     }
   }
 
@@ -189,11 +240,11 @@ class AuthService {
         throw Exception("Địa chỉ không được có kí tự đặc biệt");
       }
       else{
-        throw Exception("Failed to update user information 1");
+        throw Exception("Chỉnh sửa thông tin người dùng thất bại");
       }
 
     }else {
-      throw Exception('Failed to update user information');
+      throw Exception('Lỗi cập nhật thông tin người dùng ! Hãy kiếm tra lại !');
     }
   }
 
@@ -218,7 +269,7 @@ class AuthService {
       // Remove token from shared preferences
       await prefs.remove('auth_token');
     } else {
-      throw Exception('Logout failed');
+      throw Exception('Đăng xuất thất bại!');
     }
   }
 
@@ -227,7 +278,7 @@ class AuthService {
     final String? token = prefs.getString('auth_token');
 
     if (token == null) {
-      throw Exception('No token found');
+      throw Exception('Không tìm thấy token!');
     }
 
     final url = Uri.parse('$baseUrl/ChangePassword');
@@ -254,10 +305,72 @@ class AuthService {
       if(error['NewPassword'] != null){
         throw Exception("Mật khẩu mới không hợp lệ!");
       }else{
-        throw Exception("Failed to change password");
+        throw Exception("Đổi mật khẩu thất bại !");
       }
     }else {
-      throw Exception('Failed to change password');
+      throw Exception('Đổi mật khẩu thất bại !');
+    }
+  }
+
+  Future<void> _createCartForUser(String userId) async {
+    final cartUrl = Uri.parse('http://10.0.2.2:7258/api/Cart/AddCart');
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('auth_token'); // Thay bằng JWT token thực tế nếu cần
+
+    final cartResponse = await http.post(
+      cartUrl,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode({
+        'userId': userId,
+        'orderStatus': 0,
+        'orderNote': 'Note abc',
+      }),
+    );
+
+    if (cartResponse.statusCode == 200) {
+      print('Tạo giỏ hàng thành công cho người dùng $userId');
+    } else if (cartResponse.statusCode == 409) {
+      print('Người dùng đã có giỏ hàng');
+    } else if(cartResponse.statusCode == 500){
+      print('Tạo giỏ hàng thất bại : 500');
+    }else if(cartResponse.statusCode == 400){
+      print('Tạo giỏ hàng thất bại');
+    }
+  }
+
+  final String baseUrlCart = 'http://10.0.2.2:7258/api/Cart';
+
+  Future<String?> fetchCart() async {
+    final url = Uri.parse('$baseUrlCart/GetCart');
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('auth_token');
+
+    print("token" + token!);
+    try {
+      final response = await http.get(
+        url,
+        headers: {
+          'accept': '*/*',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final orderId = data['result'][0]['orderId'];
+        return orderId;
+      } else {
+        print('Lỗi tải dữ liệu giỏ hàng :  ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching cart: $e');
+      return null;
     }
   }
 }

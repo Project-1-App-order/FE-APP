@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_1_btl/repository/AuthRepository.dart';
+import 'package:project_1_btl/screen/Main/MainScreen.dart';
 import 'package:project_1_btl/services/AuthService.dart';
 import 'package:project_1_btl/widgets/CustomTextField.dart';
 import 'package:project_1_btl/widgets/MyAppBar.dart';
@@ -45,6 +46,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(result)),
       );
+
+      Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen()));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('${e.toString()}')),

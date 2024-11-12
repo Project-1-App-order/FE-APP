@@ -17,7 +17,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       final message = await authRepository.registerUser(event.email, event.password);
       emit(RegisterSuccess(message: message));
     } catch (error) {
-      emit(RegisterFailure(error: error.toString()));
+      emit(RegisterFailure(error: error.toString().replaceAll('Exception: ', '')));
     }
   }
 }

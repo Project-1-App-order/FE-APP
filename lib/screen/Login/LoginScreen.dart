@@ -50,16 +50,11 @@ class _LoginScreenState extends State<LoginScreen> {
         } else if (state is LoginSuccess) {
           // Điều hướng tới trang chính nếu đăng nhập thành công
 
-
-
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => MainScreen()),
 
           );
-
-          final SharedPreferences prefs = await SharedPreferences.getInstance();
-          await prefs.setString('auth_token', state.message); // Save the token
 
           //print('Token saved: ${state.message}');
         } else if (state is LoginFailure) {
@@ -77,12 +72,13 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               // Ảnh trên cùng
               Container(
+                margin: EdgeInsets.only(top: 40),
                 width: width,
                 height: height * 0.3,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/images/image_food.jpg'),
-                    fit: BoxFit.cover,
+                    image: AssetImage('assets/images/foodlogo.png'),
+                    fit: BoxFit.contain,
                   ),
                 ),
               ),

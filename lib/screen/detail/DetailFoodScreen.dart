@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:project_1_btl/model/CartDetail.dart';
 import 'package:project_1_btl/model/Food.dart';
+import 'package:project_1_btl/repository/CartRepository.dart';
 import 'package:project_1_btl/repository/FoodRepository.dart';
+import 'package:project_1_btl/services/CartService.dart';
 import 'package:project_1_btl/services/FoodService.dart';
 import 'package:project_1_btl/widgets/MyText.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DetailFoodScreen extends StatelessWidget {
   final String foodId;
@@ -12,6 +16,30 @@ class DetailFoodScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final FoodRepository foodRepository = FoodRepository(FoodService());
+    final CartRepository cartRepository = CartRepository(CartService());
+
+    void addOrUpdateCartDetail(Food food) async {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? orderId = prefs.getString('orderId');
+
+      CartDetail cartDetail = CartDetail(
+        orderId: orderId!, // Thay thế bằng logic ID đơn hàng thực tế của bạn
+        foodId: food.foodId,
+        quantity: 1,
+        note: 'Đang thêm từ màn hình chi tiết',
+      );
+
+      bool success = await cartRepository.addOrUpdateCartDetail(cartDetail);
+      if (success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("${food.foodName} đã được thêm hoặc cập nhật vào giỏ hàng")),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Thêm ${food.foodName} vào giỏ hàng thất bại")),
+        );
+      }
+    }
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -21,19 +49,19 @@ class DetailFoodScreen extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text("Error: ${snapshot.error}"));
+            return Center(child: Text("Lỗi: ${snapshot.error}"));
           } else if (!snapshot.hasData) {
-            return Center(child: Text("No data available"));
+            return Center(child: Text("Không có dữ liệu"));
           } else {
             final food = snapshot.data!;
             return SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Stack only contains image and back arrow
+                  // Stack chỉ chứa hình ảnh và mũi tên quay lại
                   Stack(
                     children: [
-                      // Full-width image with height of 350
+                      // Hình ảnh full-width với chiều cao 350
                       Container(
                         height: 350,
                         child: Hero(
@@ -47,21 +75,21 @@ class DetailFoodScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      // Back arrow, stays in place when scrolling
+                      // Mũi tên quay lại, cố định vị trí khi cuộn
                       Positioned(
-                        top: 40, // Distance from top
-                        left: 16, // Distance from left
+                        top: 40, // Khoảng cách từ trên
+                        left: 16, // Khoảng cách từ trái
                         child: IconButton(
                           icon: Icon(Icons.arrow_back, color: Colors.white),
                           onPressed: () {
                             Navigator.of(context)
-                                .pop(); // Go back to previous screen
+                                .pop(); // Quay lại màn hình trước
                           },
                         ),
                       ),
                     ],
                   ),
-                  // Product details content below image
+                  // Nội dung chi tiết sản phẩm dưới hình ảnh
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 15),
                     child: Column(
@@ -77,17 +105,20 @@ class DetailFoodScreen extends StatelessWidget {
                               color: Colors.black,
                               weight: FontWeight.w600,
                             ),
-                            Icon(
-                              Icons.add_box,
-                              color: Colors.red,
-                              size: 36,
+                            GestureDetector(
+                              onTap: () => addOrUpdateCartDetail(food),
+                              child: Icon(
+                                Icons.add_box,
+                                color: Colors.red,
+                                size: 36,
+                              ),
                             ),
                           ],
                         ),
                         SizedBox(height: 10),
                         MyText(
                           text:
-                              "Cơm rang thập cẩm là món ăn quen thuộc của ẩm thực Việt Nam, kết hợp hương vị phong phú từ nhiều nguyên liệu tươi ngon. Mỗi đĩa cơm rang bao gồm cơm trắng rang cùng trứng gà, có độ giòn vừa phải, kết hợp cùng các loại rau củ như cà rốt, đậu Hà Lan, ngô ngọt, và hành lá. Bên cạnh đó, cơm còn được xào với các loại thịt đa dạng như tôm, thịt bò, thịt gà hoặc xúc xích, mang đến vị đậm đà và thơm ngon.",
+                          "Cơm rang thập cẩm là món ăn quen thuộc của ẩm thực Việt Nam, kết hợp hương vị phong phú từ nhiều nguyên liệu tươi ngon. Mỗi đĩa cơm rang bao gồm cơm trắng rang cùng trứng gà, có độ giòn vừa phải, kết hợp cùng các loại rau củ như cà rốt, đậu Hà Lan, ngô ngọt, và hành lá. Bên cạnh đó, cơm còn được xào với các loại thịt đa dạng như tôm, thịt bò, thịt gà hoặc xúc xích, mang đến vị đậm đà và thơm ngon.",
                           size: 15,
                           color: Colors.grey,
                           weight: FontWeight.w600,
@@ -114,7 +145,7 @@ class DetailFoodScreen extends StatelessWidget {
                           weight: FontWeight.w600,
                         ),
                         SizedBox(height: 10),
-                        // Food image gallery
+                        // Thư viện hình ảnh món ăn
                         SizedBox(
                           height: 200,
                           child: ListView.builder(
@@ -127,7 +158,7 @@ class DetailFoodScreen extends StatelessWidget {
                                 child: Image.network(
                                   food.images[index],
                                   fit: BoxFit.cover,
-                                  width: 300, // Set width for each image
+                                  width: 300, // Đặt chiều rộng cho mỗi hình ảnh
                                 ),
                               ),
                             ),

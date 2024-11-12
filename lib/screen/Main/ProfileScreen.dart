@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_1_btl/repository/AuthRepository.dart';
 import 'package:project_1_btl/screen/Login/LoginScreen.dart';
 import 'package:project_1_btl/screen/Setting/SettingScreen.dart';
 import 'package:project_1_btl/screen/UserSetting/UserInformationScreen.dart';
@@ -8,11 +9,13 @@ import 'package:project_1_btl/widgets/MyButton.dart';
 import 'package:project_1_btl/widgets/MyText.dart';
 import '../../screen/item/ItemProfile.dart';
 
+
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final AuthRepository authRepository = AuthRepository(AuthService());
     final size = MediaQuery.of(context).size;
     final width = size.width;
     final height = size.height;
@@ -31,36 +34,36 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     // Avatar
                     Container(
-                      width: width * 0.2, // Đặt kích thước avatar
+                      width: width * 0.2, // Set avatar size
                       height: width * 0.2,
                       decoration: BoxDecoration(
-                        shape: BoxShape.circle, // Hình dạng tròn
+                        shape: BoxShape.circle, // Circle shape
                         image: DecorationImage(
-                          image: AssetImage('assets/images/image_food.jpg'), // Đường dẫn ảnh avatar
-                          fit: BoxFit.cover, // Hiển thị ảnh toàn bộ trong vòng tròn
+                          image: AssetImage('assets/images/image_food.jpg'), // Avatar image path
+                          fit: BoxFit.cover, // Make image cover the whole circle
                         ),
                       ),
                     ),
 
-                    // Icon "v" nhỏ ở góc dưới bên phải
+                    // Icon "v" at the bottom right
                     Positioned(
                       bottom: 0,
                       right: 0,
                       child: Container(
-                        width: 25, // Kích thước của icon
+                        width: 25, // Icon size
                         height: 25,
                         decoration: BoxDecoration(
-                          color: Colors.red, // Màu nền của icon
-                          shape: BoxShape.circle, // Hình tròn
+                          color: Colors.red, // Icon background color
+                          shape: BoxShape.circle, // Circle shape
                           border: Border.all(
-                            color: Colors.white, // Viền màu trắng quanh icon
+                            color: Colors.white, // White border around the icon
                             width: 2.0,
                           ),
                         ),
                         child: const Icon(
-                          Icons.check, // Icon "v" hoặc dấu kiểm
+                          Icons.check, // Checkmark icon
                           color: Colors.white,
-                          size: 16, // Kích thước của icon
+                          size: 16, // Icon size
                         ),
                       ),
                     ),
@@ -68,26 +71,55 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 SizedBox(width: width * 0.05),
                 Expanded(
-                  child: MyText(
-                    text: 'Nguyễn Văn A',
-                    color: ColorApp.whiteColor,
-                    size: 24,
-                    weight: FontWeight.w600,
+                  // Use FutureBuilder to fetch the user name from API
+                  child: FutureBuilder<Map<String, dynamic>>(
+                    future: authRepository.getUserInformation(), // Fetch user info from API
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return MyText(
+                          text: '', // Empty while waiting for the response
+                          color: ColorApp.whiteColor,
+                          size: 24,
+                          weight: FontWeight.w600,
+                        );
+                      } else if (snapshot.hasData) {
+                        var userName = snapshot.data?['fullName']; // Fetch name from API
+                        return MyText(
+                          text: userName ?? '', // If name is null, show empty string
+                          color: ColorApp.whiteColor,
+                          size: 24,
+                          weight: FontWeight.w600,
+                        );
+                      } else {
+                        return MyText(
+                          text: '', // Empty if no data or error occurs
+                          color: ColorApp.whiteColor,
+                          size: 24,
+                          weight: FontWeight.w600,
+                        );
+                      }
+                    },
                   ),
                 ),
               ],
             ),
           ),
-          InkWell(child : ItemProfile(size: size, icon: Icons.info, title: "Thông tin người dùng"), onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => UserInformationScreen()));
-          },),
-          SizedBox(height: 30,),
+          InkWell(
+            child: ItemProfile(size: size, icon: Icons.info, title: "Thông tin người dùng"),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => UserInformationScreen()));
+            },
+          ),
+          SizedBox(height: 30),
           ItemProfile(size: size, icon: Icons.info, title: "Chính sách quy định"),
-          InkWell(child: ItemProfile(size: size, icon: Icons.settings, title: "Cài đặt"), onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => SettingScreen()));
-          },),
+          InkWell(
+            child: ItemProfile(size: size, icon: Icons.settings, title: "Cài đặt"),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => SettingScreen()));
+            },
+          ),
           ItemProfile(size: size, icon: Icons.fastfood, title: "Về Food App"),
-          SizedBox(height: 270,),
+          SizedBox(height: 270),
           InkWell(
             onTap: () async {
               try {
@@ -99,7 +131,7 @@ class ProfileScreen extends StatelessWidget {
               } catch (e) {
                 // Handle logout error
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Logout failed: ${e.toString()}')),
+                  SnackBar(content: Text('Đăng xuất thất bại : ${e.toString()}')),
                 );
               }
             },

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project_1_btl/blocs/Cart/CartBloc.dart';
 import 'package:project_1_btl/blocs/Login/LoginBloc.dart';
 import 'package:project_1_btl/blocs/Register/RegisterBloc.dart'; // Import RegisterBloc
 import 'package:project_1_btl/network/NetworkAwareWidget.dart';
 import 'package:project_1_btl/repository/AuthRepository.dart';
+import 'package:project_1_btl/repository/CartRepository.dart';
 import 'package:project_1_btl/screen/Login/LoginScreen.dart';
+import 'package:project_1_btl/screen/Main/SplashScreen.dart';
 import 'package:project_1_btl/services/AuthService.dart';
+import 'package:project_1_btl/services/CartService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -27,6 +31,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => RegisterBloc(authRepository: AuthRepository(AuthService())), // Add RegisterBloc provider
         ),
+        BlocProvider(
+          create: (context) => CartBloc(cartRepository: CartRepository(CartService())), // Create CartDetailBloc provider
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -35,7 +42,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const NetworkAwareWidget(), // or RegisterScreen if needed
+        home: const SplashScreen(), // or RegisterScreen if needed
       ),
     );
   }

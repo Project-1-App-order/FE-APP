@@ -54,7 +54,7 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   // Text tiêu đề căn lề trái
                   Text(
-                    "Food App",
+                    "Food's Kitchen",
                     style: TextStyle(
                       fontFamily: "LobsterRegular",
                       fontSize: size.height * 0.03,
@@ -95,9 +95,9 @@ class HomeScreen extends StatelessWidget {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
+                  return Center(child: Text('Lỗi: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(child: Text('No categories available.'));
+                  return Center(child: Text('Không có gợi ý nào.'));
                 } else {
                   return Container(
                     padding: EdgeInsets.symmetric(horizontal: 7, vertical: 7),
@@ -144,7 +144,7 @@ class HomeScreen extends StatelessWidget {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
+                  return Center(child: Text('Lỗi: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return Center(child: Text('Không có sản phẩm bán chạy.'));
                 } else {
@@ -181,9 +181,9 @@ class HomeScreen extends StatelessWidget {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
+                  return Center(child: Text('Lỗi: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(child: Text('No suggestions available.'));
+                  return Center(child: Text('Không có gợi ý nào.'));
                 } else {
                   return ListView.builder(
                     shrinkWrap: true,

@@ -16,6 +16,8 @@ class MainScreen extends StatefulWidget {
 class _MainscreenState extends State<MainScreen> {
   int _selectedIndex = 0; // Để theo dõi tab hiện tại
 
+
+
   final List<Widget> _screens =  [
     HomeScreen(),
     CategoryScreen(),
@@ -44,7 +46,7 @@ class _MainscreenState extends State<MainScreen> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: 'Trang chủ',
           ),
 
           BottomNavigationBarItem(
@@ -53,7 +55,7 @@ class _MainscreenState extends State<MainScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_cart),
-            label: 'Giỏ Hàng',
+            label: 'Giỏ hàng',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),

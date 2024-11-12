@@ -32,17 +32,17 @@ class _EmailOTPScreenState extends State<EmailOTPScreen> {
     String email = _emailController.text.trim();
 
     if (email.isEmpty) {
-      _showMessage('Please enter your email');
+      _showMessage('Vui lòng nhập email của bạn');
       return;
     }
 
     try {
       String result = await _authRepository.sendOTP(email);
       _showMessage(result);
-      // Navigate to the OTP screen if successful
+      // Chuyển sang màn hình OTP nếu gửi OTP thành công
       Navigator.push(context, MaterialPageRoute(builder: (context) => OTPScreen(size: widget.size, email: email,)));
     } catch (e) {
-      _showMessage('Error: Failed to send OTP');
+      _showMessage('Lỗi: Không thể gửi OTP');
     }
   }
 
@@ -63,7 +63,7 @@ class _EmailOTPScreenState extends State<EmailOTPScreen> {
             MyText(text: "Nhập email", size: 20, color: Colors.black, weight: FontWeight.w300),
             SizedBox(height: 20,),
             CustomTextField(
-                controller: _emailController,  // Assign the controller here
+                controller: _emailController,  // Gán controller cho trường nhập liệu email
                 hintText: "Nhập Email",
                 icon: Icons.email,
                 iconSize: 20,
@@ -74,7 +74,7 @@ class _EmailOTPScreenState extends State<EmailOTPScreen> {
             SizedBox(height: 20,),
             InkWell(
               child: MyButton(size: widget.size, title: "Tiếp tục"),
-              onTap: _sendOTP,  // Call the sendOTP function when tapped
+              onTap: _sendOTP,  // Gọi hàm sendOTP khi người dùng nhấn
             )
           ],
         ),
@@ -82,4 +82,3 @@ class _EmailOTPScreenState extends State<EmailOTPScreen> {
     );
   }
 }
-
