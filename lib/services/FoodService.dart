@@ -12,7 +12,7 @@ class FoodService {
       List<dynamic> foodsJson = data["\$values"];
       return foodsJson.map((json) => Food.fromJson(json)).toList();
     } else {
-      throw Exception('Không tải được danh sách bán chạy nhất');
+      throw Exception('Không tải được danh sách bán chạy nhất').toString().replaceAll('Exception: ', '');
     }
   }
 
@@ -23,7 +23,7 @@ class FoodService {
       List<dynamic> foodsJson = data["result"]["\$values"];
       return foodsJson.map((json) => Food.fromJson(json)).toList();
     } else {
-      throw Exception('Không tải được tất cả món ăn');
+      throw Exception('Không tải được tất cả món ăn').toString().replaceAll('Exception: ', '');
     }
   }
 
@@ -36,7 +36,7 @@ class FoodService {
       List<dynamic> foodsJson = data['result']['\$values'];
       return foodsJson.map((json) => Food.fromJson(json)).toList();
     } else {
-      throw Exception('Không tải được các món ăn');
+      throw Exception('Không tải được các món ăn').toString().replaceAll('Exception: ', '');
     }
   }
 
@@ -50,7 +50,7 @@ class FoodService {
       final foodJson = data['result']['\$values'][0]; // Giả sử món ăn đầu tiên là món cần lấy
       return Food.fromJson(foodJson);
     } else {
-      throw Exception('Không tải được chi tiết món ăn');
+      throw Exception('Không tải được chi tiết món ăn').toString().replaceAll('Exception: ', '');
     }
   }
 
@@ -63,7 +63,7 @@ class FoodService {
       List<dynamic> foodsJson = data['result']['\$values'];
       return foodsJson.map((json) => Food.fromJson(json)).toList();
     } else {
-      throw Exception('Không tải được chi tiết món ăn');
+      throw Exception('Không tải được chi tiết món ăn').toString().replaceAll('Exception: ', '');
     }
   }
 
@@ -76,7 +76,7 @@ class FoodService {
       List<dynamic> foodsJson = data['result']['\$values'];
       return foodsJson.map((json) => Food.fromJson(json)).toList();
     } else {
-      throw Exception('Không tải được chi tiết món ăn');
+      throw Exception('Không tải được chi tiết món ăn').toString().replaceAll('Exception: ', '');
     }
   }
 }

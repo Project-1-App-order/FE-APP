@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:project_1_btl/blocs/Register/RegisterBloc.dart';
 import 'package:project_1_btl/blocs/Register/RegisterEvent.dart';
 import 'package:project_1_btl/blocs/Register/RegisterState.dart';
@@ -8,7 +7,7 @@ import 'package:project_1_btl/screen/Login/LoginScreen.dart';
 import 'package:project_1_btl/utils/constants.dart'; // Đảm bảo bạn đã định nghĩa ColorApp trong file này
 import 'package:project_1_btl/widgets/CustomTextField.dart';
 import 'package:project_1_btl/widgets/MyButton.dart';
-import 'package:project_1_btl/utils/constants.dart'; // Thay đổi đường dẫn nếu bạn lưu CustomTextField ở vị trí khác
+import 'package:project_1_btl/widgets/CustomOverlayDialog.dart'; // Import overlay
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -30,19 +29,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       ));
-
-      // Hiển thị thông báo đăng ký thành công nếu mật khẩu khớp
     } else if (_confirmPasswordController.text == "") {
-      Fluttertoast.showToast(
-        msg: "Hãy nhập lại mật khẩu !",
-        backgroundColor: Colors.red,
-      );
+      // Hiển thị thông báo lỗi với overlay
+      showCustomDialog(context, "Hãy nhập lại mật khẩu!", Icons.error);
     } else {
-      // Hiển thị thông báo lỗi nếu mật khẩu không khớp
-      Fluttertoast.showToast(
-        msg: "Mật khẩu không khớp.",
-        backgroundColor: Colors.red,
-      );
+      // Hiển thị thông báo lỗi với overlay
+      showCustomDialog(context, "Mật khẩu không khớp.", Icons.error);
     }
   }
 
@@ -57,17 +49,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: BlocListener<RegisterBloc, RegisterState>(
         listener: (context, state) {
           if (state is RegisterSuccess) {
-            Fluttertoast.showToast(
-              msg: "Đăng ký thành công!",
-              backgroundColor: Colors.green,
-            );
+            // Hiển thị thông báo đăng ký thành công
+            showCustomDialog(context, "Đăng ký thành công!", Icons.check_circle);
             // Chuyển hướng tới màn hình đăng nhập
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
           } else if (state is RegisterFailure) {
-            Fluttertoast.showToast(
-              msg: "${state.error}",
-              backgroundColor: Colors.red,
-            );
+            // Hiển thị thông báo lỗi với overlay
+            showCustomDialog(context, "${state.error}", Icons.error);
           }
         },
         child: BlocBuilder<RegisterBloc, RegisterState>(

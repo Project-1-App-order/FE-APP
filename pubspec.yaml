@@ -45,6 +45,7 @@ dependencies:
   fluttertoast:
   hero_animation:
   connectivity_plus:
+  #flutter_localizations:
 
 
 dev_dependencies:

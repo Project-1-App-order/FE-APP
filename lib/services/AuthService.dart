@@ -37,30 +37,30 @@ class AuthService {
       final Map<String, dynamic> errorData = json.decode(response.body);
 
       if (errorData['status'] == 'False' && errorData['statusMessage'] == 'Email already exists') {
-        throw Exception('Email đã tồn tại ! Hãy sử dụng email khác!');
+        throw Exception('Email đã tồn tại ! Hãy sử dụng email khác!').toString().replaceAll('Exception: ', '');
       }
 
       final errors = errorData['errors'];
       if (errors != null) {
         if (errors['Email'] != null) {
           if(errors['Email'][0] == "Emtpy email"){  // Cập nhật lỗi chính xác
-            throw Exception('Email rỗng ! Hãy nhập email của bạn!');
+            throw Exception('Email rỗng ! Hãy nhập email của bạn!').toString().replaceAll('Exception: ', '');
           }
 
           if(errors['Email'][0] == "Email invalid"){
-            throw Exception('Email không đúng định dạng!');
+            throw Exception('Email không đúng định dạng!').toString().replaceAll('Exception: ', '');
           }
         } else if (errors['Password'] != null) {
           if(errors['Password'][0] == "Empty Password"){
-            throw Exception('Password rỗng ! Hãy nhập password của bạn!');
+            throw Exception('Password rỗng ! Hãy nhập password của bạn!').toString().replaceAll('Exception: ', '');
           }
           if(errors['Password'][0] == "invalid format"){
-            throw Exception('Password có độ dài từ 8 - 16 kí tự, có chữ cái in hoa, kí tự đặc biệt, chữ số !');
+            throw Exception('Password có độ dài từ 8 - 16 kí tự, có chữ cái in hoa, kí tự đặc biệt, chữ số !').toString().replaceAll('Exception: ', '');
           }
         }
       }
 
-      throw Exception('Đăng ký người dùng lỗi !');
+      throw Exception('Đăng ký người dùng lỗi !').toString().replaceAll('Exception: ', '');
     } else {
       throw Exception('${response.statusCode}');
     }
@@ -101,33 +101,33 @@ class AuthService {
       if (errors != null) {
         if (errors['Email'] != null) {
           if(errors['Email'][0] == "Emtpy email"){  // Cập nhật lỗi chính xác
-            throw Exception('Email rỗng ! Hãy nhập email của bạn');
+            throw Exception('Email rỗng ! Hãy nhập email của bạn').toString().replaceAll('Exception: ', '');
           }
           if(errors['Email'][0] == "Email invalid"){
-            throw Exception('Email không đúng định dạng');
+            throw Exception('Email không đúng định dạng').toString().replaceAll('Exception: ', '');
           }
         } else if (errors['Password'] != null) {
           if(errors['Password'][0] == "Emtpy Password"){
-            throw Exception('Password rỗng ! Hãy nhập password của bạn');
+            throw Exception('Password rỗng ! Hãy nhập password của bạn').toString().replaceAll('Exception: ', '');
           }
           if(errors['Password'][0] == "invalid format"){
-            throw Exception('Password có độ dài từ 8 - 16 kí tự, có chữ cái in hoa, kí tự đặc biệt, chữ số');
+            throw Exception('Password có độ dài từ 8 - 16 kí tự, có chữ cái in hoa, kí tự đặc biệt, chữ số').toString().replaceAll('Exception: ', '');
           }
         }
       }
 
       if (errorData['status'] == 'Error' && errorData['statusMessage'] == "User doesn't exist") {
-        throw Exception('Người dùng chưa tồn tại!');
+        throw Exception('Người dùng chưa tồn tại!').toString().replaceAll('Exception: ', '');
       }
       if (errorData['status'] == 'Error' && errorData['statusMessage'] == "Invalid password") {
-        throw Exception('Mật khẩu sai ! Hãy nhập lại mật khẩu');
+        throw Exception('Mật khẩu sai ! Hãy nhập lại mật khẩu').toString().replaceAll('Exception: ', '');
       }
 
       // Xử lý các lỗi khác nếu có
-      throw Exception('Lỗi Máy Chủ Nội Bộ');
+      throw Exception('Lỗi Máy Chủ Nội Bộ').toString().replaceAll('Exception: ', '');
     } else {
       // Xử lý các mã lỗi khác
-      throw Exception('Login failed with status code: ${response.statusCode}');
+      throw Exception('Login failed with status code: ${response.statusCode}').toString().replaceAll('Exception: ', '');
     }
   }
 
@@ -140,7 +140,7 @@ class AuthService {
     if (response.statusCode == 200) {
       return 'OTP gửi thành công đến $email';
     } else {
-      throw Exception('Gửi OTP thất bại !');
+      throw Exception('Gửi OTP thất bại !').toString().replaceAll('Exception: ', '');
     }
   }
 
@@ -157,7 +157,7 @@ class AuthService {
         return data['statusMessage'];
       }
     } else {
-      throw Exception('Xác minh OTP thất bại!');
+      throw Exception('Xác minh OTP thất bại!').toString().replaceAll('Exception: ', '');
     }
   }
 
@@ -180,7 +180,7 @@ class AuthService {
     if (response.statusCode == 200) {
       return 'Đặt lại mật khẩu thành công!';
     } else {
-      throw Exception('Lỗi đặt lại mật khẩu!');
+      throw Exception('Lỗi đặt lại mật khẩu!').toString().replaceAll('Exception: ', '');
     }
   }
 
@@ -204,7 +204,7 @@ class AuthService {
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
-      throw Exception('Lỗi tải dữ người dùng!');
+      throw Exception('Lỗi tải dữ người dùng!').toString().replaceAll('Exception: ', '');
     }
   }
 
@@ -213,7 +213,7 @@ class AuthService {
     final String? token = prefs.getString('auth_token'); // Retrieve the saved token
 
     if (token == null) {
-      throw Exception('No token found');
+      throw Exception('No token found').toString().replaceAll('Exception: ', '');
     }
 
     final url = Uri.parse('http://10.0.2.2:7258/api/ApplicationUsers/UpdateUserProfile');
@@ -234,17 +234,17 @@ class AuthService {
     } else if(response.statusCode == 400) {
       final error = data['errors'];
       if(error['PhoneNumber'] != null){
-        throw Exception("Số điện thoại không đúng định dạng ! Số điện thoại có đầu số : 03, 05, 07, 08,09 và phải có 10 chữ số");
+        throw Exception("Số điện thoại không đúng định dạng ! Số điện thoại có đầu số : 03, 05, 07, 08,09 và phải có 10 chữ số").toString().replaceAll('Exception: ', '');
       }
       if(error['Address'] != null){
-        throw Exception("Địa chỉ không được có kí tự đặc biệt");
+        throw Exception("Địa chỉ không được có kí tự đặc biệt").toString().replaceAll('Exception: ', '');
       }
       else{
-        throw Exception("Chỉnh sửa thông tin người dùng thất bại");
+        throw Exception("Chỉnh sửa thông tin người dùng thất bại").toString().replaceAll('Exception: ', '');
       }
 
     }else {
-      throw Exception('Lỗi cập nhật thông tin người dùng ! Hãy kiếm tra lại !');
+      throw Exception('Lỗi cập nhật thông tin người dùng ! Hãy kiếm tra lại !').toString().replaceAll('Exception: ', '');
     }
   }
 
@@ -253,7 +253,7 @@ class AuthService {
     final String? token = prefs.getString('auth_token');
 
     if (token == null) {
-      throw Exception('No token found');
+      throw Exception('No token found').toString().replaceAll('Exception: ', '');
     }
 
     final url = Uri.parse('$baseUrl/Logout');
@@ -269,7 +269,7 @@ class AuthService {
       // Remove token from shared preferences
       await prefs.remove('auth_token');
     } else {
-      throw Exception('Đăng xuất thất bại!');
+      throw Exception('Đăng xuất thất bại!').toString().replaceAll('Exception: ', '');
     }
   }
 
@@ -278,7 +278,7 @@ class AuthService {
     final String? token = prefs.getString('auth_token');
 
     if (token == null) {
-      throw Exception('Không tìm thấy token!');
+      throw Exception('Không tìm thấy token!').toString().replaceAll('Exception: ', '');
     }
 
     final url = Uri.parse('$baseUrl/ChangePassword');
@@ -303,12 +303,12 @@ class AuthService {
     }else if(response.statusCode == 400) {
       final error = data['errors'];
       if(error['NewPassword'] != null){
-        throw Exception("Mật khẩu mới không hợp lệ!");
+        throw Exception("Mật khẩu mới không hợp lệ!").toString().replaceAll('Exception: ', '');
       }else{
-        throw Exception("Đổi mật khẩu thất bại !");
+        throw Exception("Đổi mật khẩu thất bại !").toString().replaceAll('Exception: ', '');
       }
     }else {
-      throw Exception('Đổi mật khẩu thất bại !');
+      throw Exception('Đổi mật khẩu thất bại !').toString().replaceAll('Exception: ', '');
     }
   }
 

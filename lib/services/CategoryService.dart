@@ -12,7 +12,7 @@ class CategoryService {
       List<dynamic> categoriesJson = data["\$values"];
       return categoriesJson.map((json) => Category.fromJson(json)).toList();
     } else {
-      throw Exception('Lỗi tải danh mục!');
+      throw Exception('Lỗi tải danh mục!').toString().replaceAll('Exception: ', '');
     }
   }
 

@@ -82,18 +82,24 @@ class _OrderConfirmScreenState extends State<OrderConfirmScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text("Thông tin thiếu"),
-          content: Text("Vui lòng điền số điện thoại và địa chỉ của bạn."),
+          content: Text("Vui lòng điền đầy đủ tên, số điện thoại và địa chỉ của bạn."),
           actions: [
             TextButton(
-              onPressed: () {
+              onPressed: () async {
                 Navigator.of(context).pop(); // Đóng dialog
-                Navigator.push(
+                // Điều hướng tới UserInformationScreen và chờ kết quả sau khi quay lại
+                final result = await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        UserInformationScreen(), // Chuyển sang màn hình updateUserInformation
+                    builder: (context) => UserInformationScreen(),
                   ),
                 );
+
+                if (result == true) {
+                  setState(() {
+                    _userInformationFuture = _loadUserInformation(); // Tải lại thông tin người dùng
+                  });
+                }
               },
               child: Text("OK"),
             ),
@@ -115,7 +121,7 @@ class _OrderConfirmScreenState extends State<OrderConfirmScreen> {
 
   void _handleSendOrder() async {
     print("1");
-    if (phoneController.text.isEmpty || addressController.text.isEmpty) {
+    if (phoneController.text.isEmpty || addressController.text.isEmpty || userNameController.text.isEmpty) {
       _showMissingInfoDialog(); // Show the dialog if info is missing
     } else {
       try {
