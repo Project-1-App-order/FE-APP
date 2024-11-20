@@ -3,10 +3,12 @@ import 'package:http/http.dart' as http;
 import 'package:project_1_btl/model/CartDetail.dart';
 import 'package:project_1_btl/model/Category.dart';
 import 'package:project_1_btl/model/FoodCartDetail.dart';
+import 'package:project_1_btl/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CartService {
-  final String baseUrlCart = 'http://10.0.2.2:7258/api/';
+  static String url = AppUrl.UrlApi;
+  final String baseUrlCart = url;
 
   Future<String?> fetchCart() async {
     final url = Uri.parse('$baseUrlCart/GetCart');
@@ -37,7 +39,7 @@ class CartService {
     }
   }
 
-  final String baseUrl = 'http://10.0.2.2:7258/api';
+  final String baseUrl = url;
 
   Future<bool> addCartDetail(CartDetail cartDetail) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();

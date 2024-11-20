@@ -7,6 +7,7 @@ import 'package:project_1_btl/services/AuthService.dart';
 import 'package:project_1_btl/widgets/MyAppBar.dart';
 import 'package:project_1_btl/widgets/MyButton.dart';
 import 'package:project_1_btl/widgets/MyText.dart';
+import 'package:project_1_btl/widgets/SnackBarHelper.dart';
 
 class OTPScreen extends StatefulWidget {
   final Size size;
@@ -24,26 +25,32 @@ class _OTPScreenState extends State<OTPScreen> {
 
   void _verifyOTP() async {
     try {
+      print("1");
       // Gọi AuthService để xác minh OTP
       String result = await _authRepository.verifyOTP(widget.email, _otpCode);
 
-      if (result == 'OTP verified successfully') {
+      print("OTP 1");
+      if (result == 'Xác minh OTP thành công !') {
         // Nếu OTP được xác minh thành công, chuyển sang màn hình đổi mật khẩu
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => ChangePasswordScreen(size: widget.size, email: widget.email, otp: _otpCode,)),
         );
       } else {
-        _showMessage(result); // Hiển thị thông báo lỗi nếu xác minh OTP thất bại
+        SnackBarHelper.showSimpleSnackBar(
+          context: context,
+          message: result,
+        ); // Hiển thị thông báo lỗi nếu xác minh OTP thất bại
       }
     } catch (e) {
-      _showMessage('Không thể xác minh OTP');
+      SnackBarHelper.showSimpleSnackBar(
+        context: context,
+        message: "Không thể xác minh OTP",
+      );
     }
   }
 
-  void _showMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -75,12 +82,7 @@ class _OTPScreenState extends State<OTPScreen> {
               onTap: _verifyOTP, // Gọi hàm _verifyOTP khi nhấn
             ),
             SizedBox(height: 20),
-            GestureDetector(
-              onTap: () {
-                // Tùy chọn xử lý logic gửi lại OTP
-              },
-              child: MyText(text: "Gửi Lại", size: 20, color: Colors.black, weight: FontWeight.w300),
-            ),
+
           ],
         ),
       ),

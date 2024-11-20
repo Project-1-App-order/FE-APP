@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:project_1_btl/model/Food.dart';
+import 'package:project_1_btl/utils/constants.dart';
 
 class FoodService {
-  final String _baseUrl = 'http://10.0.2.2:7258/api/Foods';
+  static String url = AppUrl.UrlApi;
+  final String _baseUrl = url+'/Foods';
 
   Future<List<Food>> fetchTopTenBestSellers() async {
     final response = await http.get(Uri.parse('$_baseUrl/GetTopTenBestSeller'));

@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:project_1_btl/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  final String baseUrl = 'http://10.0.2.2:7258/api/Authentication';
+  static String url = AppUrl.UrlApi;
+  final String baseUrl = url + '/Authentication';
 
   // Register user
   Future<String> register(String email, String password) async {
@@ -106,6 +108,9 @@ class AuthService {
           if(errors['Email'][0] == "Email invalid"){
             throw Exception('Email không đúng định dạng').toString().replaceAll('Exception: ', '');
           }
+          if(errors['Email'][0] == "Length Email Invalid"){
+            throw Exception('Độ dài email không phù hợp! Hãy nhập lại email của bạn!').toString().replaceAll('Exception: ', '');
+          }
         } else if (errors['Password'] != null) {
           if(errors['Password'][0] == "Emtpy Password"){
             throw Exception('Password rỗng ! Hãy nhập password của bạn').toString().replaceAll('Exception: ', '');
@@ -146,14 +151,16 @@ class AuthService {
 
   // Verify OTP
   Future<String> verifyOTP(String email, String otp) async {
-    final url = Uri.parse('$baseUrl/VerifyOTP?email=$email&otp=$otp');
+    final url = Uri.parse('$baseUrl/VerifyOTP?userEmail=$email&otp=$otp');
     final response = await http.post(url);
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
       if (data['status'] == 'Success') {
+        print("Xác minh 1");
         return 'Xác minh OTP thành công !';
       } else {
+        print("Xác minh 2");
         return data['statusMessage'];
       }
     } else {
@@ -194,7 +201,7 @@ class AuthService {
     }
 
     final response = await http.get(
-      Uri.parse('http://10.0.2.2:7258/api/ApplicationUsers/GetUserProfile'),
+      Uri.parse(url + '/ApplicationUsers/GetUserProfile'),
       headers: {
         'accept': '*/*',
         'Authorization': 'Bearer $token', // Use the saved token
@@ -216,9 +223,9 @@ class AuthService {
       throw Exception('No token found').toString().replaceAll('Exception: ', '');
     }
 
-    final url = Uri.parse('http://10.0.2.2:7258/api/ApplicationUsers/UpdateUserProfile');
+    final urlApi = Uri.parse(url + '/ApplicationUsers/UpdateUserProfile');
     final response = await http.put(
-      url,
+      urlApi,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token', // Include the token
@@ -230,7 +237,7 @@ class AuthService {
 
     if (response.statusCode == 200) {
 
-      return data['statusMessage']; // Return status message from response
+      return 'Cập nhật thông tin người dùng thành công!'; // Return status message from response
     } else if(response.statusCode == 400) {
       final error = data['errors'];
       if(error['PhoneNumber'] != null){
@@ -238,6 +245,9 @@ class AuthService {
       }
       if(error['Address'] != null){
         throw Exception("Địa chỉ không được có kí tự đặc biệt").toString().replaceAll('Exception: ', '');
+      }
+      if(error['FullName'] != null){
+        throw Exception("Tên người dùng không được có ký tự đặc biệt!").toString().replaceAll('Exception: ', '');
       }
       else{
         throw Exception("Chỉnh sửa thông tin người dùng thất bại").toString().replaceAll('Exception: ', '');
@@ -313,7 +323,7 @@ class AuthService {
   }
 
   Future<void> _createCartForUser(String userId) async {
-    final cartUrl = Uri.parse('http://10.0.2.2:7258/api/Cart/AddCart');
+    final cartUrl = Uri.parse(url + '/Cart/AddCart');
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('auth_token'); // Thay bằng JWT token thực tế nếu cần
@@ -342,7 +352,7 @@ class AuthService {
     }
   }
 
-  final String baseUrlCart = 'http://10.0.2.2:7258/api/Cart';
+  final String baseUrlCart = url + '/Cart';
 
   Future<String?> fetchCart() async {
     final url = Uri.parse('$baseUrlCart/GetCart');

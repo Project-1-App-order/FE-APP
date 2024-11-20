@@ -9,6 +9,8 @@ import 'package:project_1_btl/screen/OTPSetting/EmailOTPScreen.dart';
 import 'package:project_1_btl/screen/Register/RegisterScreen.dart';
 import 'package:project_1_btl/screen/Main/MainScreen.dart';
 import 'package:project_1_btl/utils/constants.dart';
+import 'package:project_1_btl/widgets/CenterCircularProgress.dart';
+import 'package:project_1_btl/widgets/CustomOverlayDialog.dart';
 import 'package:project_1_btl/widgets/CustomTextField.dart';
 import 'package:project_1_btl/widgets/MyButton.dart';
 import 'package:project_1_btl/widgets/MyText.dart';
@@ -59,9 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
           //print('Token saved: ${state.message}');
         } else if (state is LoginFailure) {
           // Hiển thị lỗi nếu đăng nhập thất bại
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.error)),
-          );
+          showCustomDialog(context, "${state.error}", "assets/images/error.png");
         }
       }, child:
       BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
@@ -102,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 iconSize: width * 0.06,
                 hintColor: Colors.grey,
                 background: ColorApp.whiteColor,
-                height: 50,
+                height: height * 0.06,
               ),
               const Divider(color: Colors.grey, height: 1),
               // TextField Password
@@ -114,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 iconSize: width * 0.06,
                 hintColor: Colors.grey,
                 background: ColorApp.whiteColor,
-                height: 50,
+                height: height * 0.06,
                 obscureText: true,
               ),
               const Divider(color: Colors.grey, height: 1),
@@ -129,7 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         'Đăng ký',
                         style: TextStyle(
                           color: ColorApp.skyBlue,
-                          fontSize: 20,
+                          fontSize: 25,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -144,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(height: height * 0.06),
               // Nút đăng nhập
               state is LoginLoading
-                  ? const CircularProgressIndicator()
+                  ? CenteredCircularProgress()
                   : InkWell(
                 child: MyButton(size: size, title: "Đăng Nhập"),
                 onTap: () {
@@ -157,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Center(
                   child: MyText(
                     text: "Quên Mật Khẩu",
-                    size: 20,
+                    size: width * 0.05,
                     color: ColorApp.skyBlue,
                     weight: FontWeight.w600,
                   ),

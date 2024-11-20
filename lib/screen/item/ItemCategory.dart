@@ -26,8 +26,15 @@ class ItemCategory extends StatelessWidget {
         );
       },
       child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.grey, // Màu viền
+            width: 1.5, // Độ dày viền
+          ),
+          // Bo góc viền
+        ),
         height: 130,
-        padding: EdgeInsets.only(right: 10),
+        margin: EdgeInsets.only(right: 10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center, // Center vertically
           children: [
@@ -38,14 +45,14 @@ class ItemCategory extends StatelessWidget {
                 food.images[0],
                 width: 80,
                 height: 80,
-                fit: BoxFit.fill,
+
                 errorBuilder: (context, error, stackTrace) {
                   return Image.asset(
                     "assets/images/image_food.jpg",
                     // Fallback image in case of error
-                    width: 80,
+                    width: double.infinity,
                     height: 80,
-                    fit: BoxFit.fill,
+                    fit: BoxFit.cover,
                   );
                 },
               ),

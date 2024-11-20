@@ -17,6 +17,7 @@ class _FilterDrawerState extends State<FilterDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: Colors.white,
       width: 350,
       child: Container(
         padding: EdgeInsets.all(20),
@@ -26,80 +27,94 @@ class _FilterDrawerState extends State<FilterDrawer> {
             SizedBox(height: 50),
             Text(
               'Lọc theo khoảng giá',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: "RobotoRegular"),
             ),
             SizedBox(height: 20),
-            // Price filtering section
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _PriceOption("25.000đ - 50.000đ", 25000, 50000),
-                _PriceOption("50.000đ - 75.000đ", 50000, 75000),
-              ],
-            ),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _PriceOption("75.000đ - 100.000đ", 75000, 100000),
-                _PriceOption("100.000đ - 125.000đ", 100000, 125000),
-              ],
-            ),
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (selectedStartPrice != null && selectedEndPrice != null) {
-                      widget.onApplyFilter(selectedStartPrice!, selectedEndPrice!);
-                      Navigator.of(context).pop();
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorApp.brightOrangeColor,
+            Expanded(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _PriceOption("25.000đ - 50.000đ", 25000, 50000),
+                      _PriceOption("50.000đ - 75.000đ", 50000, 75000),
+                    ],
                   ),
-                  child: Text(
-                    "Áp dụng lọc",
-                    style: const TextStyle(
-                      color: ColorApp.whiteColor,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _PriceOption("75.000đ - 100.000đ", 75000, 100000),
+                      _PriceOption("100.000đ - 125.000đ", 100000, 125000),
+                    ],
                   ),
-                ),
+                ],
               ),
             ),
-            SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Hủy lọc
-                    setState(() {
-                      selectedStartPrice = null;
-                      selectedEndPrice = null;
-                    });
-                    widget.onApplyFilter(null, null); // Gọi lại để hủy bộ lọc
-                    Navigator.of(context).pop(); // Đóng drawer
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red, // Màu đỏ cho nút hủy
-                  ),
-                  child: Text(
-                    "Hủy lọc",
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  // Cancel Filter button
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 3 / 9,
+                    height: 48,
+                    child: OutlinedButton(
+                      onPressed: () {
+                        setState(() {
+                          selectedStartPrice = null;
+                          selectedEndPrice = null;
+                        });
+                        widget.onApplyFilter(null, null);
+                        Navigator.of(context).pop();
+                      },
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: ColorApp.brightOrangeColor),
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.zero,
+                        ),
+                      ),
+                      child: Text(
+                        "Hủy lọc",
+                        style: TextStyle(
+                          color: ColorApp.brightOrangeColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  SizedBox(width: 8),
+                  // Apply Filter button
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 3 / 9,
+                    height: 48,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (selectedStartPrice != null && selectedEndPrice != null) {
+                          widget.onApplyFilter(selectedStartPrice!, selectedEndPrice!);
+                          Navigator.of(context).pop();
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: ColorApp.brightOrangeColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.zero,
+                        ),
+                      ),
+                      child: Text(
+                        "Áp dụng",
+                        style: TextStyle(
+                          color: ColorApp.whiteColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -114,7 +129,8 @@ class _FilterDrawerState extends State<FilterDrawer> {
     return Expanded(
       child: Card(
         elevation: isSelected ? 4 : 2,
-        color: isSelected ? ColorApp.brightOrangeColor.withOpacity(0.2) : Colors.white,
+        color: isSelected ? ColorApp.brightOrangeColor : Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
         child: InkWell(
           onTap: () {
             setState(() {

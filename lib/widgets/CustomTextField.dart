@@ -43,7 +43,7 @@ class CustomTextField extends StatelessWidget {
           decoration: InputDecoration(
             border: InputBorder.none,
             hintText: hintText,
-            hintStyle: TextStyle(color: hintColor),
+            hintStyle: TextStyle(color: hintColor,),
             prefixIcon: icon != null
                 ? Icon(
               icon,

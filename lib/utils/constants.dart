@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 class ColorApp{
@@ -6,4 +7,7 @@ class ColorApp{
   static const Color lightGrayBeige  = Color(0xffE0E5B6);
   static const Color sageGray  = Color(0xffCCD5AE);
   static const Color skyBlue = Color(0xff7695FF);
+}
+class AppUrl{
+  static const String UrlApi = "http://139.59.108.150:8081/api";
 }

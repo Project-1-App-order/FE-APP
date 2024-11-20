@@ -7,6 +7,7 @@ import 'package:project_1_btl/services/AuthService.dart';
 import 'package:project_1_btl/utils/constants.dart';
 import 'package:project_1_btl/widgets/MyButton.dart';
 import 'package:project_1_btl/widgets/MyText.dart';
+import 'package:project_1_btl/widgets/SnackBarHelper.dart';
 import '../../screen/item/ItemProfile.dart';
 
 
@@ -130,8 +131,9 @@ class ProfileScreen extends StatelessWidget {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
               } catch (e) {
                 // Handle logout error
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Đăng xuất thất bại : ${e.toString()}')),
+                SnackBarHelper.showSimpleSnackBar(
+                  context: context,
+                  message: "Đăng xuất thất bại !",
                 );
               }
             },

@@ -41,7 +41,7 @@ class _MainscreenState extends State<MainScreen> {
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex, // Tab hiện tại
         onTap: _onItemTapped, // Xử lý sự kiện khi nhấn vào tab
-        selectedItemColor: Colors.orange, // Màu của mục được chọn
+        selectedItemColor: ColorApp.brightOrangeColor, // Màu của mục được chọn
         unselectedItemColor: Colors.black, // Màu của các mục chưa được chọn
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

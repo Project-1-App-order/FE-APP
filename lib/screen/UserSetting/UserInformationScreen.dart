@@ -3,7 +3,8 @@ import 'package:project_1_btl/repository/AuthRepository.dart';
 import 'package:project_1_btl/screen/item/ItemUserInfo.dart';
 import 'package:project_1_btl/services/AuthService.dart';
 import 'package:project_1_btl/widgets/MyAppBar.dart';
-import '../../widgets/MyText.dart';
+import 'package:project_1_btl/widgets/MyButton.dart';
+import 'package:project_1_btl/widgets/SnackBarHelper.dart';
 
 class UserInformationScreen extends StatefulWidget {
   const UserInformationScreen({super.key});
@@ -24,6 +25,11 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
   void initState() {
     super.initState();
     _loadUserInformation();
+
+    // Lắng nghe thay đổi trên các trường nhập liệu
+    userNameController.addListener(() => setState(() {}));
+    phoneController.addListener(() => setState(() {}));
+    addressController.addListener(() => setState(() {}));
   }
 
   Future<void> _loadUserInformation() async {
@@ -39,9 +45,9 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
             : null;
       });
     } catch (error) {
-      // Xử lý lỗi khi lấy thông tin người dùng
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Không thể tải thông tin người dùng: $error')),
+      SnackBarHelper.showSimpleSnackBar(
+        context: context,
+        message: "Tải thông tin người dùng thất bại !",
       );
     }
   }
@@ -50,35 +56,36 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
     final updatedUserInfo = {
       'fullName': userNameController.text,
       'phoneNumber': phoneController.text,
-      'email': emailController.text, // Đảm bảo không cập nhật email nếu server không cho phép
+      'email': emailController.text,
       'address': addressController.text,
       'gender': selectedGender ?? '',
     };
 
     try {
       final result = await authRepository.updateUserInformation(updatedUserInfo);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(result)),
+      SnackBarHelper.showSimpleSnackBar(
+        context: context,
+        message: result,
       );
     } catch (error) {
-      // Xử lý lỗi khi lưu thông tin người dùng
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('$error')),
+      SnackBarHelper.showSimpleSnackBar(
+        context: context,
+        message: "$error",
       );
     }
   }
 
+  // Kiểm tra xem nút Lưu thay đổi có được kích hoạt hay không
   bool _isSaveButtonEnabled() {
-    return userNameController.text.isNotEmpty &&
-        phoneController.text.isNotEmpty &&
-        addressController.text.isNotEmpty &&
+    return userNameController.text.isNotEmpty ||
+        phoneController.text.isNotEmpty ||
+        addressController.text.isNotEmpty ||
         selectedGender != null;
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final width = size.width;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -88,18 +95,22 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-
               SizedBox(height: 20),
               _buildTextFormField("Tên Người Dùng", userNameController, true),
               _buildTextFormField("Số Điện Thoại", phoneController, true),
               _buildTextFormField("Email", emailController, false),
-              _buildGenderDropdown(), // Thêm phần dropdown giới tính
+              _buildGenderDropdown(),
               _buildTextFormField("Địa Chỉ", addressController, true),
               SizedBox(height: 30),
-              ElevatedButton(
-                onPressed: () => _saveChanges(),
-                child: Text('Lưu thay đổi'),
-
+              InkWell(
+                onTap: _isSaveButtonEnabled() ? _saveChanges : null,
+                child: Opacity(
+                  opacity: _isSaveButtonEnabled() ? 1.0 : 0.5,
+                  child: MyButton(
+                    size: size,
+                    title: "Lưu thay đổi",
+                  ),
+                ),
               ),
             ],
           ),
@@ -125,7 +136,7 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
             flex: 2,
             child: TextFormField(
               controller: controller,
-              enabled: isEditable, // Thêm điều kiện cho phép chỉnh sửa
+              enabled: isEditable,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
               ),
@@ -136,7 +147,6 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
     );
   }
 
-  // Widget cho Dropdown giới tính
   Widget _buildGenderDropdown() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -154,7 +164,7 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
             flex: 2,
             child: DropdownButtonFormField<String>(
               value: selectedGender,
-              items: ['','Nam', 'Nữ']
+              items: ['Nam', 'Nữ']
                   .map((gender) => DropdownMenuItem<String>(
                 value: gender,
                 child: Text(gender),

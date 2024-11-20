@@ -7,6 +7,7 @@ import 'package:project_1_btl/widgets/CustomTextField.dart';
 import 'package:project_1_btl/widgets/MyAppBar.dart';
 import 'package:project_1_btl/widgets/MyButton.dart';
 import 'package:project_1_btl/widgets/MyText.dart';
+import 'package:project_1_btl/widgets/SnackBarHelper.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   final Size size;
@@ -29,23 +30,29 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     final String confirmPassword = _confirmPasswordController.text;
 
     if (password != confirmPassword) {
-      _showMessage('Mật khẩu không khớp');
+      SnackBarHelper.showSimpleSnackBar(
+        context: context,
+        message: "Mật khẩu không khớp",
+      );
       return;
     }
 
     try {
       String result = await _authRepository.changePassword(widget.email, widget.otp, password);
-      _showMessage(result);
+      SnackBarHelper.showSimpleSnackBar(
+        context: context,
+        message: result,
+      );
       Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
       // Điều hướng về màn hình đăng nhập hoặc màn hình khác
     } catch (e) {
-      _showMessage('Đặt lại mật khẩu thất bại');
+      SnackBarHelper.showSimpleSnackBar(
+        context: context,
+        message: "Đặt lại mật khẩu thất bại",
+      );
     }
   }
 
-  void _showMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,8 +69,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               controller: _passwordController,
               hintText: "Mật khẩu mới",
               iconSize: 10,
-              background: Colors.white,
-              hintColor: Colors.black,
+              hintColor: Colors.grey,
+              background: Color(0xffc9c9c9),
               height: 50,
             ),
             SizedBox(height: 20,),
@@ -71,8 +78,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               controller: _confirmPasswordController,
               hintText: "Xác nhận mật khẩu mới",
               iconSize: 10,
-              background: Colors.white,
-              hintColor: Colors.black,
+              hintColor: Colors.grey,
+              background: Color(0xffc9c9c9),
               height: 50,
             ),
             SizedBox(height: 20,),

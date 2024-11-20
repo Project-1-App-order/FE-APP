@@ -4,6 +4,7 @@ import 'package:project_1_btl/model/Food.dart';
 import 'package:project_1_btl/repository/FoodRepository.dart';
 import 'package:project_1_btl/screen/item/ItemFood.dart';
 import 'package:project_1_btl/services/FoodService.dart';
+import 'package:project_1_btl/widgets/CenterCircularProgress.dart';
 import 'package:project_1_btl/widgets/MyAppBar.dart';
 
 class CategoryHomeScreen extends StatelessWidget {
@@ -26,9 +27,9 @@ class CategoryHomeScreen extends StatelessWidget {
         // Thay đổi phương thức phù hợp
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return CenteredCircularProgress();
           } else if (snapshot.hasError) {
-            return Center(child: Text('Lỗi: ${snapshot.error}'));
+            return CenteredCircularProgress();
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text('Không có gợi ý nào.'));
           } else {

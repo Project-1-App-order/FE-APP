@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:project_1_btl/model/CartDetail.dart';
 import 'package:project_1_btl/model/FoodCartDetail.dart';
 import 'package:project_1_btl/repository/AuthRepository.dart';
@@ -9,7 +10,12 @@ import 'package:project_1_btl/screen/UserSetting/UserInformationScreen.dart';
 import 'package:project_1_btl/services/AuthService.dart';
 import 'package:project_1_btl/services/CartService.dart';
 import 'package:project_1_btl/services/OrderService.dart';
+import 'package:project_1_btl/utils/constants.dart';
+import 'package:project_1_btl/widgets/CenterCircularProgress.dart';
 import 'package:project_1_btl/widgets/MyAppBar.dart';
+import 'package:project_1_btl/widgets/MyButton.dart';
+import 'package:project_1_btl/widgets/SnackBarHelper.dart';
+import 'package:project_1_btl/widgets/ToastHelper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // Thay bằng đường dẫn thật đến màn hình updateUserInformation
 
@@ -64,8 +70,9 @@ class _OrderConfirmScreenState extends State<OrderConfirmScreen> {
       });
       return userInfo;
     } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to load user information: $error')),
+      SnackBarHelper.showSimpleSnackBar(
+        context: context,
+        message: "Tải thông tin người dùng thất bại !",
       );
       return {};
     }
@@ -82,7 +89,8 @@ class _OrderConfirmScreenState extends State<OrderConfirmScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text("Thông tin thiếu"),
-          content: Text("Vui lòng điền đầy đủ tên, số điện thoại và địa chỉ của bạn."),
+          content: Text(
+              "Vui lòng điền đầy đủ tên, số điện thoại và địa chỉ của bạn."),
           actions: [
             TextButton(
               onPressed: () async {
@@ -97,7 +105,8 @@ class _OrderConfirmScreenState extends State<OrderConfirmScreen> {
 
                 if (result == true) {
                   setState(() {
-                    _userInformationFuture = _loadUserInformation(); // Tải lại thông tin người dùng
+                    _userInformationFuture =
+                        _loadUserInformation(); // Tải lại thông tin người dùng
                   });
                 }
               },
@@ -109,41 +118,38 @@ class _OrderConfirmScreenState extends State<OrderConfirmScreen> {
     );
   }
 
-  void _handlePlaceOrder() {
-    if (phoneController.text.isEmpty || addressController.text.isEmpty) {
-      _showMissingInfoDialog(); // Hiển thị dialog nếu thông tin thiếu
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Đặt hàng thành công!")),
-      );
-    }
-  }
-
   void _handleSendOrder() async {
     print("1");
-    if (phoneController.text.isEmpty || addressController.text.isEmpty || userNameController.text.isEmpty) {
+    if (phoneController.text.isEmpty ||
+        addressController.text.isEmpty ||
+        userNameController.text.isEmpty) {
       _showMissingInfoDialog(); // Show the dialog if info is missing
     } else {
       try {
         // Convert the cart details to CartDetail
 
-          // Send the API request to place the order
-          final response = await orderRepository.sendOrderFromCart();
+        // Send the API request to place the order
+        final response = await orderRepository.sendOrderFromCart();
 
-          if (response == true) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Đặt hàng thành công!")),
-            );
-            Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen()));
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Lỗi khi đặt hàng, vui lòng thử lại " + response.toString())),
-            );
-          }
-          print("2");
+        if (response == true) {
+          SnackBarHelper.showSimpleSnackBar(
+            context: context,
+            message: "Đặt hàng thành công",
+          );
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => MainScreen()));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content: Text("Lỗi khi đặt hàng, vui lòng thử lại " +
+                    response.toString())),
+          );
+        }
+        print("2");
       } catch (error) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Lỗi khi đặt hàng: $error')),
+        SnackBarHelper.showSimpleSnackBar(
+          context: context,
+          message: "Đặt hàng đã xảy ra lỗi!",
         );
       }
     }
@@ -151,6 +157,7 @@ class _OrderConfirmScreenState extends State<OrderConfirmScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: MyAppBar(title: "Xác nhận đơn hàng"),
@@ -160,7 +167,7 @@ class _OrderConfirmScreenState extends State<OrderConfirmScreen> {
           future: _userInformationFuture,
           builder: (context, userSnapshot) {
             if (userSnapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return CenteredCircularProgress();
             } else if (userSnapshot.hasError ||
                 userSnapshot.data == null ||
                 userSnapshot.data!.isEmpty) {
@@ -180,7 +187,7 @@ class _OrderConfirmScreenState extends State<OrderConfirmScreen> {
                   builder: (context, cartSnapshot) {
                     if (cartSnapshot.connectionState ==
                         ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
+                      return CenteredCircularProgress();
                     } else if (cartSnapshot.hasError ||
                         cartSnapshot.data == null ||
                         cartSnapshot.data!.isEmpty) {
@@ -240,12 +247,10 @@ class _OrderConfirmScreenState extends State<OrderConfirmScreen> {
                 SizedBox(height: 10),
                 SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton(
-                      onPressed: () {
-                        _handleSendOrder();
-                        print("send order");
-                      },
-                      child: Text("Đặt mua")),
+                  child: InkWell(child:MyButton(size: size, title: "Đặt mua"), onTap: (){
+                   _handleSendOrder();
+            },
+                  )
                 ),
               ],
             );

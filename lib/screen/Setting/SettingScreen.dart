@@ -29,11 +29,11 @@ class SettingScreen extends StatelessWidget {
            Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePasswordScreen(size: size,)));
           },),
 
-          Padding(
-            padding: const EdgeInsets.only(left: 25, top: 10, bottom: 10),
-            child: MyText(text: "Hỗ Trợ", size: 17, color: Color(0xff6e6e6e), weight: FontWeight.w500),
-          ),
-          ItemProfile(size: size, icon: null, title: "Yêu cầu xóa tài khoản"),
+          // Padding(
+          //   padding: const EdgeInsets.only(left: 25, top: 10, bottom: 10),
+          //   child: MyText(text: "Hỗ Trợ", size: 17, color: Color(0xff6e6e6e), weight: FontWeight.w500),
+          // ),
+          // ItemProfile(size: size, icon: null, title: "Yêu cầu xóa tài khoản"),
 
         ],
       ),

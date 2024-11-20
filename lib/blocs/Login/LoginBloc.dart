@@ -17,10 +17,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       // Đăng nhập và nhận token từ AuthRepository
       final token = await authRepository.loginUser(event.email, event.password);
 
-      // Lưu token vào SharedPreferences
-      // SharedPreferences prefs = await SharedPreferences.getInstance();
-      // await prefs.setString('auth_token', token); // Save the token
-
       emit(LoginSuccess(message: token));
     } catch (error) {
       emit(LoginFailure(error: error.toString()));

@@ -151,7 +151,7 @@ class _NetworkAwareWidgetState extends State<NetworkAwareWidget> {
             // Kiểm tra trạng thái đăng nhập khi có mạng
             if (isLoggedIn) {
               // Nếu có token, điều hướng đến trang chủ
-              return LoginScreen();
+              return MainScreen();
             } else {
               // Nếu không có token, điều hướng đến trang đăng nhập
               return LoginScreen();

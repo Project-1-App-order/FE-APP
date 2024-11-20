@@ -5,6 +5,7 @@ import 'package:project_1_btl/screen/item/ItemCategory.dart';
 import 'package:project_1_btl/screen/item/ItemLeftListCategory.dart';
 import 'package:project_1_btl/services/CategoryService.dart';
 import 'package:project_1_btl/services/FoodService.dart';
+import 'package:project_1_btl/widgets/CenterCircularProgress.dart';
 import 'package:project_1_btl/widgets/MyAppBar.dart';
 import 'package:project_1_btl/model/Category.dart';
 import 'package:project_1_btl/model/Food.dart'; // Import model của Food
@@ -67,7 +68,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       backgroundColor: Colors.white,
       appBar: MyAppBar(title: "Danh mục sản phẩm"),
       body: categories.isEmpty // Kiểm tra nếu categories rỗng
-          ? Center(child: CircularProgressIndicator()) // Hiển thị vòng xoay tải
+          ? CenteredCircularProgress() // Hiển thị vòng xoay tải
           :Row(
         children: [
           // Cột bên trái chứa ListView các danh mục

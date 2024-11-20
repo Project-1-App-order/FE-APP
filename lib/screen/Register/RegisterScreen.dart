@@ -22,19 +22,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _confirmPasswordController = TextEditingController();
 
   void _register(BuildContext context) {
-    // Kiểm tra mật khẩu có khớp không
-    if (_passwordController.text == _confirmPasswordController.text) {
+
+    if (_emailController.text == "" || _passwordController.text == "" || _passwordController.text == _confirmPasswordController.text) {
       // Gọi phương thức đăng ký qua Bloc
       context.read<RegisterBloc>().add(RegisterSubmitted(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       ));
-    } else if (_confirmPasswordController.text == "") {
+      //xet truong hop passwo
+    }else if (_confirmPasswordController.text == "") {
       // Hiển thị thông báo lỗi với overlay
-      showCustomDialog(context, "Hãy nhập lại mật khẩu!", Icons.error);
+      showCustomDialog(context, "Hãy nhập lại mật khẩu!", "assets/images/error.png");
     } else {
       // Hiển thị thông báo lỗi với overlay
-      showCustomDialog(context, "Mật khẩu không khớp.", Icons.error);
+      showCustomDialog(context, "Mật khẩu không khớp.", "assets/images/error.png");
     }
   }
 
@@ -48,14 +49,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
       backgroundColor: ColorApp.whiteColor,
       body: BlocListener<RegisterBloc, RegisterState>(
         listener: (context, state) {
-          if (state is RegisterSuccess) {
+          if(state is RegisterLoading){
+
+          }
+          else if (state is RegisterSuccess) {
             // Hiển thị thông báo đăng ký thành công
-            showCustomDialog(context, "Đăng ký thành công!", Icons.check_circle);
+            showCustomDialog(context, "Đăng ký thành công!", "assets/images/checked.png");
             // Chuyển hướng tới màn hình đăng nhập
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
           } else if (state is RegisterFailure) {
             // Hiển thị thông báo lỗi với overlay
-            showCustomDialog(context, "${state.error}", Icons.error);
+            showCustomDialog(context, "${state.error}", "assets/images/error.png");
           }
         },
         child: BlocBuilder<RegisterBloc, RegisterState>(
@@ -145,9 +149,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   SizedBox(height: height * 0.06),
                   // Nút đăng ký
-                  state is RegisterLoading
-                      ? const CircularProgressIndicator()
-                      : InkWell(
+                  InkWell(
                       child: MyButton(
                         size: size,
                         title: "Đăng Ký",

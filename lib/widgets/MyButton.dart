@@ -14,7 +14,7 @@ class MyButton extends StatelessWidget {
       child: SizedBox(
         width: size.width,
         // Nút rộng 100% màn hình
-        height: 48,
+        height: size.height * 0.04,
 
         child: Container(
           width: size.width,
@@ -32,7 +32,8 @@ class MyButton extends StatelessWidget {
             title,
             style: const TextStyle(
               color: ColorApp.whiteColor, // Màu chữ của nút
-              fontSize: 18,
+              fontSize: 25,
+              fontFamily: "RobotoRegular",
               fontWeight: FontWeight.w600, // Sử dụng font tùy chỉnh
             ),
           ),

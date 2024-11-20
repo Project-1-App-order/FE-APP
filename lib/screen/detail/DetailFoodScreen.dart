@@ -5,7 +5,10 @@ import 'package:project_1_btl/repository/CartRepository.dart';
 import 'package:project_1_btl/repository/FoodRepository.dart';
 import 'package:project_1_btl/services/CartService.dart';
 import 'package:project_1_btl/services/FoodService.dart';
+import 'package:project_1_btl/widgets/CenterCircularProgress.dart';
 import 'package:project_1_btl/widgets/MyText.dart';
+import 'package:project_1_btl/widgets/SnackBarHelper.dart';
+import 'package:project_1_btl/widgets/ToastHelper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DetailFoodScreen extends StatelessWidget {
@@ -31,12 +34,14 @@ class DetailFoodScreen extends StatelessWidget {
 
       bool success = await cartRepository.addOrUpdateCartDetail(cartDetail);
       if (success) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("${food.foodName} đã được thêm hoặc cập nhật vào giỏ hàng")),
+        SnackBarHelper.showSimpleSnackBar(
+          context: context,
+          message: "Món ăn đã được thêm vào giỏ hàng!",
         );
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Thêm ${food.foodName} vào giỏ hàng thất bại")),
+        SnackBarHelper.showSimpleSnackBar(
+          context: context,
+          message: "Món ăn thêm vào giỏ hàng thất bại!",
         );
       }
     }
@@ -47,9 +52,9 @@ class DetailFoodScreen extends StatelessWidget {
         future: foodRepository.getDetailFoodById(foodId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return CenteredCircularProgress();
           } else if (snapshot.hasError) {
-            return Center(child: Text("Lỗi: ${snapshot.error}"));
+            return CenteredCircularProgress();
           } else if (!snapshot.hasData) {
             return Center(child: Text("Không có dữ liệu"));
           } else {

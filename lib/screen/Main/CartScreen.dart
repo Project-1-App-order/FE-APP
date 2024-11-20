@@ -6,6 +6,8 @@ import 'package:project_1_btl/blocs/Cart/CartState.dart';
 import 'package:project_1_btl/model/FoodCartDetail.dart';
 import 'package:project_1_btl/screen/Order/OrderConfirmScreen.dart';
 import 'package:project_1_btl/screen/item/ItemCart.dart';
+import 'package:project_1_btl/utils/constants.dart';
+import 'package:project_1_btl/widgets/CenterCircularProgress.dart';
 import 'package:project_1_btl/widgets/MyText.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,7 +19,7 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  late String orderId;
+  late String orderId = '';
   List<FoodCartDetail> cartDetails = [];
 
   @override
@@ -50,31 +52,36 @@ class _CartScreenState extends State<CartScreen> {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             InkWell(
               child: MyText(
                 text: "Xóa Tất Cả",
                 size: 13,
-                color: Colors.orange,
-                weight: FontWeight.w300,
+                color: ColorApp.brightOrangeColor,
+                weight: FontWeight.w600,
               ),
               onTap: () {
                 BlocProvider.of<CartBloc>(context)
                     .add(DeleteAllCartDetailsEvent(orderId: orderId));
               },
             ),
-            const Text(
-              'Giỏ hàng',
-              style: TextStyle(color: Colors.black),
+            Spacer(),  // Thêm Spacer để tạo khoảng cách
+            Center(
+              child: const Text(
+                'Giỏ hàng',
+                style: TextStyle(color: Colors.black),
+              ),
             ),
-            const Icon(Icons.close, size: 27, color: Colors.black),
+            Spacer(),  // Thêm Spacer để căn giữa
           ],
-        ),
+        )
+
       ),
       body: BlocListener<CartBloc, CartState>(
         listener: (context, state) {
-          if (state is CartLoadedState) {
+          if (state is CartLoadingState) {
+            // Hiển thị spinner loading trong khi chờ dữ liệu
+          } else if (state is CartLoadedState) {
             setState(() {
               cartDetails = state.cartDetails;
             });
@@ -96,44 +103,44 @@ class _CartScreenState extends State<CartScreen> {
               child: BlocBuilder<CartBloc, CartState>(
                 builder: (context, state) {
                   if (state is CartLoadingState) {
-                    return const Center(child: CircularProgressIndicator());
+                    return CenteredCircularProgress();
                   } else if (state is CartErrorState) {
                     return Center(child: Text(state.message));
-                  } else {
-                    return cartDetails.isEmpty
-                        ?  Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  'assets/images/emptycart.png', // Path to your image
-                                  width: 80, // Adjust size as needed
-                                  height: 80, // Adjust size as needed
-                                ),
-                                SizedBox(height: 10),
-                                // Spacing between the image and text
-                                Text(
-                                  'Giỏ hàng trống',
-                                  style: TextStyle(
-                                    fontSize: 18, // Adjust text size as needed
-                                    color: Colors
-                                        .grey, // Change text color if needed
-                                  ),
-                                ),
-                              ],
+                  } else if (state is CartLoadedState) {
+                    if (state.cartDetails.isEmpty) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/images/emptycart.png',
+                              width: 80,
+                              height: 80,
                             ),
-                          )
-                        : ListView.builder(
-                            itemCount: cartDetails.length,
-                            itemBuilder: (context, index) {
-                              final cartDetail = cartDetails[index];
-                              return ItemCart(
-                                size: MediaQuery.of(context).size,
-                                cartDetail: cartDetail,
-                                orderId: orderId,
-                              );
-                            },
+                            const SizedBox(height: 10),
+                            const Text(
+                              'Giỏ hàng trống',
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                      );
+                    } else {
+                      return ListView.builder(
+                        itemCount: state.cartDetails.length,
+                        itemBuilder: (context, index) {
+                          final cartDetail = state.cartDetails[index];
+                          return ItemCart(
+                            size: MediaQuery.of(context).size,
+                            cartDetail: cartDetail,
+                            orderId: orderId,
                           );
+                        },
+                      );
+                    }
+                  }else{
+                    return CenteredCircularProgress();
                   }
                 },
               ),

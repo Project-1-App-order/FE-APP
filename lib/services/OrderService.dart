@@ -3,12 +3,14 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:project_1_btl/model/CartDetail.dart';
 import 'package:project_1_btl/model/Order.dart';
+import 'package:project_1_btl/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OrderService {
+  static String url = AppUrl.UrlApi;
   // Phương thức tạo đơn hàng
   Future<String?> createOrder(Order order) async {
-    final url = Uri.parse('http://10.0.2.2:7258/api/Orders/CreateOrder');
+    final urlApi = Uri.parse(url + '/Orders/CreateOrder');
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('auth_token');
@@ -22,7 +24,7 @@ class OrderService {
     final body = json.encode(order.toJson());
 
     try {
-      final response = await http.post(url, headers: headers, body: body);
+      final response = await http.post(urlApi, headers: headers, body: body);
 
       if (response.statusCode == 200) {
         // Phân tích phản hồi JSON để lấy orderId
@@ -40,7 +42,7 @@ class OrderService {
     }
   }
 
-  static const String _url = 'http://10.0.2.2:7258/api/Orders/AddAndDeleteOrderDetail';
+  static  String _url = url + '/Orders/AddAndDeleteOrderDetail';
 
   // Phương thức để gửi chi tiết đơn hàng đến API
   Future<bool> sendOrderDetails(List<CartDetail> orderDetails) async {

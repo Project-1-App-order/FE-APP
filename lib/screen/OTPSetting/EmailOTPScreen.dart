@@ -8,6 +8,7 @@ import 'package:project_1_btl/widgets/CustomTextField.dart';
 import 'package:project_1_btl/widgets/MyAppBar.dart';
 import 'package:project_1_btl/widgets/MyButton.dart';
 import 'package:project_1_btl/widgets/MyText.dart';
+import 'package:project_1_btl/widgets/SnackBarHelper.dart';
 
 class EmailOTPScreen extends StatefulWidget {
   final Size size;
@@ -29,26 +30,35 @@ class _EmailOTPScreenState extends State<EmailOTPScreen> {
   }
 
   void _sendOTP() async {
+
+
     String email = _emailController.text.trim();
 
     if (email.isEmpty) {
-      _showMessage('Vui lòng nhập email của bạn');
+      SnackBarHelper.showSimpleSnackBar(
+        context: context,
+        message: "Vui lòng nhập email của bạn",
+      );
       return;
     }
 
     try {
       String result = await _authRepository.sendOTP(email);
-      _showMessage(result);
+      SnackBarHelper.showSimpleSnackBar(
+        context: context,
+        message: result,
+      );
       // Chuyển sang màn hình OTP nếu gửi OTP thành công
       Navigator.push(context, MaterialPageRoute(builder: (context) => OTPScreen(size: widget.size, email: email,)));
     } catch (e) {
-      _showMessage('Lỗi: Không thể gửi OTP');
+      SnackBarHelper.showSimpleSnackBar(
+        context: context,
+        message: "OTP gửi thất bại !",
+      );
     }
   }
 
-  void _showMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
-  }
+
 
   @override
   Widget build(BuildContext context) {

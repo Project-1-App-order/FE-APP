@@ -11,6 +11,7 @@ import 'package:project_1_btl/screen/Search/SearchScreens.dart';
 import 'package:project_1_btl/services/CategoryService.dart';
 import 'package:project_1_btl/services/FoodService.dart';
 import 'package:project_1_btl/utils/constants.dart';
+import 'package:project_1_btl/widgets/CenterCircularProgress.dart';
 import 'package:project_1_btl/widgets/MyBanner.dart';
 import 'package:project_1_btl/widgets/MyText.dart';
 import 'package:project_1_btl/widgets/TextFieldSearchHome.dart';
@@ -93,9 +94,9 @@ class HomeScreen extends StatelessWidget {
               future: _categoryRepository.getCategories(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return CenteredCircularProgress();
                 } else if (snapshot.hasError) {
-                  return Center(child: Text('Lỗi: ${snapshot.error}'));
+                  return CenteredCircularProgress();
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return Center(child: Text('Không có gợi ý nào.'));
                 } else {
@@ -142,9 +143,9 @@ class HomeScreen extends StatelessWidget {
               future: _foodRepository.getTopTenBestSellers(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return CenteredCircularProgress();
                 } else if (snapshot.hasError) {
-                  return Center(child: Text('Lỗi: ${snapshot.error}'));
+                  return CenteredCircularProgress();
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return Center(child: Text('Không có sản phẩm bán chạy.'));
                 } else {
@@ -179,9 +180,9 @@ class HomeScreen extends StatelessWidget {
               future: _foodRepository.getDailyRandomFoods(), // Change to appropriate method
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return CenteredCircularProgress();
                 } else if (snapshot.hasError) {
-                  return Center(child: Text('Lỗi: ${snapshot.error}'));
+                  return CenteredCircularProgress();
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return Center(child: Text('Không có gợi ý nào.'));
                 } else {

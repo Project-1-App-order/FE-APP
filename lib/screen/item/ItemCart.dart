@@ -61,7 +61,8 @@ class ItemCart extends StatelessWidget {
                         text: cartDetail.foodName,
                         size: 20,
                         color: Colors.black,
-                        weight: FontWeight.w500,
+                        weight: FontWeight.w600,
+                        family: "RobotoRegular",
                       ),
                       Row(
                         children: [
@@ -69,7 +70,7 @@ class ItemCart extends StatelessWidget {
                             text: cartDetail.price.toString(),
                             size: 20,
                             color: Colors.black,
-                            weight: FontWeight.w500,
+                            weight: FontWeight.w600,
                           ),
                           SizedBox(width: 20,),
                           Row(
@@ -81,6 +82,12 @@ class ItemCart extends StatelessWidget {
                                     context.read<CartBloc>().add(UpdateCartDetailEvent(
                                       cartDetail.toCartDetail(orderId: orderId).copyWith(quantity: -1),
                                     ));
+                                  } else {
+                                    // Khi quantity == 1 và nút trừ được nhấn, xóa item khỏi giỏ hàng
+                                    context.read<CartBloc>().add(DeleteCartDetailEvent(
+                                      orderId,
+                                      cartDetail.foodId,
+                                    ));
                                   }
                                 },
                               ),
@@ -88,7 +95,7 @@ class ItemCart extends StatelessWidget {
                                 text: cartDetail.quantity.toString(),
                                 size: 20,
                                 color: Colors.black,
-                                weight: FontWeight.w500,
+                                weight: FontWeight.w600,
                               ),
                               IconButton(
                                 icon: const Icon(Icons.add_box_sharp),

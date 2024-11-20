@@ -5,6 +5,7 @@ import 'package:project_1_btl/screen/Main/MainScreen.dart';
 import 'package:project_1_btl/screen/item/ItemFood.dart';
 import 'package:project_1_btl/services/FoodService.dart';
 import 'package:project_1_btl/utils/constants.dart';
+import 'package:project_1_btl/widgets/CenterCircularProgress.dart';
 import 'package:project_1_btl/widgets/CustomTextField.dart';
 import 'package:project_1_btl/widgets/MyText.dart';
 import 'package:project_1_btl/widgets/FilterDrawer.dart';
@@ -143,7 +144,7 @@ class _SearchScreenState extends State<SearchScreen> {
               future: _searchResults,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return CenteredCircularProgress();
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Lỗi: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {

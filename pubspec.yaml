@@ -63,7 +63,7 @@ dev_dependencies:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/images/cutlery.png"
+  image_path: "assets/images/foodlogo.png"
   remove_alpha_ios: true
 
 # For information on the generic Dart part of this file, see the
@@ -87,6 +87,9 @@ flutter:
       - assets/images/banner1.png
       - assets/images/banner2.png
       - assets/images/banner3.png
+      - assets/images/warning.png
+      - assets/images/error.png
+      - assets/images/checked.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

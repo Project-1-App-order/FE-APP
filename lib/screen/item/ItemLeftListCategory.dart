@@ -51,7 +51,8 @@ class ItemLeftListCategory extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: isSelected ? Colors.red : Colors.black,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.w400,
+                fontFamily: "RobotoRegular"
               ),
             ),
           ),

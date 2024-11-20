@@ -46,17 +46,15 @@ class ItemFood extends StatelessWidget {
                 children: [
                   MyText(
                       text: food.foodName,
-                      size: 15,
+                      size: 18,
                       color: Colors.black,
-                      weight: FontWeight.w300),
-                  const SizedBox(height: 10),
-
+                      weight: FontWeight.w500),
                   const SizedBox(height: 10),
 
                       Text(
                         food.price.toString(),
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 18,
                           color: Colors.black,
                         ),
                       ),
