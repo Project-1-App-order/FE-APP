@@ -41,7 +41,7 @@ class ItemProfile extends StatelessWidget {
                 text: title,
                 size: size.height * 0.025,
                 color: Colors.black,
-                weight: FontWeight.w300,
+                weight: FontWeight.w500,
               ),
             ],
           ),

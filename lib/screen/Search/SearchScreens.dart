@@ -131,7 +131,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       text: _isFiltering ? "Lọc" : "Hủy",
                       size: 18,
                       color: ColorApp.brightOrangeColor,
-                      weight: FontWeight.w300,
+                      weight: FontWeight.w500,
                     ),
                   ),
                 ),

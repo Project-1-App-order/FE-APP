@@ -29,61 +29,91 @@ class ItemCart extends StatelessWidget {
         return false;
       },
       builder: (context, state) {
-        return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          width: size.width * 0.8,
-          child: Row(
-            children: [
-              Image.network(
-                cartDetail.images[0],
-                width: 80,
-                height: 80,
-                fit: BoxFit.fill,
-                errorBuilder: (context, error, stackTrace) {
-                  return Image.asset(
-                    "assets/images/image_food.jpg",
-                    width: 80,
-                    height: 80,
-                    fit: BoxFit.fill,
-                  );
-                },
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Container(
+            width: double.infinity,
+            height: 130,
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFfae3e2).withOpacity(0.3),
+                  spreadRadius: 1,
+                  blurRadius: 1,
+                  offset: const Offset(0, 1),
+                ),
+              ],
+            ),
+            child: Card(
+              color: Colors.white,
+              elevation: 0,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(5.0),
+                ),
               ),
-              const SizedBox(width: 20),
-              Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                      MyText(
-                        text: cartDetail.foodName,
-                        size: 20,
-                        color: Colors.black,
-                        weight: FontWeight.w600,
-                        family: "RobotoRegular",
+                    // Phần 1: Hình ảnh
+                    Flexible(
+                      flex: 3, // Chiếm 20%
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10.0), // Bo góc ảnh
+                        child: Image.network(
+                          cartDetail.images[0],
+                          width: 80,
+                          height: 80,
+                          fit: BoxFit.fill,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Image.asset(
+                              "assets/images/image_food.jpg",
+                              width: 80,
+                              height: 80,
+                              fit: BoxFit.fill,
+                            );
+                          },
+                        ),
                       ),
-                      Row(
+                    ),
+                    const SizedBox(width: 10),
+                    // Phần 2: Tên, giá, số lượng
+                    Flexible(
+                      flex: 8, // Chiếm 60%
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
                         children: [
+                          // Tên sản phẩm
                           MyText(
-                            text: cartDetail.price.toString(),
-                            size: 20,
-                            color: Colors.black,
+                            text: cartDetail.foodName,
+                            size: 18,
+                            color: const Color(0xFF3a3a3b),
                             weight: FontWeight.w600,
+                            family: "Roboto-Light.ttf",
                           ),
-                          SizedBox(width: 20,),
+                          // Giá sản phẩm
+                          MyText(
+                            text: "${cartDetail.price} VNĐ",
+                            size: 16,
+                            color: const Color(0xFF3a3a3b),
+                            weight: FontWeight.w400,
+                          ),
+                          // Row: Thêm/Bớt số lượng
                           Row(
                             children: [
                               IconButton(
-                                icon: const Icon(Icons.indeterminate_check_box),
+                                icon: const Icon(Icons.remove_circle_outline),
                                 onPressed: () {
                                   if (cartDetail.quantity > 1) {
                                     context.read<CartBloc>().add(UpdateCartDetailEvent(
-                                      cartDetail.toCartDetail(orderId: orderId).copyWith(quantity: -1),
+                                      cartDetail
+                                          .toCartDetail(orderId: orderId)
+                                          .copyWith(quantity: -1),
                                     ));
                                   } else {
-                                    // Khi quantity == 1 và nút trừ được nhấn, xóa item khỏi giỏ hàng
                                     context.read<CartBloc>().add(DeleteCartDetailEvent(
                                       orderId,
                                       cartDetail.foodId,
@@ -93,39 +123,47 @@ class ItemCart extends StatelessWidget {
                               ),
                               MyText(
                                 text: cartDetail.quantity.toString(),
-                                size: 20,
+                                size: 18,
                                 color: Colors.black,
                                 weight: FontWeight.w600,
                               ),
                               IconButton(
-                                icon: const Icon(Icons.add_box_sharp),
+                                icon: const Icon(Icons.add_circle_outline),
                                 onPressed: () {
                                   context.read<CartBloc>().add(UpdateCartDetailEvent(
-                                    cartDetail.toCartDetail(orderId: orderId).copyWith(quantity: 1),
-                                  ));
-                                },
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.delete),
-                                onPressed: () {
-                                  context.read<CartBloc>().add(DeleteCartDetailEvent(
-                                    orderId,
-                                    cartDetail.foodId,
+                                    cartDetail
+                                        .toCartDetail(orderId: orderId)
+                                        .copyWith(quantity: 1),
                                   ));
                                 },
                               ),
                             ],
                           ),
                         ],
-                      )
-                    ],),
-
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    // Phần 3: Thùng rác
+                    Flexible(
+                      flex: 2, // Chiếm 20%
+                      child: IconButton(
+                        icon: const Icon(Icons.delete, color: Colors.red),
+                        onPressed: () {
+                          context.read<CartBloc>().add(DeleteCartDetailEvent(
+                            orderId,
+                            cartDetail.foodId,
+                          ));
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),
-            ],
+            ),
           ),
         );
+
+
       },
     );
   }

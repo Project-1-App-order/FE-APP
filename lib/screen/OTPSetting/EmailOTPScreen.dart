@@ -70,7 +70,7 @@ class _EmailOTPScreenState extends State<EmailOTPScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            MyText(text: "Nhập email", size: 20, color: Colors.black, weight: FontWeight.w300),
+            MyText(text: "Nhập email", size: 20, color: Colors.black, weight: FontWeight.w400,),
             SizedBox(height: 20,),
             CustomTextField(
                 controller: _emailController,  // Gán controller cho trường nhập liệu email

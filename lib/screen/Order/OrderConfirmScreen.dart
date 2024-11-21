@@ -14,6 +14,7 @@ import 'package:project_1_btl/utils/constants.dart';
 import 'package:project_1_btl/widgets/CenterCircularProgress.dart';
 import 'package:project_1_btl/widgets/MyAppBar.dart';
 import 'package:project_1_btl/widgets/MyButton.dart';
+import 'package:project_1_btl/widgets/MyText.dart';
 import 'package:project_1_btl/widgets/SnackBarHelper.dart';
 import 'package:project_1_btl/widgets/ToastHelper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -88,9 +89,9 @@ class _OrderConfirmScreenState extends State<OrderConfirmScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Thông tin thiếu"),
-          content: Text(
-              "Vui lòng điền đầy đủ tên, số điện thoại và địa chỉ của bạn."),
+          title: MyText(text: "Thông tin thiếu", size: 20, color: Colors.black, weight: FontWeight.w500),
+          content: MyText(
+              text: "Vui lòng điền đầy đủ tên, số điện thoại và địa chỉ của bạn.", size: 16, color: Colors.black, weight: FontWeight.w400),
           actions: [
             TextButton(
               onPressed: () async {
@@ -105,13 +106,28 @@ class _OrderConfirmScreenState extends State<OrderConfirmScreen> {
 
                 if (result == true) {
                   setState(() {
-                    _userInformationFuture =
-                        _loadUserInformation(); // Tải lại thông tin người dùng
+                    _userInformationFuture = _loadUserInformation(); // Tải lại thông tin người dùng
                   });
                 }
               },
-              child: Text("OK"),
-            ),
+              style: TextButton.styleFrom(
+                backgroundColor: ColorApp.brightOrangeColor, // Màu nền cam
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0), // Bo góc nếu cần
+                ),
+                padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 32.0), // Tạo khoảng cách cho button
+              ),
+              child: Text(
+                "OK",
+                style: TextStyle(
+                  color: Colors.white, // Màu chữ trắng
+                  fontSize: 18,
+                  fontFamily: "Roboto-Light.ttf", // Dùng font tùy chỉnh
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            )
+
           ],
         );
       },
@@ -178,9 +194,11 @@ class _OrderConfirmScreenState extends State<OrderConfirmScreen> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Tên: ${userInfo['fullName']}"),
-                Text("Số điện thoại: ${userInfo['phoneNumber']}"),
-                Text("Địa chỉ: ${userInfo['address']}"),
+
+                MyText(text: "Tên: ${userInfo['fullName']?? 'Chưa có'}", size: 17, color: Colors.black, weight: FontWeight.w400),
+                MyText(text: "Số điện thoại: ${userInfo['phoneNumber']?? 'Chưa có'}", size: 17, color: Colors.black, weight: FontWeight.w400),
+                MyText(text: "Địa chỉ: ${userInfo['address']?? 'Chưa có'}", size: 17, color: Colors.black, weight: FontWeight.w400),
+
                 SizedBox(height: 10),
                 FutureBuilder<List<FoodCartDetail>?>(
                   future: _cartDetailsFuture,
@@ -202,9 +220,8 @@ class _OrderConfirmScreenState extends State<OrderConfirmScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(height: 20),
-                          Text(
-                              "Tổng tiền: ${totalPrice.toStringAsFixed(2)} VND",
-                              style: TextStyle(fontWeight: FontWeight.bold)),
+
+                          MyText(text: "Tổng tiền: ${totalPrice.toStringAsFixed(2)} VND", size: 17, color: Colors.black, weight: FontWeight.w400),
                           SizedBox(height: 20),
                           Text("Danh sách món ăn:",
                               style: TextStyle(
@@ -215,27 +232,84 @@ class _OrderConfirmScreenState extends State<OrderConfirmScreen> {
                               itemBuilder: (context, index) {
                                 final item = cartItems[index];
                                 return Card(
-                                  margin: EdgeInsets.symmetric(vertical: 8.0),
-                                  child: ListTile(
-                                    leading: Image.network(
-                                      item.images.isNotEmpty
-                                          ? item.images[0]
-                                          : 'https://via.placeholder.com/150',
-                                      width: 50,
-                                      height: 50,
-                                      fit: BoxFit.cover,
+                                  margin: const EdgeInsets.symmetric(vertical: 8.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: const Color(0xFFF8F8F8),
                                     ),
-                                    title: Text(item.foodName),
-                                    subtitle: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                    // Màu nền xám nhạt
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
                                       children: [
-                                        Text("Giá: ${item.price} VND"),
-                                        Text("Số lượng: ${item.quantity}"),
+                                        // Ảnh sản phẩm
+                                        Container(
+                                          width: 70, // Tăng kích thước ảnh
+                                          height: 70,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(8.0), // Bo góc
+                                            border: Border.all(
+                                              color: const Color(0xFFCCCCCC), // Màu viền
+                                              width: 2.0,
+                                            ),
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(8.0), // Bo góc ảnh
+                                            child: Image.network(
+                                              item.images.isNotEmpty
+                                                  ? item.images[0]
+                                                  : 'https://via.placeholder.com/150',
+                                              fit: BoxFit.cover,
+                                              errorBuilder: (context, error, stackTrace) {
+                                                return Image.asset(
+                                                  "assets/images/image_food.jpg",
+                                                  fit: BoxFit.cover,
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 12),
+                                        // Nội dung
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Text(
+                                                item.foodName,
+                                                style: const TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold, // Đậm
+                                                  fontFamily: "Roboto-Light.ttf", // Font Roboto
+                                                ),
+                                              ),
+                                              const SizedBox(height: 6),
+                                              Text(
+                                                "Giá: ${item.price} VND",
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold, // Đậm
+                                                  fontFamily: "Roboto-Light.ttf", // Font Roboto
+                                                ),
+                                              ),
+                                              const SizedBox(height: 6),
+                                              Text(
+                                                "Số lượng: ${item.quantity}",
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold, // Đậm
+                                                  fontFamily: "Roboto-Light.ttf", // Font Roboto
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
                                 );
+
                               },
                             ),
                           ),

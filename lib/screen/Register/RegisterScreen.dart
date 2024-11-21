@@ -7,7 +7,8 @@ import 'package:project_1_btl/screen/Login/LoginScreen.dart';
 import 'package:project_1_btl/utils/constants.dart'; // Đảm bảo bạn đã định nghĩa ColorApp trong file này
 import 'package:project_1_btl/widgets/CustomTextField.dart';
 import 'package:project_1_btl/widgets/MyButton.dart';
-import 'package:project_1_btl/widgets/CustomOverlayDialog.dart'; // Import overlay
+import 'package:project_1_btl/widgets/CustomOverlayDialog.dart';
+import 'package:project_1_btl/widgets/MyTextField.dart'; // Import overlay
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -88,46 +89,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       color: ColorApp.brightOrangeColor,
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'OpenSansRegular',
+                      fontFamily: 'Roboto-Light.ttf',
                     ),
                   ),
-                  SizedBox(height: height * 0.03),
+                  SizedBox(height: height * 0.01),
                   // Trường email
-                  CustomTextField(
-                    controller: _emailController,  // Gắn controller
-                    hintText: 'Email / Tên đăng nhập',
-                    icon: Icons.email,
-                    iconSize: width * 0.06,
-                    hintColor: Colors.grey,
-                    background: ColorApp.whiteColor,
-                    height: 50,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+
+                    child: MyTextField(icon: Icons.email_outlined, hintText: "Email", controller: _emailController, isPassword: false,),
                   ),
-                  const Divider(color: ColorApp.lightGrayBeige, height: 1),
+                  SizedBox(height: 10,),
                   // Trường mật khẩu
-                  CustomTextField(
-                    controller: _passwordController,  // Gắn controller
-                    hintText: 'Mật khẩu',
-                    icon: Icons.lock,
-                    iconSize: width * 0.06,
-                    hintColor: Colors.grey,
-                    background: ColorApp.whiteColor,
-                    height: 50,
-                    obscureText: true,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+
+                    child: MyTextField(icon: Icons.lock, hintText: "Mật khẩu", controller: _passwordController,isPassword: true,),
                   ),
-                  const Divider(color: ColorApp.lightGrayBeige, height: 1),
+                  SizedBox(height: 10,),
                   // Trường xác nhận mật khẩu
-                  CustomTextField(
-                    controller: _confirmPasswordController,  // Gắn controller
-                    hintText: 'Nhập lại Mật khẩu',
-                    icon: Icons.lock,
-                    iconSize: width * 0.06,
-                    hintColor: Colors.grey,
-                    background: ColorApp.whiteColor,
-                    height: 50,
-                    obscureText: true,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+
+                    child: MyTextField(icon: Icons.lock, hintText: "Nhập lại mật khẩu", controller: _confirmPasswordController,isPassword: true,),
                   ),
-                  const Divider(color: ColorApp.lightGrayBeige, height: 1),
-                  SizedBox(height: height * 0.06),
+
+                  SizedBox(height: height * 0.03),
                   Align(
                     alignment: Alignment.centerRight,
                     child: Padding(
@@ -139,6 +126,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             color: ColorApp.skyBlue,
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
+                            fontFamily: "Roboto-Light.ttf"
                           ),
                         ),
                         onTap: () {
@@ -147,7 +135,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: height * 0.06),
+                  SizedBox(height: height * 0.03),
                   // Nút đăng ký
                   InkWell(
                       child: MyButton(
@@ -168,7 +156,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           color: Colors.black,
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
-                          fontFamily: 'OpenSansRegular',
+                          fontFamily: 'Roboto-Light.ttf',
                         ),
                         children: <TextSpan>[
                           TextSpan(
@@ -177,7 +165,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               color: ColorApp.skyBlue,
                               fontSize: 13,
                               fontWeight: FontWeight.bold,
-                              fontFamily: 'OpenSansRegular',
+                              fontFamily: 'Roboto-Light.ttf',
                               decoration: TextDecoration.underline,
                             ),
                           ),

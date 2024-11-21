@@ -7,6 +7,7 @@ import 'package:project_1_btl/widgets/CustomTextField.dart';
 import 'package:project_1_btl/widgets/MyAppBar.dart';
 import 'package:project_1_btl/widgets/MyButton.dart';
 import 'package:project_1_btl/widgets/MyText.dart';
+import 'package:project_1_btl/widgets/SnackBarHelper.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   final Size size;
@@ -43,14 +44,16 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         confirmPassword,
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(result)),
+      SnackBarHelper.showSimpleSnackBar(
+        context: context,
+        message: result,
       );
 
       Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen()));
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('${e.toString()}')),
+      SnackBarHelper.showSimpleSnackBar(
+        context: context,
+        message: "${e.toString()}",
       );
     }
   }
@@ -58,6 +61,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: MyAppBar(title: "Đổi Mật Khẩu"),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 10),

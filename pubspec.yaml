@@ -108,10 +108,11 @@ flutter:
           - asset: assets/fonts/OpenSans-Regular.ttf
             style: normal
 
-      - family: RobotoRegular
+      - family: Roboto
         fonts:
           - asset: assets/fonts/Roboto-Regular.ttf
-            style: normal
+          - asset: assets/fonts/Roboto-Bold.ttf
+          - asset: assets/fonts/Roboto-Light.ttf
 
       - family: LobsterRegular
         fonts:

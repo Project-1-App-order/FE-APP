@@ -47,7 +47,7 @@ class CustomOverlayDialog extends StatelessWidget {
                     title,
                     textAlign: TextAlign.center, // Căn giữa text
                     style: TextStyle(
-                      fontFamily: "RobotoRegular",
+                      fontFamily: "Roboto-Light.ttf",
                       fontWeight: FontWeight.w600,
                       color: Colors.white, // Màu chữ trắng
                       fontSize: 18.0,

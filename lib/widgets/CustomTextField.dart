@@ -9,8 +9,8 @@ class CustomTextField extends StatelessWidget {
   final Color hintColor;
   final double width;
   final double height;
-  final TextEditingController? controller; // Thêm controller để quản lý văn bản
-  final ValueChanged<String>? onChanged; // Hàm lắng nghe sự thay đổi văn bản
+  final TextEditingController? controller;
+  final ValueChanged<String>? onChanged;
 
   const CustomTextField({
     Key? key,
@@ -23,40 +23,60 @@ class CustomTextField extends StatelessWidget {
     this.width = double.infinity,
     required this.height,
     this.controller,
-    this.onChanged, // Nhận vào hàm lắng nghe thay đổi
+    this.onChanged,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        color: background,
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Center(
-        child: TextField(
-          controller: controller, // Sử dụng controller để quản lý văn bản
-          onChanged: onChanged, // Lắng nghe sự thay đổi văn bản
-          obscureText: obscureText,
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            hintText: hintText,
-            hintStyle: TextStyle(color: hintColor,),
-            prefixIcon: icon != null
-                ? Icon(
-              icon,
-              size: iconSize,
-            )
-                : null,
-            contentPadding: EdgeInsets.symmetric(
-              vertical: height * 0.25,
-              horizontal: icon == null ? 10 : 0,
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+            border: Border.all(width: 1, color: Colors.orange),
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(10.0))),
+        child: Row(
+          children: [
+            if (icon != null)
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 15,
+                ),
+                child: Icon(
+                  icon,
+                  size: iconSize,
+                ),
+              ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: TextField(
+                  controller: controller,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontFamily: "Roboto-Light.ttf",
+                      fontSize: 18),
+                  showCursor: true,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      borderSide: BorderSide(
+                        width: 0,
+                        style: BorderStyle.none,
+                      ),
+                    ),
+                    filled: true,
+                    fillColor: Color(0xFFffffff),
+                    hintStyle: TextStyle(
+                        color: Color(0xFF666666),
+                        fontFamily: "Roboto-Light.ttf",
+                        fontSize: 18),
+                    hintText: hintText,
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
-    );
+          ],
+        ));
   }
 }

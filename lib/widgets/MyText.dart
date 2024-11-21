@@ -11,7 +11,7 @@ class MyText extends StatelessWidget {
     Key? key,
     required this.text,
     required this.size , // Giá trị mặc định cho size
-    this.family = "RobotoRegular" , // Giá trị mặc định cho font family
+    this.family = "Roboto-Light.ttf" , // Giá trị mặc định cho font family
     required this.color , // Giá trị mặc định cho màu sắc
     required this.weight, // Giá trị mặc định cho độ dày
   }) : super(key: key);

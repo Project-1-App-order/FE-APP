@@ -103,8 +103,14 @@ class HomeScreen extends StatelessWidget {
                   return Container(
                     padding: EdgeInsets.symmetric(horizontal: 7, vertical: 7),
                     height: size.height * 0.14,
+                    decoration: new BoxDecoration(boxShadow: [
+                      new BoxShadow(
+                        color: Color(0xE4FFBF61),
+                        blurRadius: 25.0,
+                        offset: Offset(0.0, 0.75),
+                      ),
+                    ]),
                     width: size.width,
-                    color: ColorApp.whiteColor,
                     child: ListView.builder(
                       itemBuilder: (context, index) {
                         return GestureDetector(
@@ -130,12 +136,13 @@ class HomeScreen extends StatelessWidget {
                 }
               },
             ),
+            SizedBox(height: 15,),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: MyText(
                   text: "Bán Chạy",
                   size: 20,
-                  color: Colors.black,
+                  color: ColorApp.brightOrangeColor,
                   weight: FontWeight.w600),
             ),
             //SizedBox(height: 10),
@@ -167,12 +174,13 @@ class HomeScreen extends StatelessWidget {
                 }
               },
             ),
+            SizedBox(height: 10,),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: MyText(
                   text: "Gợi ý",
                   size: 20,
-                  color: Colors.black,
+                  color: ColorApp.brightOrangeColor,
                   weight: FontWeight.w600),
             ),
             // Inside FutureBuilder for recommended items

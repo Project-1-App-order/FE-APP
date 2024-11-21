@@ -12,25 +12,36 @@ class ItemHomeCategory extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 7),
       child: Column(
         children: [
-          ClipOval(
+        Card(
+        color: Colors.white,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(5.0),
+          ),
+        ),
             child: Container(
-              width: 55,
-              height: 55,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: (category.categoryImgUrl != null && category.categoryImgUrl!.isNotEmpty)
-                      ? NetworkImage(category.categoryImgUrl!) // Use NetworkImage if categoryImgUrl is not null
-                      : AssetImage('assets/images/image_food.jpg') as ImageProvider, // Fallback to local asset
-                  fit: BoxFit.fill,
+              width: 50,
+              height: 50,
+              child: Center(
+                child: ClipOval(
+                  child: Image(
+                    image: (category.categoryImgUrl != null && category.categoryImgUrl!.isNotEmpty)
+                        ? NetworkImage(category.categoryImgUrl!)
+                        : AssetImage('assets/images/image_food.jpg') as ImageProvider,
+                    width: 30,  // Kích thước ảnh là 25
+                    height: 30, // Kích thước ảnh là 25
+                    fit: BoxFit.cover, // Đảm bảo ảnh không bị méo
+                  ),
                 ),
               ),
+            ),
 
             ),
-          ),
           const SizedBox(height: 8),
           Text(
             category.categoryName != null ? category.categoryName : "Food 1",
-            style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.w600),
+            style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.w600, fontFamily: "Roboto-Light.ttf"),
           ),
         ],
       ),

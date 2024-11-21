@@ -4,6 +4,7 @@ import 'package:project_1_btl/screen/item/ItemUserInfo.dart';
 import 'package:project_1_btl/services/AuthService.dart';
 import 'package:project_1_btl/widgets/MyAppBar.dart';
 import 'package:project_1_btl/widgets/MyButton.dart';
+import 'package:project_1_btl/widgets/MyText.dart';
 import 'package:project_1_btl/widgets/SnackBarHelper.dart';
 
 class UserInformationScreen extends StatefulWidget {
@@ -128,17 +129,33 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
             flex: 1,
             child: Text(
               label,
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 16, fontFamily: "Roboto-Light.ttf", fontWeight: FontWeight.w500),
             ),
           ),
           SizedBox(width: 5),
           Expanded(
             flex: 2,
-            child: TextFormField(
+            child: TextField(
               controller: controller,
               enabled: isEditable,
+              showCursor: true,
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius:
+                  BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide(
+                    width: 0,
+                    style: BorderStyle.none,
+                  ),
+                ),
+                filled: true,
+                fillColor: Color(0xFFF2F3F5),
+                hintStyle: TextStyle(
+                  color: Color(0xFF666666),
+                  fontFamily: "Roboto-Light.ttf",
+                  fontSize: 16,
+                ),
+                hintText: label,
               ),
             ),
           ),
@@ -146,7 +163,6 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
       ),
     );
   }
-
   Widget _buildGenderDropdown() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -156,18 +172,19 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
             flex: 1,
             child: Text(
               'Giới Tính',
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 16, fontFamily: "Roboto-Light.ttf", fontWeight: FontWeight.w500),
             ),
           ),
           SizedBox(width: 10),
+
           Expanded(
             flex: 2,
             child: DropdownButtonFormField<String>(
               value: selectedGender,
-              items: ['Nam', 'Nữ']
+              items: ['','Nam', 'Nữ']
                   .map((gender) => DropdownMenuItem<String>(
                 value: gender,
-                child: Text(gender),
+                child: MyText(size: 20, color: Colors.black, weight: FontWeight.w500,text: gender,family: "Roboto-Light.ttf",),
               ))
                   .toList(),
               onChanged: (newValue) {

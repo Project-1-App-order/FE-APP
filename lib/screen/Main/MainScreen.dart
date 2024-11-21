@@ -61,7 +61,18 @@ class _MainscreenState extends State<MainScreen> {
             icon: Icon(Icons.person),
             label: 'Tôi',
           ),
+
         ],
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        selectedLabelStyle: TextStyle(
+          fontWeight: FontWeight.bold, // In đậm cho mục đã chọn
+          fontFamily: 'Roboto-Light.ttf', // Đặt font gia đình
+        ),
+        unselectedLabelStyle: TextStyle(
+          fontWeight: FontWeight.bold, // In đậm cho mục chưa chọn
+          fontFamily: 'Roboto-Light.ttf', // Đặt font gia đình
+        ),
       ),
     );
   }

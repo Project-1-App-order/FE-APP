@@ -20,7 +20,7 @@ class ItemLeftListCategory extends StatelessWidget {
       height: 100,
       decoration: BoxDecoration(
         color: isSelected ? Colors.white : Colors.grey[300],
-        borderRadius: isSelected ? BorderRadius.only(topRight: Radius.circular(10)) : null,
+
       ),
       padding: EdgeInsets.all(16.0),
       child: Column(
@@ -51,8 +51,8 @@ class ItemLeftListCategory extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: isSelected ? Colors.red : Colors.black,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.w400,
-                fontFamily: "RobotoRegular"
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                fontFamily: "Roboto-Light.ttf"
               ),
             ),
           ),

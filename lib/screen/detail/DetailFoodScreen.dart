@@ -69,8 +69,7 @@ class DetailFoodScreen extends StatelessWidget {
                       // Hình ảnh full-width với chiều cao 350
                       Container(
                         height: 350,
-                        child: Hero(
-                          tag: "image", // Đảm bảo tag là duy nhất
+                        // Đảm bảo tag là duy nhất
                           child: Image.network(
                             food.images[0].isNotEmpty
                                 ? food.images[0]
@@ -79,7 +78,6 @@ class DetailFoodScreen extends StatelessWidget {
                             width: double.infinity,
                           ),
                         ),
-                      ),
                       // Mũi tên quay lại, cố định vị trí khi cuộn
                       Positioned(
                         top: 40, // Khoảng cách từ trên
@@ -114,7 +112,7 @@ class DetailFoodScreen extends StatelessWidget {
                               onTap: () => addOrUpdateCartDetail(food),
                               child: Icon(
                                 Icons.add_box,
-                                color: Colors.red,
+                                color: Colors.orange,
                                 size: 36,
                               ),
                             ),
@@ -132,7 +130,7 @@ class DetailFoodScreen extends StatelessWidget {
                           height: 10,
                         ),
                         Text(
-                          food.price.toString() + " Đ",
+                          food.price.toInt().toString() + " Đ",
                           style: TextStyle(
                             fontSize: 20,
                             color: Colors.black,

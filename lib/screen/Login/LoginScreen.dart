@@ -14,6 +14,7 @@ import 'package:project_1_btl/widgets/CustomOverlayDialog.dart';
 import 'package:project_1_btl/widgets/CustomTextField.dart';
 import 'package:project_1_btl/widgets/MyButton.dart';
 import 'package:project_1_btl/widgets/MyText.dart';
+import 'package:project_1_btl/widgets/MyTextField.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -89,35 +90,23 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: ColorApp.brightOrangeColor,
                   fontSize: 40,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'OpenSansRegular',
+                  fontFamily: 'Roboto-Light.ttf',
                 ),
               ),
               SizedBox(height: height * 0.03),
               // TextField Email
-              CustomTextField(
-                controller: emailController,
-                // Thêm controller
-                hintText: 'Email',
-                icon: Icons.email,
-                iconSize: width * 0.06,
-                hintColor: Colors.grey,
-                background: ColorApp.whiteColor,
-                height: height * 0.06,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: MyTextField(icon: Icons.email_outlined, hintText: "Email", controller: emailController, isPassword: false,),
               ),
-              const Divider(color: Colors.grey, height: 1),
               // TextField Password
-              CustomTextField(
-                controller: passwordController,
-                // Thêm controller
-                hintText: 'Mật khẩu',
-                icon: Icons.lock,
-                iconSize: width * 0.06,
-                hintColor: Colors.grey,
-                background: ColorApp.whiteColor,
-                height: height * 0.06,
-                obscureText: true,
+              SizedBox(height: 10,),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+
+                child: MyTextField(icon: Icons.lock, hintText: "Mật khẩu", controller: passwordController,isPassword: true,),
               ),
-              const Divider(color: Colors.grey, height: 1),
+
               SizedBox(height: height * 0.06),
               // Đăng ký
               Align(
@@ -131,6 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           color: ColorApp.skyBlue,
                           fontSize: 25,
                           fontWeight: FontWeight.w600,
+                          fontFamily: "Roboto-Light.ttf"
                         ),
                       ),
                       onTap: () {
@@ -151,15 +141,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   _login(context); // Gọi hàm đăng nhập
                 },
               ),
-              SizedBox(height: height * 0.06),
+              SizedBox(height: height * 0.04),
               // Quên mật khẩu
               InkWell(
                 child: Center(
                   child: MyText(
                     text: "Quên Mật Khẩu",
-                    size: width * 0.05,
+                    size: width * 0.06,
                     color: ColorApp.skyBlue,
                     weight: FontWeight.w600,
+
                   ),
                 ),
                 onTap: () {

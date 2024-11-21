@@ -47,10 +47,10 @@ class _CartScreenState extends State<CartScreen> {
         cartDetails.fold(0, (sum, item) => sum + item.price * item.quantity);
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFFAFAFA),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
+          backgroundColor: Color(0xFFFAFAFA),
         title: Row(
           children: [
             InkWell(
@@ -162,16 +162,19 @@ class _CartScreenState extends State<CartScreen> {
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.orange,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 30, vertical: 15),
+                        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.zero, // Không bo góc để tạo hình chữ nhật
+                        ),
                       ),
                       onPressed: () {
                         // Handle purchase action
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    OrderConfirmScreen(orderId: orderId)));
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => OrderConfirmScreen(orderId: orderId),
+                          ),
+                        );
                       },
                       child: MyText(
                         text: "Đặt mua",
@@ -182,7 +185,8 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ],
                 ),
-              ),
+              )
+
           ],
         ),
       ),
