@@ -31,45 +31,129 @@ class ProfileScreen extends StatelessWidget {
             padding: EdgeInsets.only(left: width * 0.05, top: height * 0.1),
             child: Row(
               children: [
+                // Stack(
+                //   children: [
+                //     // Avatar
+                //     Container(
+                //       width: width * 0.15, // Set avatar size
+                //       height: width * 0.15,
+                //       decoration: BoxDecoration(
+                //         shape: BoxShape.circle, // Circle shape
+                //         image: DecorationImage(
+                //           image: AssetImage('assets/images/user.png'), // Avatar image path
+                //           fit: BoxFit.cover, // Make image cover the whole circle
+                //         ),
+                //       ),
+                //     ),
+                //
+                //     // Icon "v" at the bottom right
+                //     Positioned(
+                //       bottom: 0,
+                //       right: 0,
+                //       child: Container(
+                //         width: 20, // Icon size
+                //         height: 20,
+                //         decoration: BoxDecoration(
+                //           color: Colors.red, // Icon background color
+                //           shape: BoxShape.circle, // Circle shape
+                //           border: Border.all(
+                //             color: Colors.white, // White border around the icon
+                //             width: 2.0,
+                //           ),
+                //         ),
+                //         child: const Icon(
+                //           Icons.check, // Checkmark icon
+                //           color: Colors.white,
+                //           size: 16, // Icon size
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 Stack(
                   children: [
-                    // Avatar
-                    Container(
-                      width: width * 0.2, // Set avatar size
-                      height: width * 0.2,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle, // Circle shape
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/image_food.jpg'), // Avatar image path
-                          fit: BoxFit.cover, // Make image cover the whole circle
-                        ),
-                      ),
-                    ),
+                    // Kiểm tra tên người dùng để hiển thị ảnh hoặc chữ
+                    FutureBuilder<Map<String, dynamic>>(
+                      future: authRepository.getUserInformation(), // Fetch user info from API
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          // Loading state: Hiển thị biểu tượng avatar mặc định
+                          return Container(
+                            width: width * 0.15, // Set avatar size
+                            height: width * 0.15,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.grey.shade300, // Màu nền mặc định
+                            ),
+                            child: Center(
+                              child: Icon(Icons.person, size: width * 0.1, color: Colors.grey),
+                            ),
+                          );
+                        } else if (snapshot.hasData) {
+                          var userName = snapshot.data?['fullName']; // Lấy tên từ API
+                          if (userName != null && userName.isNotEmpty) {
+                            // Lấy chữ cái đầu tiên của từ cuối cùng
+                            String initial = userName.split(' ').last.substring(0, 1).toUpperCase();
 
-                    // Icon "v" at the bottom right
+                            return Container(
+                              width: width * 0.15,
+                              height: width * 0.15,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.blue, // Màu nền avatar
+                              ),
+                              child: Center(
+                                child: Text(
+                                  initial,
+                                  style: TextStyle(
+                                    fontSize: width * 0.08,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                        }
+                        // Nếu không có dữ liệu hoặc lỗi, hiển thị ảnh mặc định
+                        return Container(
+                          width: width * 0.15,
+                          height: width * 0.15,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.grey.shade300,
+                          ),
+                          child: Center(
+                            child: Icon(Icons.person, size: width * 0.1, color: Colors.grey),
+                          ),
+                        );
+                      },
+                    ),
+                    // Icon "v" ở góc dưới bên phải
                     Positioned(
                       bottom: 0,
                       right: 0,
                       child: Container(
-                        width: 25, // Icon size
-                        height: 25,
+                        width: 20,
+                        height: 20,
                         decoration: BoxDecoration(
-                          color: Colors.red, // Icon background color
-                          shape: BoxShape.circle, // Circle shape
+                          color: Colors.green,
+                          shape: BoxShape.circle,
                           border: Border.all(
-                            color: Colors.white, // White border around the icon
+                            color: Colors.white,
                             width: 2.0,
                           ),
                         ),
                         child: const Icon(
-                          Icons.check, // Checkmark icon
+                          Icons.check,
                           color: Colors.white,
-                          size: 16, // Icon size
+                          size: 16,
                         ),
                       ),
                     ),
                   ],
                 ),
+
                 SizedBox(width: width * 0.05),
                 Expanded(
                   // Use FutureBuilder to fetch the user name from API

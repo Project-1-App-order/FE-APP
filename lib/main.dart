@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_1_btl/blocs/Cart/CartBloc.dart';
 import 'package:project_1_btl/blocs/Login/LoginBloc.dart';
 import 'package:project_1_btl/blocs/Register/RegisterBloc.dart'; // Import RegisterBloc
-import 'package:project_1_btl/network/NetworkAwareWidget.dart';
 import 'package:project_1_btl/repository/AuthRepository.dart';
 import 'package:project_1_btl/repository/CartRepository.dart';
 import 'package:project_1_btl/screen/Login/LoginScreen.dart';
