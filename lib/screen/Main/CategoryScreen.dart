@@ -66,7 +66,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: MyAppBar(title: "Danh mục sản phẩm"),
+      appBar: AppBar(
+        title: Center(child: Text("Danh mục sản phẩm", style: TextStyle(fontSize: 20, fontFamily: "Roboto-Light.ttf", fontWeight: FontWeight.w500),),),
+        automaticallyImplyLeading: false,
+      ),
       body: categories.isEmpty // Kiểm tra nếu categories rỗng
           ? CenteredCircularProgress() // Hiển thị vòng xoay tải
           :Row(

@@ -106,7 +106,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     iconSize: 10,
                     hintColor: Colors.grey,
                     background: Color(0xffc9c9c9),
-                    height: 40,
+                    height: 38,
                   ),
                 ),
                 IconButton(

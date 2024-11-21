@@ -49,7 +49,7 @@ class CustomTextField extends StatelessWidget {
               ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(top: 5),
+                padding: const EdgeInsets.only(top: 10),
                 child: TextField(
                   controller: controller,
                   style: TextStyle(
