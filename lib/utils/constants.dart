@@ -9,9 +9,10 @@ class ColorApp{
   static const Color skyBlue = Color(0xff7695FF);
 }
 class AppUrl{
-  static const String UrlApi = "http://139.59.108.150:8083/api";
+  static const String UrlApi = "http://157.245.59.210:8083/api";
 
   //static const String UrlApi = "http://10.0.2.2:7258/api";
 
+  //http://157.245.59.210/
   //http://10.0.2.2:7258/api
 }

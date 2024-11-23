@@ -9,7 +9,7 @@ class ItemUserInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50,
+      height: 47,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

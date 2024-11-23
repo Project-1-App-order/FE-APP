@@ -96,11 +96,15 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: 20),
+              SizedBox(height: 5),
               _buildTextFormField("Tên Người Dùng", userNameController, true),
+              SizedBox(height: 5),
               _buildTextFormField("Số Điện Thoại", phoneController, true),
+              SizedBox(height: 5),
               _buildTextFormField("Email", emailController, false),
+              SizedBox(height: 5),
               _buildGenderDropdown(),
+              SizedBox(height: 5),
               _buildTextFormField("Địa Chỉ", addressController, true),
               SizedBox(height: 30),
               InkWell(
@@ -122,7 +126,7 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
 
   Widget _buildTextFormField(String label, TextEditingController controller, bool isEditable) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(
         children: [
           Expanded(
@@ -165,7 +169,7 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
   }
   Widget _buildGenderDropdown() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(
         children: [
           Expanded(

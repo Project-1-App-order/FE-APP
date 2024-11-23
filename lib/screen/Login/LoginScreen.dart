@@ -118,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         'Đăng ký',
                         style: TextStyle(
                           color: ColorApp.skyBlue,
-                          fontSize: 25,
+                          fontSize: 20,
                           fontWeight: FontWeight.w600,
                           fontFamily: "Roboto-Light.ttf"
                         ),
@@ -147,7 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Center(
                   child: MyText(
                     text: "Quên Mật Khẩu",
-                    size: width * 0.06,
+                    size: 20,
                     color: ColorApp.skyBlue,
                     weight: FontWeight.w600,
 

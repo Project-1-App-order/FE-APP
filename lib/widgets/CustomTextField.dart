@@ -32,7 +32,7 @@ class CustomTextField extends StatelessWidget {
         width: width,
         height: height,
         decoration: BoxDecoration(
-            border: Border.all(width: 1, color: Colors.orange),
+
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(10.0))),
         child: Row(
@@ -49,7 +49,7 @@ class CustomTextField extends StatelessWidget {
               ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.only(top: 13),
                 child: TextField(
                   controller: controller,
                   style: TextStyle(

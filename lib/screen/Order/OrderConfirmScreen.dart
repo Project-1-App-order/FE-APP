@@ -89,14 +89,50 @@ class _OrderConfirmScreenState extends State<OrderConfirmScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: MyText(text: "Thông tin thiếu", size: 20, color: Colors.black, weight: FontWeight.w500),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(0.0), // Góc vuông hoàn toàn
+          ),
           content: MyText(
-              text: "Vui lòng điền đầy đủ tên, số điện thoại và địa chỉ của bạn.", size: 16, color: Colors.black, weight: FontWeight.w400),
+            text: "Vui lòng điền đầy đủ tên, số điện thoại và địa chỉ của bạn.",
+            size: 16,
+            color: Colors.black,
+            weight: FontWeight.w400,
+          ),
           actions: [
+            // Nút "Hủy"
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Đóng dialog mà không làm gì
+              },
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.white, // Nền trắng
+                side: BorderSide(
+                  color: ColorApp.brightOrangeColor, // Viền màu cam
+                  width: 2.0,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(0.0), // Bo góc bằng 0
+                ),
+                padding: EdgeInsets.symmetric(
+                  vertical: 14.0,
+                  horizontal: 32.0,
+                ),
+              ),
+              child: Text(
+                "Hủy",
+                style: TextStyle(
+                  color: ColorApp.brightOrangeColor, // Chữ màu cam
+                  fontSize: 18,
+                  fontFamily: "Roboto-Light.ttf",
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            // Nút "OK"
             TextButton(
               onPressed: () async {
                 Navigator.of(context).pop(); // Đóng dialog
-                // Điều hướng tới UserInformationScreen và chờ kết quả sau khi quay lại
+                // Điều hướng tới UserInformationScreen và chờ kết quả
                 final result = await Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -111,25 +147,30 @@ class _OrderConfirmScreenState extends State<OrderConfirmScreen> {
                 }
               },
               style: TextButton.styleFrom(
-                backgroundColor: ColorApp.brightOrangeColor, // Màu nền cam
+                backgroundColor: ColorApp.brightOrangeColor, // Nền cam
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0), // Bo góc nếu cần
+                  borderRadius: BorderRadius.circular(0.0), // Bo góc bằng 0
                 ),
-                padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 32.0), // Tạo khoảng cách cho button
+                padding: EdgeInsets.symmetric(
+                  vertical: 14.0,
+                  horizontal: 32.0,
+                ),
               ),
               child: Text(
                 "OK",
                 style: TextStyle(
-                  color: Colors.white, // Màu chữ trắng
+                  color: Colors.white, // Chữ màu trắng
                   fontSize: 18,
-                  fontFamily: "Roboto-Light.ttf", // Dùng font tùy chỉnh
+                  fontFamily: "Roboto-Light.ttf",
                   fontWeight: FontWeight.w600,
                 ),
               ),
-            )
-
+            ),
           ],
         );
+
+
+
       },
     );
   }
@@ -195,9 +236,9 @@ class _OrderConfirmScreenState extends State<OrderConfirmScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
 
-                MyText(text: "Tên: ${userInfo['fullName']?? 'Chưa có'}", size: 17, color: Colors.black, weight: FontWeight.w400),
-                MyText(text: "Số điện thoại: ${userInfo['phoneNumber']?? 'Chưa có'}", size: 17, color: Colors.black, weight: FontWeight.w400),
-                MyText(text: "Địa chỉ: ${userInfo['address']?? 'Chưa có'}", size: 17, color: Colors.black, weight: FontWeight.w400),
+                MyText(text: "Tên: ${userInfo['fullName']?? 'Chưa có'}", size: 17, color: Colors.black, weight: FontWeight.w500),
+                MyText(text: "Số điện thoại: ${userInfo['phoneNumber']?? 'Chưa có'}", size: 17, color: Colors.black, weight: FontWeight.w500),
+                MyText(text: "Địa chỉ: ${userInfo['address']?? 'Chưa có'}", size: 17, color: Colors.black, weight: FontWeight.w500),
 
                 SizedBox(height: 10),
                 FutureBuilder<List<FoodCartDetail>?>(
@@ -221,7 +262,7 @@ class _OrderConfirmScreenState extends State<OrderConfirmScreen> {
                         children: [
                           SizedBox(height: 20),
 
-                          MyText(text: "Tổng tiền: ${totalPrice.toStringAsFixed(2)} VND", size: 17, color: Colors.black, weight: FontWeight.w400),
+                          MyText(text: "Tổng tiền: ${totalPrice.toStringAsFixed(2)} VND", size: 17, color: Colors.black, weight: FontWeight.w500),
                           SizedBox(height: 20),
                           Text("Danh sách món ăn:",
                               style: TextStyle(

@@ -67,6 +67,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Center(child: Text("Danh mục sản phẩm", style: TextStyle(fontSize: 20, fontFamily: "Roboto-Light.ttf", fontWeight: FontWeight.w500),),),
         automaticallyImplyLeading: false,
       ),

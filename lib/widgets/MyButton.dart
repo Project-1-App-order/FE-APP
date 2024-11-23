@@ -32,7 +32,7 @@ class MyButton extends StatelessWidget {
             title,
             style: const TextStyle(
               color: ColorApp.whiteColor, // Màu chữ của nút
-              fontSize: 25,
+              fontSize: 20,
               fontFamily: "Roboto-Light.ttf",
               fontWeight: FontWeight.w600, // Sử dụng font tùy chỉnh
             ),

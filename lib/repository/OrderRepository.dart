@@ -25,6 +25,9 @@ class OrderRepository {
       final String? orderId = prefs.getString('orderId');
       final String? userId = prefs.getString('userId');
 
+      print("User Id : " + userId!);
+      print("Order Id : " + orderId!);
+
       // Kiểm tra sự hiện diện của userId và orderId
       if (userId == null || orderId == null) {
         print("Thiếu userId hoặc orderId trong SharedPreferences.");
@@ -40,7 +43,7 @@ class OrderRepository {
       }
 
       // Bước 2: Tạo một đơn hàng mới
-      Order order = Order(userId: userId, orderStatus: 0, orderNote: "Ghi chú");
+      Order order = Order(userId: userId, orderStatus: 0 , orderNote: "Ghi chú");
       final String? newOrderId = await createOrder(order);
 
       if (newOrderId == null) {

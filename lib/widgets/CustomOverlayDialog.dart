@@ -23,7 +23,8 @@ class CustomOverlayDialog extends StatelessWidget {
               width: 320,
               padding: EdgeInsets.all(16.0),
               decoration: BoxDecoration(
-                color: const Color(0xFFFA812F), // Nền mờ với màu cam
+                color: Color(0xFFC3C3C4),
+                // Nền mờ với màu cam
                 borderRadius: BorderRadius.circular(12.0),
                 boxShadow: [
                   BoxShadow(
@@ -39,8 +40,8 @@ class CustomOverlayDialog extends StatelessWidget {
                 children: [
                   Image.asset(
                     image,
-                    width: 40,
-                    height: 40,
+                    width: 45,
+                    height: 45,
                   ),
                   SizedBox(height: 12.0),
                   Text(
@@ -49,7 +50,7 @@ class CustomOverlayDialog extends StatelessWidget {
                     style: TextStyle(
                       fontFamily: "Roboto-Light.ttf",
                       fontWeight: FontWeight.w600,
-                      color: Colors.white, // Màu chữ trắng
+                      color: Colors.black, // Màu chữ trắng
                       fontSize: 18.0,
                     ),
                   ),
@@ -76,7 +77,7 @@ void showCustomDialog(BuildContext context, String title, String image) {
   overlay.insert(overlayEntry);
 
   // Tự động đóng overlay sau 2 giây
-  Future.delayed(Duration(seconds: 2), () {
+  Future.delayed(Duration(seconds: 1), () {
     overlayEntry.remove(); // Xóa overlay sau 2 giây
   });
 }

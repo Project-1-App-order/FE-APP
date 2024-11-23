@@ -69,7 +69,7 @@ class _CartScreenState extends State<CartScreen> {
             Center(
               child: const Text(
                 'Giỏ hàng',
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(fontFamily: "Roboto-Light.ttf", fontWeight: FontWeight.w500),
               ),
             ),
             Spacer(),  // Thêm Spacer để căn giữa
@@ -121,7 +121,7 @@ class _CartScreenState extends State<CartScreen> {
                             const Text(
                               'Giỏ hàng trống',
                               style:
-                                  TextStyle(fontSize: 18, color: Colors.grey),
+                              TextStyle(fontFamily: "Roboto-Light.ttf", fontWeight: FontWeight.w500)
                             ),
                           ],
                         ),
@@ -145,7 +145,7 @@ class _CartScreenState extends State<CartScreen> {
                 },
               ),
             ),
-            const Divider(height: 2, color: Colors.grey),
+
             if (cartDetails
                 .isNotEmpty) // Only show the button if cart is not empty
               Container(
@@ -161,7 +161,7 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange,
+                        backgroundColor: ColorApp.brightOrangeColor,
                         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.zero, // Không bo góc để tạo hình chữ nhật

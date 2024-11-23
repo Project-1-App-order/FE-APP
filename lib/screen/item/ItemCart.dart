@@ -33,7 +33,7 @@ class ItemCart extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Container(
             width: double.infinity,
-            height: 130,
+            //height: 135,
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -58,13 +58,13 @@ class ItemCart extends StatelessWidget {
                   children: [
                     // Phần 1: Hình ảnh
                     Flexible(
-                      flex: 3, // Chiếm 20%
+                      flex: 4, // Chiếm 20%
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10.0), // Bo góc ảnh
                         child: Image.network(
                           cartDetail.images[0],
-                          width: 80,
-                          height: 80,
+                          width: 90,
+                          height: 90,
                           fit: BoxFit.fill,
                           errorBuilder: (context, error, stackTrace) {
                             return Image.asset(
@@ -77,7 +77,7 @@ class ItemCart extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 15),
                     // Phần 2: Tên, giá, số lượng
                     Flexible(
                       flex: 8, // Chiếm 60%
@@ -94,12 +94,13 @@ class ItemCart extends StatelessWidget {
                             weight: FontWeight.w600,
                             family: "Roboto-Light.ttf",
                           ),
+                          SizedBox(height: 5,),
                           // Giá sản phẩm
                           MyText(
                             text: "${cartDetail.price} VNĐ",
-                            size: 16,
+                            size: 17,
                             color: const Color(0xFF3a3a3b),
-                            weight: FontWeight.w400,
+                            weight: FontWeight.w500,
                           ),
                           // Row: Thêm/Bớt số lượng
                           Row(

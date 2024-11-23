@@ -25,6 +25,7 @@ class FoodRepository {
 
       // Kiểm tra nếu ngày hôm nay đã có danh sách món ăn được lưu
       if (lastSavedDate != null && lastSavedDate == currentDate) {
+        print("foodlist" + prefs.getString('foodList')!);
         // Đã có danh sách món ăn cho hôm nay, lấy danh sách đã lưu
         final String? foodListString = prefs.getString('foodList');
         if (foodListString != null) {
@@ -33,6 +34,8 @@ class FoodRepository {
           return foodList;
         }
       }
+
+      print("không có sản phẩm");
 
       // Nếu chưa có hoặc ngày đã thay đổi, lấy món ăn mới từ API
       final response = await http.get(Uri.parse('http://139.59.108.150:8083/api/Foods/FilterGetFoods'));

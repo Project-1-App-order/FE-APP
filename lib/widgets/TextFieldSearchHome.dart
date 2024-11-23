@@ -20,45 +20,12 @@ class TextFieldSearchHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return Container(
-    //   height: height,
-    //   decoration: BoxDecoration(
-    //     color: background,
-    //     borderRadius: BorderRadius.circular(8.0),
-    //   ),
-    //   child: Row(
-    //     children: [
-    //       Padding(
-    //         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-    //         child: Icon(
-    //           icon,
-    //           size: iconSize,
-    //           color: hintColor,
-    //         ),
-    //       ),
-    //       Expanded(
-    //         child: Text(
-    //           hintText,
-    //           style: TextStyle(
-    //             color: hintColor,
-    //             fontSize: 16,
-    //             fontFamily: "Roboto-Light.ttf"
-    //           ),
-    //         ),
-    //       ),
-    //     ],
-    //   ),
-    // );
 
     return Container(
       height: 40,
       child: Container(
                 decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 1,
-                    color: Colors.orange
-                  ),
-                    color: Colors.white,
+                    color: Color(0xFFF2F3F5),
                     borderRadius: BorderRadius.all(Radius.circular(10.0))),
                 child: Row(
                   children: <Widget>[
@@ -75,7 +42,7 @@ class TextFieldSearchHome extends StatelessWidget {
                         child: IconButton(
                           icon: Icon(
                             Icons.search,
-                            color: Colors.orange,
+                            color: Colors.black,
                           ),
                           onPressed: () {
                             // Khi nhấn vào icon, cũng chuyển đến SearchScreen

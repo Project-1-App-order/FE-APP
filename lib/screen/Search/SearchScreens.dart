@@ -83,7 +83,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFFAFAFA),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -154,16 +154,18 @@ class _SearchScreenState extends State<SearchScreen> {
                       children: [
                         // Hình ảnh
                         Container(
-                          width: 100,
-                          height: 100,
-                          child: Image.asset(
-                            "assets/images/searching.png", // Đường dẫn đến hình ảnh
-                            fit: BoxFit.cover, // Đảm bảo hình ảnh được hiển thị đầy đủ trong container
+                          width: 80,
+                          height: 80,
+                          child: Center(
+                            child: Image.asset(
+                              "assets/images/searching.png", // Đường dẫn đến hình ảnh
+                              fit: BoxFit.cover, // Đảm bảo hình ảnh được hiển thị đầy đủ trong container
+                            ),
                           ),
                         ),
                         SizedBox(height: 16), // Khoảng cách giữa hình ảnh và text
                         // Text
-                        MyText(text: "Không có kết quả tìm kiếm", size: 20, color: Colors.black, weight: FontWeight.w500),
+                        MyText(text: "Không có kết quả tìm kiếm", size: 17, color: Colors.black, weight: FontWeight.w500,),
 
                       ],
                     ),
@@ -186,16 +188,18 @@ class _SearchScreenState extends State<SearchScreen> {
                 children: [
                   // Hình ảnh
                   Container(
-                    width: 100,
-                    height: 100,
-                    child: Image.asset(
-                      "assets/images/searching.png", // Đường dẫn đến hình ảnh
-                      fit: BoxFit.cover, // Đảm bảo hình ảnh được hiển thị đầy đủ trong container
+                    width: 80,
+                    height: 80,
+                    child: Center(
+                      child: Image.asset(
+                        "assets/images/searching.png", // Đường dẫn đến hình ảnh
+                        fit: BoxFit.cover, // Đảm bảo hình ảnh được hiển thị đầy đủ trong container
+                      ),
                     ),
                   ),
                   SizedBox(height: 16), // Khoảng cách giữa hình ảnh và text
                   // Text
-                  MyText(text: "Chưa có sản phẩm tìm kiếm", size: 20, color: Colors.black, weight: FontWeight.w500),
+                  MyText(text: "Chưa có sản phẩm tìm kiếm", size: 17, color: Colors.black, weight: FontWeight.w500,),
 
                 ],
               ),

@@ -15,7 +15,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
           padding: const EdgeInsets.only(right: 50.0),
           child: Align(
             alignment: Alignment.center,
-            child: Text(title, style: TextStyle(fontFamily: "Roboto-Light.ttf", fontWeight: FontWeight.w600),),
+            child: Text(title, style: TextStyle(fontFamily: "Roboto-Light.ttf", fontWeight: FontWeight.w500),),
           ),
         ),
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_1_btl/model/Food.dart';
 import 'package:project_1_btl/screen/detail/DetailFoodScreen.dart';
+import 'package:project_1_btl/utils/constants.dart';
 //import 'package:project_1_btl/screen/Detail/DetailFoodScreen.dart';
 import 'package:project_1_btl/widgets/MyText.dart';
 
@@ -19,9 +20,7 @@ class ItemFood extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(bottom: 10),
-              child: Hero(
-                tag: "image", // Cùng tag với ảnh lớn để tạo hiệu ứng chuyển tiếp
-                child: ClipRRect(
+              child: ClipRRect(
                   borderRadius: BorderRadius.circular(10.0), // Bo góc ảnh
                   child: Image.network(
                     food.images[0],
@@ -39,7 +38,6 @@ class ItemFood extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
             const SizedBox(width: 20),
             Expanded(
               child: Column(
@@ -54,10 +52,10 @@ class ItemFood extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    food.price.toInt().toString() + ' Đ',
+                    food.price.toInt().toString() + ' đ',
                     style: TextStyle(
                       fontSize: 18,
-                      color: Color(0xFF676767),
+                      color: ColorApp.brightOrangeColor,
                       fontFamily: "Roboto-Light.ttf",
                     ),
                   ),

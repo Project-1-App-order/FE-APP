@@ -35,7 +35,7 @@ class HomeScreen extends StatelessWidget {
     final PageController _pageController = PageController();
 
     return Scaffold(
-      backgroundColor: ColorApp.whiteColor,
+      backgroundColor: Color(0xFFFAFAFA),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,78 +137,130 @@ class HomeScreen extends StatelessWidget {
               },
             ),
             SizedBox(height: 15,),
+            // "Bán Chạy" Section
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: MyText(
-                  text: "Bán Chạy",
-                  size: 20,
-                  color: ColorApp.brightOrangeColor,
-                  weight: FontWeight.w600),
-            ),
-            //SizedBox(height: 10),
-            FutureBuilder<List<Food>>(
-              future: _foodRepository.getTopTenBestSellers(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CenteredCircularProgress();
-                } else if (snapshot.hasError) {
-                  return CenteredCircularProgress();
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(child: Text('Không có sản phẩm bán chạy.'));
-                } else {
-                  return Container(
-                    padding: EdgeInsets.symmetric(horizontal: 7, vertical: 7),
-                    height: size.height * 0.2,
-                    width: size.width,
-                    color: Colors.white,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-                        final food = snapshot.data![index];
-                        return ItemCategory(food: food,);
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color(0xFFFAFAFA),
+                  borderRadius: BorderRadius.circular(10), // Bo góc toàn bộ phần
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: Offset(0, 3), // Hiệu ứng đổ bóng
+                    ),
+                  ],
+                ),
+                padding: const EdgeInsets.all(10), // Khoảng cách bên trong Container
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Tiêu đề "Bán Chạy"
+                    MyText(
+                      text: "Bán Chạy",
+                      size: 20,
+                      color: ColorApp.brightOrangeColor,
+                      weight: FontWeight.w600,
+                    ),
+                    // Danh sách "Bán Chạy"
+                    FutureBuilder<List<Food>>(
+                      future: _foodRepository.getTopTenBestSellers(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return CenteredCircularProgress();
+                        } else if (snapshot.hasError) {
+                          return CenteredCircularProgress();
+                        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                          return Center(
+                            child: Text('Không có sản phẩm bán chạy.'),
+                          );
+                        } else {
+                          return SizedBox(
+                            height: size.height * 0.2, // Chiều cao của danh sách
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              padding:
+                              const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (context, index) {
+                                final food = snapshot.data![index];
+                                return ItemCategory(
+                                  food: food,
+                                );
+                              },
+                            ),
+                          );
+                        }
                       },
                     ),
-                  );
-                }
-              },
+                  ],
+                ),
+              ),
             ),
             SizedBox(height: 10,),
+            // "Gợi ý" Section
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: MyText(
-                  text: "Gợi ý",
-                  size: 20,
-                  color: ColorApp.brightOrangeColor,
-                  weight: FontWeight.w600),
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color(0xFFFAFAFA),
+                  borderRadius: BorderRadius.circular(10), // Bo góc toàn bộ phần
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: Offset(0, 3), // Hiệu ứng đổ bóng
+                    ),
+                  ],
+                ),
+                padding: const EdgeInsets.all(10), // Khoảng cách bên trong Container
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Tiêu đề "Gợi ý"
+                    MyText(
+                      text: "Gợi ý",
+                      size: 20,
+                      color: ColorApp.brightOrangeColor,
+                      weight: FontWeight.w600,
+                    ),
+
+                    // Danh sách "Gợi ý"
+                    FutureBuilder<List<Food>>(
+                      future: _foodRepository.getDailyRandomFoods(), // Lấy dữ liệu gợi ý
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return CenteredCircularProgress();
+                        } else if (snapshot.hasError) {
+                          return CenteredCircularProgress();
+                        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                          return Center(
+                            child: Text('Không có gợi ý nào.'),
+                          );
+                        } else {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(), // Ngăn cuộn riêng
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (context, index) {
+                              final food = snapshot.data![index];
+                              return ItemFood(
+                                size: size,
+                                food: food, // Truyền dữ liệu food vào ItemFood
+                              );
+                            },
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ),
-            // Inside FutureBuilder for recommended items
-            FutureBuilder<List<Food>>(
-              future: _foodRepository.getDailyRandomFoods(), // Change to appropriate method
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CenteredCircularProgress();
-                } else if (snapshot.hasError) {
-                  return CenteredCircularProgress();
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(child: Text('Không có gợi ý nào.'));
-                } else {
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      final food = snapshot.data![index];
-                      return ItemFood(
-                        size: size,
-                        food: food, // Assuming price is a double
-                      );
-                    },
-                  );
-                }
-              },
-            ),
+
 
             // ),
           ],

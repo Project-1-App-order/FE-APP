@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
           // Nếu có token, điều hướng đến trang chính
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => MainScreen()),
+            MaterialPageRoute(builder: (context) => LoginScreen()),
           );
         } else {
           // Nếu không có token, điều hướng đến trang đăng nhập

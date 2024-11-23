@@ -6,7 +6,7 @@ class SnackBarHelper {
   static void showSnackBar({
     required BuildContext context,
     required String message,
-    Color backgroundColor = const Color(0xFFFF9D3D),
+    Color backgroundColor = ColorApp.brightOrangeColor,
     Color textColor = Colors.white,
     double fontSize = 16.0,
   }) {

@@ -52,7 +52,7 @@ class _MyBannerState extends State<MyBanner> {
   void initState() {
     super.initState();
     // Set up the timer to change the page every 3 seconds
-    _timer = Timer.periodic(Duration(seconds: 3), (Timer timer) {
+    _timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
       if (_currentIndex < _banners.length - 1) {
         _currentIndex++;
       } else {
@@ -60,7 +60,7 @@ class _MyBannerState extends State<MyBanner> {
       }
       widget.pageController.animateToPage(
         _currentIndex,
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
     });
@@ -75,33 +75,39 @@ class _MyBannerState extends State<MyBanner> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: widget.size.width,
-      height: widget.size.height * 0.2,
-      child: Stack(
-        children: [
-          PageView(
-            controller: widget.pageController,
-            children: _banners,
-          ),
-          Positioned(
-            bottom: 5,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: SmoothPageIndicator(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10.0), // Margin 2 bên
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10), // Border radius toàn bộ PageView
+        child: Container(
+          height: widget.size.height * 0.2,
+          color: Colors.grey[200], // Background color cho hiệu ứng rõ hơn
+          child: Stack(
+            children: [
+              PageView(
                 controller: widget.pageController,
-                count: _banners.length,
-                effect: WormEffect(
-                  dotHeight: 10.0,
-                  dotWidth: 10.0,
-                  activeDotColor: ColorApp.whiteColor,
-                  dotColor: Colors.grey,
+                children: _banners,
+              ),
+              Positioned(
+                bottom: 5,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: SmoothPageIndicator(
+                    controller: widget.pageController,
+                    count: _banners.length,
+                    effect: WormEffect(
+                      dotHeight: 7.0,
+                      dotWidth: 7.0,
+                      activeDotColor: ColorApp.whiteColor,
+                      dotColor: Colors.grey,
+                    ),
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

@@ -28,7 +28,7 @@ class ItemProfile extends StatelessWidget {
       ),
       padding: EdgeInsets.symmetric(horizontal: size.width * 0.04), // Khoảng cách hai bên
       //color: ColorApp.skyBlue,
-      height: size.height * 0.06, // Điều chỉnh chiều cao theo ý bạn
+      height: size.height * 0.05, // Điều chỉnh chiều cao theo ý bạn
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

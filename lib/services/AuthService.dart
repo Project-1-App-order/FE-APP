@@ -49,6 +49,10 @@ class AuthService {
             throw Exception('Email rỗng ! Hãy nhập email của bạn!').toString().replaceAll('Exception: ', '');
           }
 
+          if(errors['Email'][0] == "Length Email Invalid"){
+            throw Exception('Độ dài email không phù hợp! Hãy nhập lại email của bạn!').toString().replaceAll('Exception: ', '');
+          }
+
           if(errors['Email'][0] == "Email invalid"){
             throw Exception('Email không đúng định dạng!').toString().replaceAll('Exception: ', '');
           }
@@ -61,7 +65,7 @@ class AuthService {
           }
         }
       }
-
+      print("Body : " + response.body);
       throw Exception('Đăng ký người dùng lỗi !').toString().replaceAll('Exception: ', '');
     } else {
       throw Exception('${response.statusCode}');
@@ -373,6 +377,9 @@ class AuthService {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final orderId = data['result'][0]['orderId'];
+        final userId = data['result'][0]['userId'];
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString("userId", userId);
         return orderId;
       } else {
         print('Lỗi tải dữ liệu giỏ hàng :  ${response.statusCode}');

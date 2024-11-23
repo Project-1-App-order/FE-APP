@@ -28,10 +28,12 @@ class ItemCategory extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Color(0xFFF2F3F5),
+          color: Colors.white, // Loại bỏ background
+
         ),
         width: 90,
-        height: 150,
+        height: 130,
+
         margin: EdgeInsets.only(right: 5),
         child: Padding(
           padding: const EdgeInsets.only(top: 5),
@@ -40,26 +42,22 @@ class ItemCategory extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(10), // Apply border radius
-
-                  // Cùng tag với ảnh lớn để tạo hiệu ứng chuyển tiếp
-                  child: Image.network(
-                    food.images[0],
-                    width: 78,
-                    height: 78,
-                    fit: BoxFit.cover,
-
-                    errorBuilder: (context, error, stackTrace) {
-                      return Image.asset(
-                        "assets/images/image_food.jpg",
-                        // Fallback image in case of error
-                        width: double.infinity,
-                        height: 80,
-                        fit: BoxFit.cover,
-                      );
-                    },
-                  ),
+                child: Image.network(
+                  food.images[0],
+                  width: 78,
+                  height: 78,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      "assets/images/image_food.jpg",
+                      // Fallback image in case of error
+                      width: double.infinity,
+                      height: 80,
+                      fit: BoxFit.cover,
+                    );
+                  },
                 ),
-
+              ),
               SizedBox(height: 10),
               // Container to constrain the width of the text
               Container(
@@ -69,17 +67,20 @@ class ItemCategory extends StatelessWidget {
                   child: Text(
                     food.foodName,
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontWeight: FontWeight.w600, fontFamily: "Roboto-Light.ttf"),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontFamily: "Roboto-Light.ttf",
+                    ),
                     maxLines: 2, // Limit to 2 lines
-                    overflow:
-                    TextOverflow.ellipsis, // Handle overflow with ellipsis
+                    overflow: TextOverflow.ellipsis, // Handle overflow with ellipsis
                   ),
                 ),
               ),
             ],
           ),
         ),
-      ),
+      )
+
     );
   }
 }
