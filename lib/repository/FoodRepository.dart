@@ -38,7 +38,7 @@ class FoodRepository {
       print("không có sản phẩm");
 
       // Nếu chưa có hoặc ngày đã thay đổi, lấy món ăn mới từ API
-      final response = await http.get(Uri.parse('http://139.59.108.150:8083/api/Foods/FilterGetFoods'));
+      final response = await http.get(Uri.parse('http://157.245.59.210:8083/api/Foods/FilterGetFoods'));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         List<dynamic> foodsJson = data["result"]["\$values"];
